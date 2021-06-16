@@ -70,7 +70,7 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <DataGrid CanUserAddRows="True" Grid.Column="0" Width="Auto" ItemsSource="{Binding Customers}" SelectionMode="Single" SelectedItem="{Binding SelectedCustomer}" />
-            <GridSplitter Grid.Column="1" ResizeDirection="Columns" />
+            <GridSplitter Grid.Column="1" ResizeDirection="Columns" ShowsPreview="True" />
             <DataGrid CanUserAddRows="False" Grid.Column="2" Width="Auto" ItemsSource="{Binding Orders}" SelectionMode="Single" SelectedItem="{Binding SelectedOrder}" />
         </Grid>
     </DockPanel>
