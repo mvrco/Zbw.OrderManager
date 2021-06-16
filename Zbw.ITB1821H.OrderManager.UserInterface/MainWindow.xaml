@@ -7,10 +7,12 @@
         xmlns:local="clr-namespace:ZbW.ITB1821H.OrderManager"
         xmlns:iconPacks="clr-namespace:MahApps.Metro.IconPacks;assembly=MahApps.Metro.IconPacks.Modern"
         mc:Ignorable="d"
-        Title="Order manager" Height="450" Width="800" TitleBarHeight="30">
+        Title="Order manager" Height="450" Width="800"
+        Icon="pack://application:,,,/icon.ico" ShowIconOnTitleBar="True" TitleBarHeight="30">
     <mah:MetroWindow.ContextMenu>
         <ContextMenu>
             <MenuItem Command="ApplicationCommands.New" />
+            <MenuItem Command="ApplicationCommands.Open" />
             <MenuItem Command="ApplicationCommands.Delete" />
         </ContextMenu>
     </mah:MetroWindow.ContextMenu>
@@ -67,9 +69,9 @@
                 <ColumnDefinition Width="5px" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <DataGrid Grid.Column="0" Width="Auto" ItemsSource="{Binding Customers}" SelectionMode="Single" SelectedItem="{Binding SelectedCustomer}" />
+            <DataGrid CanUserAddRows="True" Grid.Column="0" Width="Auto" ItemsSource="{Binding Customers}" SelectionMode="Single" SelectedItem="{Binding SelectedCustomer}" />
             <GridSplitter Grid.Column="1" ResizeDirection="Columns" />
-            <DataGrid Grid.Column="2" Width="Auto" ItemsSource="{Binding Orders}" SelectionMode="Single" SelectedItem="{Binding SelectedOrder}" />
+            <DataGrid CanUserAddRows="False" Grid.Column="2" Width="Auto" ItemsSource="{Binding Orders}" SelectionMode="Single" SelectedItem="{Binding SelectedOrder}" />
         </Grid>
     </DockPanel>
 </mah:MetroWindow>
