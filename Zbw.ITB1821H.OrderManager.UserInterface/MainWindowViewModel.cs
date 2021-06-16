@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using ZbW.ITB1821H.OrderManager.Controls;
 using ZbW.ITB1821H.OrderManager.Model;
 
@@ -9,26 +10,26 @@ namespace ZbW.ITB1821H.OrderManager
     {
         public MainWindowViewModel()
         {
-            Customers = new List<Customer> {
+            Customers = new ObservableCollection<Customer> {
                 new Customer { Name = "Mike", Email = "Test", LastName = "S." },
                 new Customer { Name = "Marco", Email = "Test", LastName = "G." },
                 new Customer { Name = "Philip", Email = "Test", LastName = "S." }
             };
-            Orders = new List<Order>
+            Orders = new ObservableCollection<Order>
             {
                 new Order{ Customer = Customers[0], DateOfPurchase = DateTime.Today}
             };
         }
 
-        public IList<Customer> Customers { get; private set; }
+        public IList<Customer> Customers { get; set; }
         public Customer SelectedCustomer { get; set; }
-        public IList<Order> Orders { get; private set; }
+        public IList<Order> Orders { get; set; }
         public Order SelectedOrder { get; set; }
 
         /// <summary>
         /// Loads and sets the scaling factor from/to user settings
         /// </summary>
-        public double SliderValue
+        public static double SliderValue
         {
             get
             {
@@ -40,5 +41,9 @@ namespace ZbW.ITB1821H.OrderManager
                 UserInterface.Properties.Settings.Default.Save();
             }
         }
+
+        public bool IsBusy { get => true; }
+
+        public bool IsIdle { get => !IsBusy; }
     }
 }

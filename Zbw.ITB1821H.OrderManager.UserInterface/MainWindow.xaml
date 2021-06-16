@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZbW.ITB1821H.OrderManager"
         xmlns:iconPacks="clr-namespace:MahApps.Metro.IconPacks;assembly=MahApps.Metro.IconPacks.Modern"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
         Title="Order manager" Height="450" Width="800"
         Icon="pack://application:,,,/icon.ico" ShowIconOnTitleBar="True" TitleBarHeight="30">
@@ -30,15 +31,19 @@
     </mah:MetroWindow.LeftWindowCommands>
 
     <DockPanel>
-        <StatusBar DockPanel.Dock="Bottom" x:Name="StatusBar" Height="30">
-            <StatusBarItem DockPanel.Dock="Right" ToolTip="Zoom">
-                <Slider x:Name="zoomSlider" Width="100" Value="{Binding SliderValue}" Minimum=".5" Maximum="2" Style="{DynamicResource MahApps.Styles.Slider.Flat}" />
+        <StatusBar DockPanel.Dock="Bottom" x:Name="StatusBar" Height="30" HorizontalAlignment="Stretch">
+            <StatusBarItem HorizontalAlignment="Left" Padding="0 0 0 0">
+                <fa:ImageAwesome Icon="Spinner" Foreground="Black" Spin="{Binding IsBusy}" ToolTip="Working..." Height="25" Width="25" VerticalAlignment="Bottom" mah:VisibilityHelper.IsVisible="{Binding IsBusy}" />
             </StatusBarItem>
-            <mah:ToggleSwitch Toggled="ToggleSwitch_Toggled" ToolTip="Turn dark mode on or off">
-                <mah:ToggleSwitch.LayoutTransform>
+            <StatusBarItem HorizontalAlignment="Right" Padding="0 0 30 0">
+                <StatusBarItem.LayoutTransform>
                     <ScaleTransform ScaleX="0.8" ScaleY="0.8" />
-                </mah:ToggleSwitch.LayoutTransform>
-            </mah:ToggleSwitch>
+                </StatusBarItem.LayoutTransform>
+                <StackPanel Orientation="Horizontal">
+                    <mah:ToggleSwitch Toggled="ToggleSwitch_Toggled" ToolTip="Turn dark mode on or off" />
+                    <Slider x:Name="zoomSlider" Width="150" Height="15" Value="{Binding SliderValue}" Minimum=".5" Maximum="2" Style="{DynamicResource MahApps.Styles.Slider.Flat}" />
+                </StackPanel>
+            </StatusBarItem>
         </StatusBar>
         <Expander DockPanel.Dock="Left" ExpandDirection="Right" IsExpanded="True" Padding="2">
             <ListBox ItemsSource="{Binding Customers}" SelectedItem="{Binding SelectedCustomer}" DisplayMemberPath="FullName" Width="150" />
@@ -69,9 +74,10 @@
                 <ColumnDefinition Width="5px" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <DataGrid CanUserAddRows="True" Grid.Column="0" Width="Auto" ItemsSource="{Binding Customers}" SelectionMode="Single" SelectedItem="{Binding SelectedCustomer}" />
+
+            <DataGrid CanUserAddRows="True" Grid.Column="0" Width="Auto" ItemsSource="{Binding Customers}" SelectionMode="Single" SelectedItem="{Binding SelectedCustomer}" IsEnabled="{Binding IsIdle}" />
             <GridSplitter Grid.Column="1" ResizeDirection="Columns" ShowsPreview="True" />
-            <DataGrid CanUserAddRows="False" Grid.Column="2" Width="Auto" ItemsSource="{Binding Orders}" SelectionMode="Single" SelectedItem="{Binding SelectedOrder}" />
+            <DataGrid CanUserAddRows="False" Grid.Column="2" Width="Auto" ItemsSource="{Binding Orders}" SelectionMode="Single" SelectedItem="{Binding SelectedOrder}" IsEnabled="{Binding IsIdle}" />
         </Grid>
     </DockPanel>
 </mah:MetroWindow>
