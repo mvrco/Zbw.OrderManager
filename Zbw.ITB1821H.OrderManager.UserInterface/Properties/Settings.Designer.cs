@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ZbW.ITB1821H.OrderManager.Properties {
+namespace ZbW.ITB1821H.OrderManager.UserInterface.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -29,6 +29,27 @@ namespace ZbW.ITB1821H.OrderManager.Properties {
         public string DbConnectionString {
             get {
                 return ((string)(this["DbConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public double ScalingFactor {
+            get {
+                return ((double)(this["ScalingFactor"]));
+            }
+            set {
+                this["ScalingFactor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/MasterAzazel/Zbw.OrderManager")]
+        public string GithubUrl {
+            get {
+                return ((string)(this["GithubUrl"]));
             }
         }
     }

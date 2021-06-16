@@ -1,5 +1,6 @@
 ﻿using ControlzEx.Theming;
 using MahApps.Metro.Controls;
+using System.Diagnostics;
 
 namespace ZbW.ITB1821H.OrderManager
 {
@@ -22,6 +23,11 @@ namespace ZbW.ITB1821H.OrderManager
                 else
                     ThemeManager.Current.ChangeTheme(this, "Light.Taupe");
             }
+        }
+
+        private void Github_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Process.Start("explorer", UserInterface.Properties.Settings.Default.GithubUrl);
         }
     }
 }

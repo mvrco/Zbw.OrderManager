@@ -5,8 +5,9 @@
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZbW.ITB1821H.OrderManager"
+        xmlns:iconPacks="clr-namespace:MahApps.Metro.IconPacks;assembly=MahApps.Metro.IconPacks.Modern"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Order manager" Height="450" Width="800" TitleBarHeight="30">
     <mah:MetroWindow.ContextMenu>
         <ContextMenu>
             <MenuItem Command="ApplicationCommands.New" />
@@ -15,18 +16,30 @@
     </mah:MetroWindow.ContextMenu>
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
+            <TextBox mah:TextBoxHelper.ClearTextButton="True" mah:TextBoxHelper.Watermark="Search data" MinWidth="100" />
+            <Button Click="Github_Click" ToolTip="Open GitHub page">
+                <iconPacks:PackIconModern Width="22" Height="22" Kind="SocialGithubOctocat" />
+            </Button>
         </mah:WindowCommands>
     </mah:MetroWindow.RightWindowCommands>
+    <mah:MetroWindow.LeftWindowCommands>
+        <mah:WindowCommands>
+        </mah:WindowCommands>
+    </mah:MetroWindow.LeftWindowCommands>
 
     <DockPanel>
-        <StatusBar DockPanel.Dock="Bottom" x:Name="StatusBar">
-            <StatusBarItem DockPanel.Dock="Right">
-                <Slider x:Name="zoomSlider" Width="125" Value="1" Minimum=".5" Maximum="2" Style="{DynamicResource MahApps.Styles.Slider.Flat}" />
+        <StatusBar DockPanel.Dock="Bottom" x:Name="StatusBar" Height="30">
+            <StatusBarItem DockPanel.Dock="Right" ToolTip="Zoom">
+                <Slider x:Name="zoomSlider" Width="100" Value="{Binding SliderValue}" Minimum=".5" Maximum="2" Style="{DynamicResource MahApps.Styles.Slider.Flat}" />
             </StatusBarItem>
-            <mah:ToggleSwitch Toggled="ToggleSwitch_Toggled" ToolTip="Turn dark mode on or off" />
+            <mah:ToggleSwitch Toggled="ToggleSwitch_Toggled" ToolTip="Turn dark mode on or off">
+                <mah:ToggleSwitch.LayoutTransform>
+                    <ScaleTransform ScaleX="0.8" ScaleY="0.8" />
+                </mah:ToggleSwitch.LayoutTransform>
+            </mah:ToggleSwitch>
         </StatusBar>
         <Expander DockPanel.Dock="Left" ExpandDirection="Right" IsExpanded="True" Padding="2">
-            <ListBox ItemsSource="{Binding Customers}" DisplayMemberPath="FullName" Width="160" />
+            <ListBox ItemsSource="{Binding Customers}" SelectedItem="{Binding SelectedCustomer}" DisplayMemberPath="FullName" Width="150" />
             <Expander.Header>
                 <TextBlock Text="Customers" FontSize="12" Foreground="White">
                     <TextBlock.LayoutTransform>
@@ -35,8 +48,8 @@
                 </TextBlock>
             </Expander.Header>
         </Expander>
-        <Expander DockPanel.Dock="Right" ExpandDirection="Left" IsExpanded="True" Padding="2">
-            <ListBox ItemsSource="{Binding Orders}" DisplayMemberPath="DateOfPurchase" Width="160" />
+        <Expander DockPanel.Dock="Right" ExpandDirection="Left" IsExpanded="False" Padding="2">
+            <ListBox ItemsSource="{Binding Orders}" SelectedItem="{Binding SelectedOrder}" DisplayMemberPath="DateOfPurchase" Width="175" />
             <Expander.Header>
                 <TextBlock Text="Latest orders" FontSize="12" Foreground="White">
                     <TextBlock.LayoutTransform>
@@ -49,8 +62,14 @@
             <Grid.LayoutTransform>
                 <ScaleTransform ScaleX="{Binding ElementName=zoomSlider, Path=Value}" ScaleY="{Binding ElementName=zoomSlider, Path=Value}" />
             </Grid.LayoutTransform>
-
-            <DataGrid Width="Auto" ItemsSource="{Binding Customers}" />
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="5px" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <DataGrid Grid.Column="0" Width="Auto" ItemsSource="{Binding Customers}" SelectionMode="Single" SelectedItem="{Binding SelectedCustomer}" />
+            <GridSplitter Grid.Column="1" ResizeDirection="Columns" />
+            <DataGrid Grid.Column="2" Width="Auto" ItemsSource="{Binding Orders}" SelectionMode="Single" SelectedItem="{Binding SelectedOrder}" />
         </Grid>
     </DockPanel>
 </mah:MetroWindow>
