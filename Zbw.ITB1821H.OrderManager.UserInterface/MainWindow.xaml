@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:ZbW.ITB1821H.OrderManager"
         xmlns:iconPacks="clr-namespace:MahApps.Metro.IconPacks;assembly=MahApps.Metro.IconPacks.Modern"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
-        mc:Ignorable="d"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="Order manager" Height="450" Width="800"
         Icon="pack://application:,,,/icon.ico" ShowIconOnTitleBar="True"
         TitleBarHeight="30" TitleForeground="{DynamicResource MahApps.Brushes.Accent1}"
@@ -31,6 +31,68 @@
             <TextBox x:Name="searchBox" mah:TextBoxHelper.ClearTextButton="True" mah:TextBoxHelper.Watermark="Search..." TextChanged="SearchBox_TextChanged" MinWidth="100" />
         </mah:WindowCommands>
     </mah:MetroWindow.LeftWindowCommands>
+    <mah:MetroWindow.Resources>
+
+        <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type local:HamMenuItem}">
+            <Grid Height="48">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="28" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <ContentControl Grid.Column="0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Content="{Binding Icon}"
+                        Focusable="False" />
+                <TextBlock Grid.Column="1"
+                   VerticalAlignment="Center"
+                   FontSize="16"
+                   Text="{Binding Label}" />
+            </Grid>
+        </DataTemplate>
+
+        <!--<Style BasedOn="{StaticResource {x:Type Frame}}" TargetType="{x:Type Frame}">
+            <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Accent2}" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="ClipToBounds" Value="True" />
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <mah:TransitioningContentControl Content="{Binding}"
+                                                  RestartTransitionOnContentChange="True"
+                                                  Transition="Custom">
+                            <mah:TransitioningContentControl.CustomVisualStates>
+                                <VisualState x:Name="CustomTransition">
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                   Storyboard.TargetName="CurrentContentPresentationSite"
+                                                   Storyboard.TargetProperty="(UIElement.Opacity)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.150" Value="1" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                   Storyboard.TargetName="CurrentContentPresentationSite"
+                                                   Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="200" />
+                                            <SplineDoubleKeyFrame KeySpline="0.1, 0.9, 0.2, 1"
+                                            KeyTime="00:00:00.300"
+                                            Value="0" />
+                                        </DoubleAnimationUsingKeyFrames>
+
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                   Storyboard.TargetName="PreviousContentPresentationSite"
+                                                   Storyboard.TargetProperty="(UIElement.Opacity)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </mah:TransitioningContentControl.CustomVisualStates>
+                        </mah:TransitioningContentControl>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>-->
+    </mah:MetroWindow.Resources>
 
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom" x:Name="StatusBar" Height="30" HorizontalAlignment="Stretch">
@@ -47,7 +109,18 @@
                 </StackPanel>
             </StatusBarItem>
         </StatusBar>
-        <Expander DockPanel.Dock="Left" ExpandDirection="Right" IsExpanded="True">
+        <mah:HamburgerMenu x:Name="HamburgerMenuControl" DockPanel.Dock="Left"
+                           CompactPaneLength="31"
+                           HamburgerWidth="20"
+                          DisplayMode="CompactInline"
+                          IsPaneOpen="False"
+                           PaneBackground="{DynamicResource MahApps.Brushes.Accent}"
+                          ItemInvoked="HamburgerMenuControl_OnItemInvoked"
+                          ItemTemplate="{StaticResource MenuItemTemplate}"
+                          ItemsSource="{Binding Menu}"
+                          OptionsItemTemplate="{StaticResource MenuItemTemplate}"
+                          OptionsItemsSource="{Binding OptionsMenu}" />
+        <!--<Expander DockPanel.Dock="Left" ExpandDirection="Right" IsExpanded="True">
             <ListBox x:Name="customersListBox" ItemsSource="{Binding Customers}" SelectedItem="{Binding SelectedCustomer}" DisplayMemberPath="FullName" Width="150" />
             <Expander.Header>
                 <TextBlock Text="Customers" FontSize="12" Foreground="{DynamicResource MahApps.Brushes.Accent1}">
@@ -66,29 +139,6 @@
                     </TextBlock.LayoutTransform>
                 </TextBlock>
             </Expander.Header>
-        </Expander>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="5px" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-
-            <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                <DataGrid mah:DataGridHelper.SelectionUnit="FullRow" CanUserAddRows="True" ItemsSource="{Binding Customers}" SelectionMode="Single" SelectedItem="{Binding SelectedCustomer}" IsEnabled="{Binding IsIdle}">
-                    <DataGrid.LayoutTransform>
-                        <ScaleTransform ScaleX="{Binding ElementName=zoomSlider, Path=Value}" ScaleY="{Binding ElementName=zoomSlider, Path=Value}" />
-                    </DataGrid.LayoutTransform>
-                </DataGrid>
-            </ScrollViewer>
-            <GridSplitter Grid.Column="1" ResizeDirection="Columns" ShowsPreview="True" />
-            <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                <DataGrid mah:DataGridHelper.SelectionUnit="FullRow" CanUserAddRows="False" ItemsSource="{Binding Orders}" SelectionMode="Single" SelectedItem="{Binding SelectedOrder}" IsEnabled="{Binding IsIdle}">
-                    <DataGrid.LayoutTransform>
-                        <ScaleTransform ScaleX="{Binding ElementName=zoomSlider, Path=Value}" ScaleY="{Binding ElementName=zoomSlider, Path=Value}" />
-                    </DataGrid.LayoutTransform>
-                </DataGrid>
-            </ScrollViewer>
-        </Grid>
+        </Expander>-->
     </DockPanel>
 </mah:MetroWindow>

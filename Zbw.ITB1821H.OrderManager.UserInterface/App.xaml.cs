@@ -9,6 +9,7 @@ namespace ZbW.ITB1821H.OrderManager
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            new SplashScreen("splashscreen.jpg").Show(true);
             MainWindowViewModel mainWindowViewModel = new();
             MainWindow mainWindow = new()
             {
