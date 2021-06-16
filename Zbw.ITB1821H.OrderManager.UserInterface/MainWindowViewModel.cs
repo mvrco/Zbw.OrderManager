@@ -42,7 +42,20 @@ namespace ZbW.ITB1821H.OrderManager
             }
         }
 
-        public bool IsBusy { get => true; }
+        public static bool LightSwitch
+        {
+            get
+            {
+                return UserInterface.Properties.Settings.Default.LightSwitch;
+            }
+            set
+            {
+                UserInterface.Properties.Settings.Default.LightSwitch = value;
+                UserInterface.Properties.Settings.Default.Save();
+            }
+        }
+
+        public bool IsBusy { get => false; }
 
         public bool IsIdle { get => !IsBusy; }
     }

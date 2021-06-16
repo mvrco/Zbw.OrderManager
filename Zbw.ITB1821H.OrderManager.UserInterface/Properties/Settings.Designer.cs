@@ -52,5 +52,17 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Properties {
                 return ((string)(this["GithubUrl"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LightSwitch {
+            get {
+                return ((bool)(this["LightSwitch"]));
+            }
+            set {
+                this["LightSwitch"] = value;
+            }
+        }
     }
 }
