@@ -11,13 +11,17 @@ namespace ZbW.ITB1821H.OrderManager
         public MainWindowViewModel()
         {
             Customers = new ObservableCollection<Customer> {
-                new Customer { Name = "Mike", Email = "Test", LastName = "S." },
-                new Customer { Name = "Marco", Email = "Test", LastName = "G." },
-                new Customer { Name = "Philip", Email = "Test", LastName = "S." }
+                new Customer { Id=666, Name = "Mike", Email = "mikexyz@devil.op", LastName = "S." },
+                new Customer { Id=500, Name = "Marco", Email = "marcog@gmail.com", LastName = "G." },
+                new Customer { Id=123, Name = "Philip", Email = "philips@hotmail.com", LastName = "S." },
+                new Customer { Id=9, Name = "Alain", Email = "alain.berset@admin.ch", LastName = "Berset" }
             };
             Orders = new ObservableCollection<Order>
             {
-                new Order{ Customer = Customers[0], DateOfPurchase = DateTime.Today}
+                new Order{ Id=0, Customer = Customers[0], DateOfPurchase = DateTime.UtcNow},
+                new Order{ Id=1, Customer = Customers[1], DateOfPurchase = DateTime.Today},
+                new Order{ Id=2, Customer = Customers[2], DateOfPurchase = DateTime.Today},
+                new Order{ Id=3, Customer = Customers[2], DateOfPurchase = DateTime.Today}
             };
         }
 

@@ -4,7 +4,7 @@ namespace ZbW.ITB1821H.OrderManager.Model
 {
     public class Customer
     {
-        public int Id { get; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }
         public string FullName => Name + " " + LastName;
@@ -16,12 +16,8 @@ namespace ZbW.ITB1821H.OrderManager.Model
 
         public override string ToString()
         {
-            return base.ToString() + "; " +
-                nameof(Id) + "; " + Id + "; " +
-                nameof(Name) + "; " + Name + "; " +
-                nameof(LastName) + "; " + LastName + "; " +
-                nameof(Email) + "; " + Email + "; " +
-                nameof(Website) + "; " + Website;
+            return nameof(Id) + "; " + Id + "; " +
+                nameof(FullName) + "; " + FullName;
         }
     }
 }
