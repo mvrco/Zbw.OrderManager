@@ -4,14 +4,15 @@ namespace ZbW.ITB1821H.OrderManager.Model
 {
     public class Customer
     {
-        public virtual int Id { get; }
-        public virtual string Name { get; set; }
-        public virtual string LastName { get; set; }
-        public virtual string Email { get; set; }
-        public virtual string Website { get; set; }
+        public int Id { get; }
+        public string Name { get; set; }
+        public string LastName { get; set; }
+        public string FullName => Name + " " + LastName;
+        public string Email { get; set; }
+        public string Website { get; set; }
 
-        public virtual IList<Address> Addresses { get; }
-        public virtual IList<Order> Orders { get; }
+        public IList<Address> Addresses { get; }
+        public IList<Order> Orders { get; }
 
         public override string ToString()
         {

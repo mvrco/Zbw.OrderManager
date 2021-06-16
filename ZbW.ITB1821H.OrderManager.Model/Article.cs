@@ -2,12 +2,12 @@
 {
     public class Article
     {
-        public virtual int Id { get; }
-        public virtual string Name { get; set; }
-        public virtual string Description { get; set; }
-        public virtual double Price { get; set; }
+        public int Id { get; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public double Price { get; set; }
 
-        public virtual ArticleGroup ArticleGroup { get; set; }
+        public ArticleGroup ArticleGroup { get; set; }
 
         // TODO tostring
     }

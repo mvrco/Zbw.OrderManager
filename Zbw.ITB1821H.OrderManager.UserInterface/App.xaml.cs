@@ -7,6 +7,16 @@ namespace ZbW.ITB1821H.OrderManager
     /// </summary>
     public partial class App : Application
     {
-        // TODO initialize log4net
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            MainWindowViewModel mainWindowViewModel = new();
+            MainWindow mainWindow = new()
+            {
+                DataContext = mainWindowViewModel
+            };
+            mainWindow.Show();
+
+            base.OnStartup(e);
+        }
     }
 }

@@ -2,14 +2,14 @@
 {
     public class Address
     {
-        public virtual int Id { get; }
-        public virtual string Street { get; set; }
-        public virtual string City { get; set; }
-        public virtual string State { get; set; }
-        public virtual string PostalCode { get; set; }
-        public virtual string Country { get; set; }
+        public int Id { get; }
+        public string Street { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string PostalCode { get; set; }
+        public string Country { get; set; }
 
-        public virtual Customer Customer { get; }
+        public Customer Customer { get; }
 
         // TODO tostring
     }
