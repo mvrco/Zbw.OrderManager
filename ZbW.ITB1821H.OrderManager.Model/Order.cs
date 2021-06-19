@@ -7,16 +7,21 @@ namespace ZbW.ITB1821H.OrderManager.Model
     {
         public Order()
         {
-            Id = 0;
-            DateOfPurchase = DateTime.Now;
-            Customer = null;
-            Positions = new List<Position>();
+            //Id = 0;
+            //DateOfPurchase = DateTime.Now;
+        }
+
+        public Order(DateTime dateOfPurchase)
+        {
+            //Id = 0;
+            DateOfPurchase = dateOfPurchase;
         }
 
         public int Id { get; set; }
         public DateTime DateOfPurchase { get; set; }
-        public Customer Customer { get; set; }
-        public IList<Position> Positions { get; set; }
+        public int CustomerId { get; set; }
+        public virtual Customer Customer { get; set; }
+        public virtual ICollection<Position> Positions { get; set; }
 
         // TODO tostring
         public override string ToString()

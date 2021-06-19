@@ -6,9 +6,8 @@ namespace ZbW.ITB1821H.OrderManager.Model
     {
         public Customer()
         {
-            Id = 0;
-            Addresses = new List<Address>();
-            Orders = new List<Order>();
+            //Id = 0;
+            //Orders = new List<Order>();
         }
 
         public int Id { get; set; }
@@ -17,9 +16,9 @@ namespace ZbW.ITB1821H.OrderManager.Model
         public string FullName => Name + " " + LastName;
         public string Email { get; set; }
         public string Website { get; set; }
-
-        public IList<Address> Addresses { get; set; }
-        public IList<Order> Orders { get; set; }
+        public int AdressId { get; set; }
+        public virtual Address Address { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
 
         public override string ToString()
         {

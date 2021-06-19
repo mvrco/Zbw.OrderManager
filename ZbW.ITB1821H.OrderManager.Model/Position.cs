@@ -2,9 +2,11 @@
 {
     public class Position
     {
-        public int Id { get; }
-        public Order Order { get; }
-        public Article Article { get; set; }
+        public int Id { get; set; }
+        public int OrderId { get; set; }
+        public int ArticleId { get; set; }
+        public virtual Order Order { get; set; }
+        public virtual Article Article { get; set; }
 
         // TODO tostring
     }
