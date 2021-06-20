@@ -26,7 +26,8 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
             set
             {
                 selectedCustomer = value;
-                selectedCustomer.Orders = App.DbContext.Orders.Where(x => x.CustomerId == selectedCustomer.Id).ToList();
+                if (value != null)
+                    selectedCustomer.Orders = App.DbContext.Orders.Where(x => x.CustomerId == selectedCustomer.Id).ToList();
                 OnPropertyChanged();
             }
         }

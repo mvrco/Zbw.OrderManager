@@ -1,0 +1,40 @@
+﻿<Page x:Class="ZbW.ITB1821H.OrderManager.UserInterface.Controls.OrdersPositionsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+      xmlns:local="clr-namespace:ZbW.ITB1821H.OrderManager.UserInterface.Controls"
+      mc:Ignorable="d"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="OrdersPositionsPage">
+    <Page.DataContext>
+        <local:OrdersPositionsPageViewModel />
+    </Page.DataContext>
+    <Grid>
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.DataGrid.xaml" />
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="5px" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            <DataGrid x:Name="ordersDatagrid" MouseDoubleClick="OrdersDataGrid_DoubleClick"
+                      mah:DataGridHelper.SelectionUnit="FullRow" CanUserAddRows="True" ItemsSource="{Binding Orders}" SelectionMode="Single" SelectedItem="{Binding SelectedOrder}">
+            </DataGrid>
+        </ScrollViewer>
+        <GridSplitter Grid.Column="1" ResizeDirection="Columns" ShowsPreview="True" />
+        <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            <DataGrid x:Name="positionsDatagrid" MouseDoubleClick="PositionsDataGrid_DoubleClick"
+                      mah:DataGridHelper.SelectionUnit="FullRow" ItemsSource="{Binding SelectedOrder.Positions}" SelectionMode="Single" SelectedItem="{Binding SelectedPosition}">
+            </DataGrid>
+        </ScrollViewer>
+    </Grid>
+</Page>

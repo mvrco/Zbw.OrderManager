@@ -37,7 +37,7 @@
               Click="GoBack_OnClick" IsEnabled="False">
                 <mah:FontIcon AutomationProperties.Name="Back" FontSize="14" Glyph="&#xE72B;" />
             </Button>
-            <TextBox x:Name="searchBox" mah:TextBoxHelper.ClearTextButton="True" mah:TextBoxHelper.Watermark="Search..." TextChanged="SearchBox_TextChanged" MinWidth="100" />
+            <TextBox x:Name="searchBox" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" mah:TextBoxHelper.ClearTextButton="True" mah:TextBoxHelper.Watermark="Search..." MinWidth="100" />
         </mah:WindowCommands>
     </mah:MetroWindow.LeftWindowCommands>
     <mah:MetroWindow.Resources>
@@ -78,15 +78,17 @@
         <mah:HamburgerMenu x:Name="HamburgerMenuControl" DockPanel.Dock="Left"
                            CompactPaneLength="31"
                            HamburgerWidth="20"
+                           OpenPaneLength="150"
                            CanResizeOpenPane="True"
-                          DisplayMode="CompactInline"
+                          DisplayMode="CompactOverlay"
                           IsPaneOpen="False"
                            PaneBackground="{DynamicResource MahApps.Brushes.Accent}"
                           ItemInvoked="HamburgerMenuControl_OnItemInvoked"
                           ItemTemplate="{StaticResource MenuItemTemplate}"
                           ItemsSource="{Binding Menu}"
                           OptionsItemTemplate="{StaticResource MenuItemTemplate}"
-                          OptionsItemsSource="{Binding OptionsMenu}">
+                          OptionsItemsSource="{Binding OptionsMenu}"
+                           ShowSelectionIndicator="True">
             <mah:HamburgerMenu.LayoutTransform>
                 <ScaleTransform ScaleX="{Binding ElementName=zoomSlider, Path=Value}" ScaleY="{Binding ElementName=zoomSlider, Path=Value}" />
             </mah:HamburgerMenu.LayoutTransform>

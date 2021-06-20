@@ -10,6 +10,7 @@ using System.Windows.Input;
 using ZbW.ITB1821H.OrderManager.Controls;
 using ZbW.ITB1821H.OrderManager.Model.Context;
 using ZbW.ITB1821H.OrderManager.UserInterface.Controls;
+using ZbW.ITB1821H.OrderManager.UserInterface.Util;
 
 namespace ZbW.ITB1821H.OrderManager
 {
@@ -20,6 +21,8 @@ namespace ZbW.ITB1821H.OrderManager
         private static readonly IList<HamMenuItem> AppMenu = new ObservableCollection<HamMenuItem>();
         private static readonly IList<HamMenuItem> AppOptionsMenu = new ObservableCollection<HamMenuItem>();
 
+        private string searchText;
+
         public MainWindowViewModel() : base(LogManager.GetLogger(nameof(MainWindowViewModel)))
         {
             this.dbContext = App.DbContext;
@@ -27,16 +30,23 @@ namespace ZbW.ITB1821H.OrderManager
             this.Menu.Add(new HamMenuItem()
             {
                 Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.UserSolid },
-                Label = "Customers & Orders",
+                Label = "Customers",
                 NavigationType = typeof(CustomersOrdersPage),
                 NavigationDestination = new Uri("Controls/CustomersOrdersPage.xaml", UriKind.RelativeOrAbsolute)
             });
             this.Menu.Add(new HamMenuItem()
             {
                 Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.GiftSolid },
-                Label = "Articles & Groups",
+                Label = "Articles",
                 NavigationType = typeof(ArticlesGroupsPage),
                 NavigationDestination = new Uri("Controls/ArticlesGroupsPage.xaml", UriKind.RelativeOrAbsolute)
+            });
+            this.Menu.Add(new HamMenuItem()
+            {
+                Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.ChessBoardSolid },
+                Label = "Orders",
+                NavigationType = typeof(ArticlesGroupsPage),
+                NavigationDestination = new Uri("Controls/OrdersPositionsPage.xaml", UriKind.RelativeOrAbsolute)
             });
 
             //this.OptionsMenu.Add(new HamMenuItem()
@@ -78,6 +88,20 @@ namespace ZbW.ITB1821H.OrderManager
         public IList<HamMenuItem> Menu => AppMenu;
 
         public IList<HamMenuItem> OptionsMenu => AppOptionsMenu;
+
+        public string SearchText
+        {
+            get
+            {
+                return searchText;
+            }
+            set
+            {
+                searchText = value;
+                OnPropertyChanged();
+                ApplicationEventHandler.OnSearchTextChanged(this, searchText);
+            }
+        }
 
         /// <summary>
         /// Loads and sets the scaling factor from/to user settings

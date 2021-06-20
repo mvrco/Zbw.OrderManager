@@ -46,16 +46,6 @@ namespace ZbW.ITB1821H.OrderManager
                                                                 .OfType<HamMenuItem>()
                                                                 .FirstOrDefault(x => x.NavigationDestination == e.Uri);
 
-            // or when using the NavigationType on menu item
-            this.HamburgerMenuControl.SelectedItem = this.HamburgerMenuControl
-                                                         .Items
-                                                         .OfType<HamMenuItem>()
-                                                         .FirstOrDefault(x => x.NavigationType == e.Content?.GetType());
-            this.HamburgerMenuControl.SelectedOptionsItem = this.HamburgerMenuControl
-                                                                .OptionsItems
-                                                                .OfType<HamMenuItem>()
-                                                                .FirstOrDefault(x => x.NavigationType == e.Content?.GetType());
-
             // update back button
             this.GoBackButton.IsEnabled = this.navigationService.CanGoBack;
         }
@@ -79,27 +69,6 @@ namespace ZbW.ITB1821H.OrderManager
         private void Github_Click(object sender, RoutedEventArgs e)
         {
             Process.Start("explorer", UserInterface.Properties.Settings.Default.GithubUrl);
-        }
-
-        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            ////customersListBox.UnselectAll();
-            //CollectionView customers = (CollectionView)CollectionViewSource.GetDefaultView(customersDatagrid.ItemsSource);
-            //if (customers != null)
-            //    customers.Filter = UserFilter;
-            //customers.Refresh();
-            ////ordersListBox.UnselectAll();
-            //CollectionView orders = (CollectionView)CollectionViewSource.GetDefaultView(ordersDatagrid.ItemsSource);
-            //if (orders != null)
-            //    orders.Filter = UserFilter;
-            //orders.Refresh();
-        }
-
-        private bool UserFilter(object item)
-        {
-            if (string.IsNullOrEmpty(searchBox.Text))
-                return true;
-            return (item.ToString().IndexOf(searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0);
         }
     }
 

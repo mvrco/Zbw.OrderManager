@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ControlzEx.Theming;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -9,13 +10,13 @@ using ZbW.ITB1821H.OrderManager.UserInterface.Windows;
 namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
 {
     /// <summary>
-    /// Interaction logic for ArticlesGroupsPage.xaml
+    /// Interaction logic for OrdersPositionsPage.xaml
     /// </summary>
-    public partial class ArticlesGroupsPage : Page
+    public partial class OrdersPositionsPage : Page
     {
         private string searchText;
 
-        public ArticlesGroupsPage()
+        public OrdersPositionsPage()
         {
             InitializeComponent();
             ApplicationEventHandler.SearchTextChanged += ApplicationEventHandler_SearchTextChanged;
@@ -24,12 +25,12 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
         private void ApplicationEventHandler_SearchTextChanged(object sender, string e)
         {
             searchText = e;
-            articlesDatagrid.UnselectAll();
-            articleGroupDatagrid.UnselectAll();
-            CollectionView articleGroups = (CollectionView)CollectionViewSource.GetDefaultView(articleGroupDatagrid.ItemsSource);
-            if (articleGroups != null)
-                articleGroups.Filter = UserFilter;
-            articleGroups.Refresh();
+            positionsDatagrid.UnselectAll();
+            ordersDatagrid.UnselectAll();
+            CollectionView orders = (CollectionView)CollectionViewSource.GetDefaultView(ordersDatagrid.ItemsSource);
+            if (orders != null)
+                orders.Filter = UserFilter;
+            orders.Refresh();
         }
 
         private bool UserFilter(object item)
@@ -39,24 +40,26 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
             return (item.ToString().IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
-        private void ArticlesDataGrid_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void OrdersDataGrid_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             SingleObjectWindow window = new();
-            SingleObjectWindowViewModel<Article> viewModel = new(articlesDatagrid.SelectedItem as Article);
+            SingleObjectWindowViewModel<Order> viewModel = new(ordersDatagrid.SelectedItem as Order);
             window.DataContext = viewModel;
             window.Owner = Application.Current.MainWindow;
+            // property grid is not theme aware, dark skin messes it up
+            ThemeManager.Current.ChangeTheme(window, "Light.Blue");
             window.ShowDialog();
-            e.Handled = true;
         }
 
-        private void ArticleGroupsDataGrid_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void PositionsDataGrid_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             SingleObjectWindow window = new();
-            SingleObjectWindowViewModel<ArticleGroup> viewModel = new(articleGroupDatagrid.SelectedItem as ArticleGroup);
+            SingleObjectWindowViewModel<Order> viewModel = new(ordersDatagrid.SelectedItem as Order);
             window.DataContext = viewModel;
             window.Owner = Application.Current.MainWindow;
+            // property grid is not theme aware, dark skin messes it up
+            ThemeManager.Current.ChangeTheme(window, "Light.Blue");
             window.ShowDialog();
-            e.Handled = true;
         }
     }
 }

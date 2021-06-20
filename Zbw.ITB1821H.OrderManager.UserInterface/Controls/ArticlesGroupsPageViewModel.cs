@@ -1,8 +1,11 @@
 ﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Data;
 using ZbW.ITB1821H.OrderManager.Controls;
 using ZbW.ITB1821H.OrderManager.Model;
+using ZbW.ITB1821H.OrderManager.UserInterface.Util;
 
 namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
 {
@@ -26,7 +29,8 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
             set
             {
                 selectedArticleGroup = value;
-                selectedArticleGroup.Articles = App.DbContext.Articles.Where(x => x.ArticleGroupId == selectedArticleGroup.Id).ToList();
+                if (value != null)
+                    selectedArticleGroup.Articles = App.DbContext.Articles.Where(x => x.ArticleGroupId == selectedArticleGroup.Id).ToList();
                 OnPropertyChanged();
             }
         }
