@@ -20,6 +20,13 @@ namespace ZbW.ITB1821H.OrderManager.Model.DbConfiguration
                 .HasForeignKey(artG => artG.ParentGroupId);
 
             builder.Property(x => x.Name).IsRequired();
+
+            builder.HasData(
+                new ArticleGroup { Id = 10, Name = "Food", Description = "all food" },
+                new ArticleGroup { Id = 11, Name = "Fruits", Description = "Worldwide selection of Fruits", ParentGroupId = 10 },
+                new ArticleGroup { Id = 12, Name = "Meat", Description = "Good Quality Meat", ParentGroupId = 10 },
+                new ArticleGroup { Id = 13, Name = "Dairy", Description = "Milk for everyone!", ParentGroupId = 10 }
+            );
         }
     }
 }

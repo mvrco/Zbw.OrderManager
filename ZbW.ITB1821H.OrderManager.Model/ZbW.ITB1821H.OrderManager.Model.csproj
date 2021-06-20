@@ -178,6 +178,10 @@
     <Compile Include="Migrations\20210620101709_AddedColumnsToCustomersAndPositions.designer.cs">
       <DependentUpon>20210620101709_AddedColumnsToCustomersAndPositions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20210620111608_InitialDataSeed.cs" />
+    <Compile Include="Migrations\20210620111608_InitialDataSeed.designer.cs">
+      <DependentUpon>20210620111608_InitialDataSeed.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DatabaseContextModelSnapshot.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="Position.cs" />
