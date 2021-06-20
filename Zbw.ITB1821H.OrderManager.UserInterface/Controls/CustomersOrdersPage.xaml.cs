@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using ControlzEx.Theming;
+using System.Windows;
 using System.Windows.Controls;
 using ZbW.ITB1821H.OrderManager.Model;
 using ZbW.ITB1821H.OrderManager.UserInterface.Windows;
@@ -21,6 +22,8 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
             SingleObjectWindowViewModel<Customer> viewModel = new(customersDatagrid.SelectedItem as Customer);
             window.DataContext = viewModel;
             window.Owner = Application.Current.MainWindow;
+            // property grid is not theme aware, dark skin messes it up
+            ThemeManager.Current.ChangeTheme(window, "Light.Blue");
             window.ShowDialog();
             e.Handled = true;
         }
@@ -31,6 +34,8 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
             SingleObjectWindowViewModel<Order> viewModel = new(ordersDatagrid.SelectedItem as Order);
             window.DataContext = viewModel;
             window.Owner = Application.Current.MainWindow;
+            // property grid is not theme aware, dark skin messes it up
+            ThemeManager.Current.ChangeTheme(window, "Light.Blue");
             window.ShowDialog();
             e.Handled = true;
         }

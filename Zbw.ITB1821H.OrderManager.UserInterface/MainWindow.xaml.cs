@@ -5,11 +5,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
+using System.Windows.Media;
 using System.Windows.Navigation;
-using ZbW.ITB1821H.OrderManager.Model;
 using ZbW.ITB1821H.OrderManager.UserInterface.Util;
-using ZbW.ITB1821H.OrderManager.UserInterface.Windows;
 
 namespace ZbW.ITB1821H.OrderManager
 {
@@ -34,9 +32,7 @@ namespace ZbW.ITB1821H.OrderManager
         protected void HamburgerMenuControl_OnItemInvoked(object sender, HamburgerMenuItemInvokedEventArgs e)
         {
             if (e.InvokedItem is HamMenuItem menuItem)
-            {
                 this.navigationService.Navigate(menuItem.NavigationDestination);
-            }
         }
 
         private void NavigationService_OnNavigated(object sender, NavigationEventArgs e)
@@ -52,14 +48,14 @@ namespace ZbW.ITB1821H.OrderManager
                                                                 .FirstOrDefault(x => x.NavigationDestination == e.Uri);
 
             // or when using the NavigationType on menu item
-            // this.HamburgerMenuControl.SelectedItem = this.HamburgerMenuControl
-            //                                              .Items
-            //                                              .OfType<MenuItem>()
-            //                                              .FirstOrDefault(x => x.NavigationType == e.Content?.GetType());
-            // this.HamburgerMenuControl.SelectedOptionsItem = this.HamburgerMenuControl
-            //                                                     .OptionsItems
-            //                                                     .OfType<MenuItem>()
-            //                                                     .FirstOrDefault(x => x.NavigationType == e.Content?.GetType());
+            this.HamburgerMenuControl.SelectedItem = this.HamburgerMenuControl
+                                                         .Items
+                                                         .OfType<HamMenuItem>()
+                                                         .FirstOrDefault(x => x.NavigationType == e.Content?.GetType());
+            this.HamburgerMenuControl.SelectedOptionsItem = this.HamburgerMenuControl
+                                                                .OptionsItems
+                                                                .OfType<HamMenuItem>()
+                                                                .FirstOrDefault(x => x.NavigationType == e.Content?.GetType());
 
             // update back button
             //this.GoBackButton.Visibility = this.navigationService.CanGoBack ? Visibility.Visible : Visibility.Collapsed;
@@ -75,9 +71,9 @@ namespace ZbW.ITB1821H.OrderManager
             if (sender is ToggleSwitch toggleSwitch)
             {
                 if (toggleSwitch.IsOn)
-                    ThemeManager.Current.ChangeTheme(Application.Current, "Dark.Taupe");
+                    ThemeManager.Current.ChangeTheme(Application.Current, "Dark.Blue");
                 else
-                    ThemeManager.Current.ChangeTheme(Application.Current, "Light.Taupe");
+                    ThemeManager.Current.ChangeTheme(Application.Current, "Light.Blue");
             }
         }
 
