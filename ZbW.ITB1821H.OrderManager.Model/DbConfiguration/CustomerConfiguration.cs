@@ -18,6 +18,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.DbConfiguration
                 .HasOne(cus => cus.Address)
                 .WithMany(adr => adr.Customers)
                 .HasForeignKey(cus => cus.AdressId);
+                .HasForeignKey(cus => cus.AddressId);
 
             builder.Property(x => x.Name).IsRequired();
             builder.Property(x => x.LastName).IsRequired();
