@@ -33,7 +33,7 @@
         <GridSplitter Grid.Column="1" ResizeDirection="Columns" ShowsPreview="True" />
         <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
             <DataGrid x:Name="ordersDatagrid" MouseDoubleClick="OrdersDataGrid_DoubleClick"
-                      mah:DataGridHelper.SelectionUnit="FullRow" CanUserAddRows="False" ItemsSource="{Binding SelectedCustomer.Orders}" SelectionMode="Single" SelectedItem="{Binding SelectedOrder}">
+                      mah:DataGridHelper.SelectionUnit="FullRow" ItemsSource="{Binding SelectedCustomer.Orders}" SelectionMode="Single" SelectedItem="{Binding SelectedOrder}">
             </DataGrid>
         </ScrollViewer>
     </Grid>

@@ -21,11 +21,11 @@
     </mah:MetroWindow.ContextMenu>
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
-            <Button Click="Github_Click" ToolTip="Open GitHub page">
-                <iconPacks:PackIconModern Width="25" Height="25" Kind="SocialGithubOctocat" />
-            </Button>
             <Button Command="{Binding ExportData}" ToolTip="Export data">
                 <iconPacks:PackIconModern Width="20" Height="20" Kind="Save" />
+            </Button>
+            <Button Click="Github_Click" ToolTip="Open GitHub page">
+                <iconPacks:PackIconModern Width="25" Height="25" Kind="SocialGithubOctocat" />
             </Button>
         </mah:WindowCommands>
     </mah:MetroWindow.RightWindowCommands>

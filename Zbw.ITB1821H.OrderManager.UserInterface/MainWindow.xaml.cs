@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Navigation;
 using ZbW.ITB1821H.OrderManager.UserInterface.Util;
 
@@ -26,7 +25,7 @@ namespace ZbW.ITB1821H.OrderManager
             this.HamburgerMenuControl.Content = this.navigationService.Frame;
 
             // Navigate to the home page.
-            this.Loaded += (sender, args) => this.navigationService.Navigate(new Uri("Controls/CustomersOrdersPage.xaml", UriKind.RelativeOrAbsolute));
+            this.navigationService.Navigate(new Uri("Controls/CustomersOrdersPage.xaml", UriKind.RelativeOrAbsolute));
         }
 
         protected void HamburgerMenuControl_OnItemInvoked(object sender, HamburgerMenuItemInvokedEventArgs e)

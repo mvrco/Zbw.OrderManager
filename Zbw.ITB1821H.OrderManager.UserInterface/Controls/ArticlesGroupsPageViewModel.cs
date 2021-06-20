@@ -1,9 +1,6 @@
-﻿using System;
+﻿using log4net;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ZbW.ITB1821H.OrderManager.Controls;
 using ZbW.ITB1821H.OrderManager.Model;
 
@@ -13,20 +10,12 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
     {
         private ArticleGroup selectedArticleGroup;
 
-        public ArticlesGroupsPageViewModel()
+        public ArticlesGroupsPageViewModel() : base(LogManager.GetLogger(nameof(ArticlesGroupsPageViewModel)))
         {
-            ArticleGroups = new ObservableCollection<ArticleGroup>
-            {
-                new ArticleGroup{Description = "TestDescription", Name = "Figures",
-                Articles = new ObservableCollection<Article>(){ new Article() { Name="Spongebob", Price = 45},
-                } },
-                new ArticleGroup{Description = "TestDescription", Name = "Vases"},
-                new ArticleGroup{Description = "TestDescription", Name = "Drings"},
-                new ArticleGroup{Description = "TestDescription", Name = "Animal food"}
-            };
+            ArticleGroups = App.DbContext.ArticleGroups.ToList();
         }
 
-        public IList<ArticleGroup> ArticleGroups { get; set; }
+        public IList<ArticleGroup> ArticleGroups { get; private set; }
 
         public ArticleGroup SelectedArticleGroup
         {
@@ -37,7 +26,8 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
             set
             {
                 selectedArticleGroup = value;
-                OnPropertyChanged(nameof(SelectedArticleGroup));
+                selectedArticleGroup.Articles = App.DbContext.Articles.Where(x => x.ArticleGroupId == selectedArticleGroup.Id).ToList();
+                OnPropertyChanged();
             }
         }
 

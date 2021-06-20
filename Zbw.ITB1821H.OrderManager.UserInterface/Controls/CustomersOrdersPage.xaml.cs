@@ -25,7 +25,6 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
             // property grid is not theme aware, dark skin messes it up
             ThemeManager.Current.ChangeTheme(window, "Light.Blue");
             window.ShowDialog();
-            e.Handled = true;
         }
 
         private void OrdersDataGrid_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -37,7 +36,6 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
             // property grid is not theme aware, dark skin messes it up
             ThemeManager.Current.ChangeTheme(window, "Light.Blue");
             window.ShowDialog();
-            e.Handled = true;
         }
     }
 }

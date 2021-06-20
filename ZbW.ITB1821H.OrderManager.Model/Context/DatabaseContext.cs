@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Context
@@ -19,14 +14,12 @@ namespace ZbW.ITB1821H.OrderManager.Model.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=.\zbw; Database=OrderManager; Trusted_Connection=True");
-
+            optionsBuilder.UseSqlServer(@"server=UNKNOWN\SQLEXPRESS; Initial Catalog=OrderManager; Trusted_Connection=True;Integrated Security=SSPI;");
             base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(modelBuilder);
         }
