@@ -21,7 +21,7 @@ namespace ZbW.ITB1821H.OrderManager.Controls
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            log.Debug(nameof(OnPropertyChanged) + "; " + propertyName));
+            log.Debug(nameof(OnPropertyChanged) + "; " + propertyName);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 

@@ -58,7 +58,6 @@
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom" x:Name="StatusBar" Height="30" HorizontalAlignment="Stretch">
             <StatusBarItem HorizontalAlignment="Left">
-                <fa:ImageAwesome Foreground="{DynamicResource MahApps.Brushes.Window.FlyoutOverlay}" Icon="CircleOutlineNotch" Spin="{Binding IsBusy}" ToolTip="Working..." Height="23" Width="23" VerticalAlignment="Bottom" mah:VisibilityHelper.IsVisible="{Binding IsBusy}" />
             </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Right" Padding="0 0 30 0">
                 <StatusBarItem.LayoutTransform>
