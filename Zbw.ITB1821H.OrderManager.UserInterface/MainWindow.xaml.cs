@@ -25,7 +25,7 @@ namespace ZbW.ITB1821H.OrderManager
             this.HamburgerMenuControl.Content = this.navigationService.Frame;
 
             // Navigate to the home page.
-            this.navigationService.Navigate(new Uri("Controls/CustomersOrdersPage.xaml", UriKind.RelativeOrAbsolute));
+            this.navigationService.Navigate(new Uri("Controls/StartPage.xaml", UriKind.RelativeOrAbsolute));
         }
 
         protected void HamburgerMenuControl_OnItemInvoked(object sender, HamburgerMenuItemInvokedEventArgs e)
@@ -57,7 +57,7 @@ namespace ZbW.ITB1821H.OrderManager
                                                                 .FirstOrDefault(x => x.NavigationType == e.Content?.GetType());
 
             // update back button
-            //this.GoBackButton.Visibility = this.navigationService.CanGoBack ? Visibility.Visible : Visibility.Collapsed;
+            this.GoBackButton.IsEnabled = this.navigationService.CanGoBack;
         }
 
         private void GoBack_OnClick(object sender, RoutedEventArgs e)

@@ -9,7 +9,7 @@
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="Order manager" Height="450" Width="800"
-        Icon="pack://application:,,,/icon.ico" ShowIconOnTitleBar="True"
+        Icon="pack://application:,,,/icon.ico" ShowIconOnTitleBar="False"
         TitleBarHeight="30" TitleForeground="{DynamicResource MahApps.Brushes.Accent1}"
         TitleCharacterCasing="Normal" TitleAlignment="Center">
     <mah:MetroWindow.ContextMenu>
@@ -31,6 +31,12 @@
     </mah:MetroWindow.RightWindowCommands>
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands>
+            <Button x:Name="GoBackButton"
+              Width="{Binding ElementName=HamburgerMenuControl, Path=CompactPaneLength}"
+              AutomationProperties.Name="Go back"
+              Click="GoBack_OnClick" IsEnabled="False">
+                <mah:FontIcon AutomationProperties.Name="Back" FontSize="14" Glyph="&#xE72B;" />
+            </Button>
             <TextBox x:Name="searchBox" mah:TextBoxHelper.ClearTextButton="True" mah:TextBoxHelper.Watermark="Search..." TextChanged="SearchBox_TextChanged" MinWidth="100" />
         </mah:WindowCommands>
     </mah:MetroWindow.LeftWindowCommands>
