@@ -14,7 +14,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"server=UNKNOWN\SQLEXPRESS; Initial Catalog=OrderManager; Trusted_Connection=True;Integrated Security=SSPI;");
+            optionsBuilder.UseSqlServer(Properties.Settings.Default.ConnectionString);
             base.OnConfiguring(optionsBuilder);
         }
 
