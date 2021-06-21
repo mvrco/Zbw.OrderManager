@@ -25,7 +25,6 @@
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.12" />
     <PackageReference Include="MahApps.Metro" Version="2.4.6" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ZbW.ITB1821H.OrderManager.Model\ZbW.ITB1821H.OrderManager.Model.csproj" />
