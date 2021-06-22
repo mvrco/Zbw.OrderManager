@@ -14,7 +14,10 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
         {
             using (var context = new DatabaseContext())
             {
-                return context.Set<Address>().Include(x=>x.Customers).Where(filter).ToList();
+                return context.Set<Address>()
+                    .Include(x=>x.Customers)
+                    .Where(filter)
+                    .ToList();
             }
         }
 
@@ -22,7 +25,9 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
         {
             using (var context = new DatabaseContext())
             {
-                return context.Set<Address>().Include(x => x.Customers).ToList();
+                return context.Set<Address>()
+                    .Include(x => x.Customers)
+                    .ToList();
             }
         }
 
@@ -30,7 +35,9 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
         {
             using (var context = new DatabaseContext())
             {
-                return context.Set<Address>().Include(x => x.Customers).FirstOrDefault(x => x.Id == pkValue);
+                return context.Set<Address>()
+                    .Include(x => x.Customers)
+                    .FirstOrDefault(x => x.Id == pkValue);
             }
         }
     }

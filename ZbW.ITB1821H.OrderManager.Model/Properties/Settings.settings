@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="ConnectionString" Type="System.String" Scope="User">
-      <Value Profile="(Default)">server=UNKNOWN\SQLEXPRESS; Initial Catalog=OrderManager; Trusted_Connection=True;Integrated Security=SSPI;</Value>
+      <Value Profile="(Default)">data source=.\zbw; Initial Catalog=OrderManager; Trusted_Connection=True;Integrated Security=SSPI;</Value>
     </Setting>
   </Settings>
 </SettingsFile>

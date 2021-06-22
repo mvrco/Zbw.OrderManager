@@ -25,8 +25,8 @@ namespace ZbW.ITB1821H.OrderManager.Model.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("server=UNKNOWN\\SQLEXPRESS; Initial Catalog=OrderManager; Trusted_Connection=True;" +
-            "Integrated Security=SSPI;")]
+        [global::System.Configuration.DefaultSettingValueAttribute("data source=.\\zbw; Initial Catalog=OrderManager; Trusted_Connection=True;Integrat" +
+            "ed Security=SSPI;")]
         public string ConnectionString {
             get {
                 return ((string)(this["ConnectionString"]));
