@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ZbW.ITB1821H.OrderManager.UserInterface.Properties {
+namespace ZbW.ITB1821H.OrderManager.Model.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -25,34 +25,14 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public double ScalingFactor {
+        [global::System.Configuration.DefaultSettingValueAttribute("server=UNKNOWN\\SQLEXPRESS; Initial Catalog=OrderManager; Trusted_Connection=True;" +
+            "Integrated Security=SSPI;")]
+        public string ConnectionString {
             get {
-                return ((double)(this["ScalingFactor"]));
+                return ((string)(this["ConnectionString"]));
             }
             set {
-                this["ScalingFactor"] = value;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/MasterAzazel/Zbw.OrderManager")]
-        public string GithubUrl {
-            get {
-                return ((string)(this["GithubUrl"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool LightSwitch {
-            get {
-                return ((bool)(this["LightSwitch"]));
-            }
-            set {
-                this["LightSwitch"] = value;
+                this["ConnectionString"] = value;
             }
         }
     }

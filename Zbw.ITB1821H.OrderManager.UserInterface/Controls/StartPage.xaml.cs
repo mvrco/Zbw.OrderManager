@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ZbW.ITB1821H.OrderManager.UserInterface.Windows
+namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
 {
     /// <summary>
-    /// Interaction logic for SingleOrderWindow.xaml
+    /// Interaction logic for StartPage.xaml
     /// </summary>
-    public partial class SingleOrderWindow : Window
+    public partial class StartPage : Page
     {
-        public SingleOrderWindow()
+        public StartPage()
         {
             InitializeComponent();
         }

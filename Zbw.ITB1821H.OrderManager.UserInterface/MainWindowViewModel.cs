@@ -1,42 +1,59 @@
-﻿using MahApps.Metro.IconPacks;
+﻿using log4net;
+using MahApps.Metro.IconPacks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
 using Microsoft.Xaml.Behaviors.Core;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Controls;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
 using System.Windows.Input;
+using System.Xml;
+using System.Xml.Serialization;
 using ZbW.ITB1821H.OrderManager.Controls;
 using ZbW.ITB1821H.OrderManager.Model;
+using ZbW.ITB1821H.OrderManager.Model.Context;
 using ZbW.ITB1821H.OrderManager.UserInterface.Controls;
+using ZbW.ITB1821H.OrderManager.UserInterface.Util;
 
 namespace ZbW.ITB1821H.OrderManager
 {
     public class MainWindowViewModel : BaseViewModel
     {
-        private static readonly ObservableCollection<HamMenuItem> AppMenu = new ObservableCollection<HamMenuItem>();
-        private static readonly ObservableCollection<HamMenuItem> AppOptionsMenu = new ObservableCollection<HamMenuItem>();
+        private DatabaseContext dbContext;
 
-        public ObservableCollection<HamMenuItem> Menu => AppMenu;
+        private static readonly IList<HamMenuItem> AppMenu = new ObservableCollection<HamMenuItem>();
+        private static readonly IList<HamMenuItem> AppOptionsMenu = new ObservableCollection<HamMenuItem>();
 
-        public ObservableCollection<HamMenuItem> OptionsMenu => AppOptionsMenu;
+        private string searchText;
 
-        public MainWindowViewModel()
+        public MainWindowViewModel() : base(LogManager.GetLogger(nameof(MainWindowViewModel)))
         {
-            // Build the menus
+            this.dbContext = App.DbContext;
+            // create main menu
             this.Menu.Add(new HamMenuItem()
             {
                 Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.UserSolid },
-                Label = "Customers & Orders",
+                Label = "Customers",
                 NavigationType = typeof(CustomersOrdersPage),
                 NavigationDestination = new Uri("Controls/CustomersOrdersPage.xaml", UriKind.RelativeOrAbsolute)
             });
             this.Menu.Add(new HamMenuItem()
             {
                 Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.GiftSolid },
-                Label = "Articles & Groups",
+                Label = "Articles",
                 NavigationType = typeof(ArticlesGroupsPage),
                 NavigationDestination = new Uri("Controls/ArticlesGroupsPage.xaml", UriKind.RelativeOrAbsolute)
+            });
+            this.Menu.Add(new HamMenuItem()
+            {
+                Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.ChessBoardSolid },
+                Label = "Orders",
+                NavigationType = typeof(ArticlesGroupsPage),
+                NavigationDestination = new Uri("Controls/OrdersPositionsPage.xaml", UriKind.RelativeOrAbsolute)
             });
 
             //this.OptionsMenu.Add(new HamMenuItem()
@@ -46,7 +63,68 @@ namespace ZbW.ITB1821H.OrderManager
             //    NavigationType = typeof(SaveFileDialog),
             //    NavigationDestination = new Uri(typeof(SaveFileDialog).Name, UriKind.RelativeOrAbsolute)
             //});
+            // create commands
             ExportData = new ActionCommand(OnExportData);
+        }
+
+        // Commands
+        public ICommand ExportData { get; set; }
+
+        private void OnExportData()
+        {
+            try
+            {
+                SaveFileDialog dialog = new SaveFileDialog() { DefaultExt = "json", FileName = "OrderManagerData", Filter = "JSON file|*.json|XML file|*.xml" };
+                bool? result = dialog.ShowDialog();
+                if (result == true)
+                {
+                    Stream fileStream = dialog.OpenFile();
+                    StreamWriter sw = new StreamWriter(fileStream);
+                    // get json string
+                    string jsonString = System.Text.Json.JsonSerializer.Serialize(App.DbContext.Customers.ToList(), new JsonSerializerOptions() { WriteIndented = true });
+                    switch (dialog.SafeFileName.Split(".").Last())
+                    {
+                        case "json":
+                            // write json string to file
+                            sw.Write(jsonString);
+                            break;
+
+                        case "xml":
+                            // convert json string to xml string anf write to file
+                            XmlDocument doc = JsonConvert.DeserializeXmlNode("{'Customer':" + jsonString + "}", "OrderManagerData");
+                            //doc.InnerXml
+                            XmlWriter writer = XmlWriter.Create(fileStream, new XmlWriterSettings { Indent = true });
+                            doc.WriteTo(writer);
+                            writer.Flush();
+                            break;
+                    }
+                    sw.Flush();
+                    sw.Close();
+                }
+            }
+            catch (IOException ioExc)
+            {
+                ShowError(ioExc.Message);
+            }
+        }
+
+        // For this view model relevant data
+        public IList<HamMenuItem> Menu => AppMenu;
+
+        public IList<HamMenuItem> OptionsMenu => AppOptionsMenu;
+
+        public string SearchText
+        {
+            get
+            {
+                return searchText;
+            }
+            set
+            {
+                searchText = value;
+                OnPropertyChanged();
+                ApplicationEventHandler.OnSearchTextChanged(this, searchText);
+            }
         }
 
         /// <summary>
@@ -65,6 +143,9 @@ namespace ZbW.ITB1821H.OrderManager
             }
         }
 
+        /// <summary>
+        /// Loads and sets the theme selection from/to user settings
+        /// </summary>
         public static bool LightSwitch
         {
             get
@@ -81,21 +162,5 @@ namespace ZbW.ITB1821H.OrderManager
         public bool IsBusy { get => false; }
 
         public bool IsIdle { get => !IsBusy; }
-
-        public ICommand ExportData { get; set; }
-
-        private void OnExportData()
-        {
-            SaveFileDialog dialog = new SaveFileDialog() { DefaultExt = "json", FileName = "OrderManagerData", Filter = "JSON file|*.json|CSV file|*.csv|XML file|*.xml" };
-            bool? result = dialog.ShowDialog();
-            if (result == true)
-            {
-                System.IO.Stream fileStream = dialog.OpenFile();
-                System.IO.StreamWriter sw = new System.IO.StreamWriter(fileStream);
-                sw.WriteLine("INSERT EXPORT DATA");
-                sw.Flush();
-                sw.Close();
-            }
-        }
     }
 }

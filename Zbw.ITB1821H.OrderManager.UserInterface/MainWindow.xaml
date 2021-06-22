@@ -6,10 +6,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZbW.ITB1821H.OrderManager"
         xmlns:iconPacks="clr-namespace:MahApps.Metro.IconPacks;assembly=MahApps.Metro.IconPacks.Modern"
-        xmlns:fa="http://schemas.fontawesome.io/icons/"
-        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+                 mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="Order manager" Height="450" Width="800"
-        Icon="pack://application:,,,/icon.ico" ShowIconOnTitleBar="True"
+        Icon="pack://application:,,,/icon.ico" ShowIconOnTitleBar="False"
         TitleBarHeight="30" TitleForeground="{DynamicResource MahApps.Brushes.Accent1}"
         TitleCharacterCasing="Normal" TitleAlignment="Center">
     <mah:MetroWindow.ContextMenu>
@@ -21,17 +20,23 @@
     </mah:MetroWindow.ContextMenu>
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
-            <Button Click="Github_Click" ToolTip="Open GitHub page">
-                <iconPacks:PackIconModern Width="25" Height="25" Kind="SocialGithubOctocat" />
-            </Button>
             <Button Command="{Binding ExportData}" ToolTip="Export data">
                 <iconPacks:PackIconModern Width="20" Height="20" Kind="Save" />
+            </Button>
+            <Button Click="Github_Click" ToolTip="Open GitHub page">
+                <iconPacks:PackIconModern Width="25" Height="25" Kind="SocialGithubOctocat" />
             </Button>
         </mah:WindowCommands>
     </mah:MetroWindow.RightWindowCommands>
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands>
-            <TextBox x:Name="searchBox" mah:TextBoxHelper.ClearTextButton="True" mah:TextBoxHelper.Watermark="Search..." TextChanged="SearchBox_TextChanged" MinWidth="100" />
+            <Button x:Name="GoBackButton"
+              Width="{Binding ElementName=HamburgerMenuControl, Path=CompactPaneLength}"
+              AutomationProperties.Name="Go back"
+              Click="GoBack_OnClick" IsEnabled="False">
+                <mah:FontIcon AutomationProperties.Name="Back" FontSize="14" Glyph="&#xE72B;" />
+            </Button>
+            <TextBox x:Name="searchBox" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" mah:TextBoxHelper.ClearTextButton="True" mah:TextBoxHelper.Watermark="Search..." MinWidth="100" />
         </mah:WindowCommands>
     </mah:MetroWindow.LeftWindowCommands>
     <mah:MetroWindow.Resources>
@@ -58,7 +63,6 @@
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom" x:Name="StatusBar" Height="30" HorizontalAlignment="Stretch">
             <StatusBarItem HorizontalAlignment="Left">
-                <fa:ImageAwesome Foreground="{DynamicResource MahApps.Brushes.Window.FlyoutOverlay}" Icon="CircleOutlineNotch" Spin="{Binding IsBusy}" ToolTip="Working..." Height="23" Width="23" VerticalAlignment="Bottom" mah:VisibilityHelper.IsVisible="{Binding IsBusy}" />
             </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Right" Padding="0 0 30 0">
                 <StatusBarItem.LayoutTransform>
@@ -73,15 +77,17 @@
         <mah:HamburgerMenu x:Name="HamburgerMenuControl" DockPanel.Dock="Left"
                            CompactPaneLength="31"
                            HamburgerWidth="20"
+                           OpenPaneLength="150"
                            CanResizeOpenPane="True"
-                          DisplayMode="CompactInline"
+                          DisplayMode="CompactOverlay"
                           IsPaneOpen="False"
                            PaneBackground="{DynamicResource MahApps.Brushes.Accent}"
                           ItemInvoked="HamburgerMenuControl_OnItemInvoked"
                           ItemTemplate="{StaticResource MenuItemTemplate}"
                           ItemsSource="{Binding Menu}"
                           OptionsItemTemplate="{StaticResource MenuItemTemplate}"
-                          OptionsItemsSource="{Binding OptionsMenu}">
+                          OptionsItemsSource="{Binding OptionsMenu}"
+                           ShowSelectionIndicator="True">
             <mah:HamburgerMenu.LayoutTransform>
                 <ScaleTransform ScaleX="{Binding ElementName=zoomSlider, Path=Value}" ScaleY="{Binding ElementName=zoomSlider, Path=Value}" />
             </mah:HamburgerMenu.LayoutTransform>

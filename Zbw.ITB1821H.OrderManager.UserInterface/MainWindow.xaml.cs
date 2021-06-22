@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Navigation;
 using ZbW.ITB1821H.OrderManager.UserInterface.Util;
 
@@ -26,7 +25,7 @@ namespace ZbW.ITB1821H.OrderManager
             this.HamburgerMenuControl.Content = this.navigationService.Frame;
 
             // Navigate to the home page.
-            this.Loaded += (sender, args) => this.navigationService.Navigate(new Uri("Controls/CustomersOrdersPage.xaml", UriKind.RelativeOrAbsolute));
+            this.navigationService.Navigate(new Uri("Controls/StartPage.xaml", UriKind.RelativeOrAbsolute));
         }
 
         protected void HamburgerMenuControl_OnItemInvoked(object sender, HamburgerMenuItemInvokedEventArgs e)
@@ -47,18 +46,8 @@ namespace ZbW.ITB1821H.OrderManager
                                                                 .OfType<HamMenuItem>()
                                                                 .FirstOrDefault(x => x.NavigationDestination == e.Uri);
 
-            // or when using the NavigationType on menu item
-            this.HamburgerMenuControl.SelectedItem = this.HamburgerMenuControl
-                                                         .Items
-                                                         .OfType<HamMenuItem>()
-                                                         .FirstOrDefault(x => x.NavigationType == e.Content?.GetType());
-            this.HamburgerMenuControl.SelectedOptionsItem = this.HamburgerMenuControl
-                                                                .OptionsItems
-                                                                .OfType<HamMenuItem>()
-                                                                .FirstOrDefault(x => x.NavigationType == e.Content?.GetType());
-
             // update back button
-            //this.GoBackButton.Visibility = this.navigationService.CanGoBack ? Visibility.Visible : Visibility.Collapsed;
+            this.GoBackButton.IsEnabled = this.navigationService.CanGoBack;
         }
 
         private void GoBack_OnClick(object sender, RoutedEventArgs e)
@@ -80,27 +69,6 @@ namespace ZbW.ITB1821H.OrderManager
         private void Github_Click(object sender, RoutedEventArgs e)
         {
             Process.Start("explorer", UserInterface.Properties.Settings.Default.GithubUrl);
-        }
-
-        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            ////customersListBox.UnselectAll();
-            //CollectionView customers = (CollectionView)CollectionViewSource.GetDefaultView(customersDatagrid.ItemsSource);
-            //if (customers != null)
-            //    customers.Filter = UserFilter;
-            //customers.Refresh();
-            ////ordersListBox.UnselectAll();
-            //CollectionView orders = (CollectionView)CollectionViewSource.GetDefaultView(ordersDatagrid.ItemsSource);
-            //if (orders != null)
-            //    orders.Filter = UserFilter;
-            //orders.Refresh();
-        }
-
-        private bool UserFilter(object item)
-        {
-            if (string.IsNullOrEmpty(searchBox.Text))
-                return true;
-            return (item.ToString().IndexOf(searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0);
         }
     }
 

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using log4net;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
 using ZbW.ITB1821H.OrderManager.Controls;
 using ZbW.ITB1821H.OrderManager.Model;
 
@@ -8,19 +8,12 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
 {
     public class CustomersOrdersPageViewModel : BaseViewModel
     {
-        public CustomersOrdersPageViewModel()
-        {
-            Customers = new ObservableCollection<Customer> {
-                new Customer { Id=666, Name = "Mike", Email = "mikexyz@devil.op", LastName = "S." },
-                new Customer { Id=500, Name = "Marco", Email = "marcog@gmail.com", LastName = "G.",
-                    Orders = new ObservableCollection<Order>(){ new Order{ Id=1, DateOfPurchase = DateTime.Today},
-                new Order{ Id=2, DateOfPurchase = DateTime.Today}} },
-                new Customer { Id=123, Name = "Philip", Email = "philips@hotmail.com", LastName = "S." },
-                new Customer { Id=9, Name = "Alain", Email = "alain.berset@admin.ch", LastName = "Berset" }
-            };
-        }
-
         private Customer selectedCustomer;
+
+        public CustomersOrdersPageViewModel() : base(LogManager.GetLogger(nameof(CustomersOrdersPageViewModel)))
+        {
+            Customers = App.DbContext.Customers.ToList();
+        }
 
         public IList<Customer> Customers { get; set; }
 
@@ -33,7 +26,9 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
             set
             {
                 selectedCustomer = value;
-                OnPropertyChanged(nameof(SelectedCustomer));
+                if (value != null)
+                    selectedCustomer.Orders = App.DbContext.Orders.Where(x => x.CustomerId == selectedCustomer.Id).ToList();
+                OnPropertyChanged();
             }
         }
 
