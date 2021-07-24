@@ -14,10 +14,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
         {
             using (var context = new DatabaseContext())
             {
-                return context.Set<ArticleGroup>()
-                    .Include(x => x.Articles)
-                    .Include(x => x.SubArticleGroups)
-                    .Include(x => x.ParentGroup)
+                return context.GetAllArticleGroups()
                     .Where(filter)
                     .ToList();
             }
@@ -27,10 +24,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
         {
             using (var context = new DatabaseContext())
             {
-                return context.Set<ArticleGroup>()
-                    .Include(x => x.Articles)
-                    .Include(x => x.SubArticleGroups)
-                    .Include(x => x.ParentGroup)
+                return context.GetAllArticleGroups()
                     .ToList();
             }
         }
@@ -39,10 +33,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
         {
             using (var context = new DatabaseContext())
             {
-                return context.Set<ArticleGroup>()
-                    .Include(x => x.Articles)
-                    .Include(x => x.SubArticleGroups)
-                    .Include(x => x.ParentGroup)
+                return context.GetArticleGroupsWithParents(pkValue)
                     .FirstOrDefault(x => x.Id == pkValue);
             }
         }

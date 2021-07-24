@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Context
@@ -11,6 +12,13 @@ namespace ZbW.ITB1821H.OrderManager.Model.Context
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Position> Positions { get; set; }
+
+
+        public IQueryable<ArticleGroup> GetAllArticleGroups() =>
+            ArticleGroups.FromSqlRaw("Exec dbo.GetAllArticleGroups");
+
+        public IQueryable<ArticleGroup> GetArticleGroupsWithParents(int id) =>
+            ArticleGroups.FromSqlRaw("Exec dbo.GetArticleGroupsWithParents {0}", id);
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
