@@ -8,8 +8,8 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
 {
     public class AddressService : ServiceBase<Address>
     {
-        public AddressService() : base() { _repository = new AddressRepository(new DatabaseContext(_contextOptions.Options)); }
-        public AddressService(DbContextOptionsBuilder optionsBuilder) : base(optionsBuilder) { _repository = new AddressRepository(new DatabaseContext(_contextOptions.Options)); }
+        public AddressService() : base() { _repository = new AddressRepository(new DatabaseContext(_contextOptions)); }
+        public AddressService(DbContextOptionsBuilder optionsBuilder) : base(optionsBuilder) { _repository = new AddressRepository(new DatabaseContext(_contextOptions)); }
        
         public new List<Address> GetAll(Func<Address, bool> filter)
         {
