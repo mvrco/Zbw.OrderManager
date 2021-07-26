@@ -13,6 +13,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Context
         public DbSet<Order> Orders { get; set; }
         public DbSet<Position> Positions { get; set; }
 
+        public DatabaseContext(DbContextOptions options) : base(options) { }
 
         public IQueryable<ArticleGroup> GetAllArticleGroups() =>
             ArticleGroups.FromSqlRaw("Exec dbo.GetAllArticleGroups");
@@ -22,7 +23,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(Properties.Settings.Default.ConnectionString);
+            //optionsBuilder.UseSqlServer(Properties.Settings.Default.ConnectionString);
             base.OnConfiguring(optionsBuilder);
         }
 
