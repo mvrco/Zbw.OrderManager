@@ -19,8 +19,11 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
 
         public void Add(TEntity entity)
         {
-            _context.Set<TEntity>().Add(entity);
-            _context.SaveChanges();
+            using (_context)
+            {
+                _context.Set<TEntity>().Add(entity);
+                _context.SaveChanges();
+            }
         }
 
         public long Count(Func<TEntity, bool> filter)
@@ -30,35 +33,52 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
 
         public long Count()
         {
-            return _context.Set<TEntity>().Count();
+            using (_context)
+            {
+                return _context.Set<TEntity>().Count();
+            }
         }
 
         public void Delete(TEntity entity)
         {
-
-            _context.Set<TEntity>().Remove(entity);
-            _context.SaveChanges();
+            using (_context)
+            {
+                _context.Set<TEntity>().Remove(entity);
+                _context.SaveChanges();
+            }
         }
 
         public List<TEntity> GetAll(Func<TEntity, bool> filter)
         {
-            return _context.Set<TEntity>().Where(filter).ToList();
+            using (_context)
+            { 
+                return _context.Set<TEntity>().Where(filter).ToList();
+            }
         }
 
         public List<TEntity> GetAll()
         {
-            return _context.Set<TEntity>().ToList();
+            using (_context)
+            {
+                return _context.Set<TEntity>().ToList();
+            }
         }
 
         public TEntity GetSingle(int pkValue)
         {
-            return _context.Set<TEntity>().Find(pkValue);
+            using (_context)
+            {
+                return _context.Set<TEntity>().Find(pkValue);
+            }
         }
 
         public void Update(TEntity entity)
         {
-            _context.Set<TEntity>().Update(entity);
-            _context.SaveChanges();
+            using (_context)
+            {
+                _context.Set<TEntity>().Update(entity);
+                _context.SaveChanges();
+            }
         }
     }
 }

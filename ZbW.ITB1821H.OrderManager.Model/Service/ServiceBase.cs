@@ -10,16 +10,9 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
         public readonly DbContextOptionsBuilder _contextOptions;
         public IRepositoryBase<TEntity> _repository;
 
-        public ServiceBase() 
-        {
-            var optionsBuilder = new DbContextOptionsBuilder();
-            _contextOptions = optionsBuilder.UseSqlServer(Properties.Settings.Default.ConnectionString);
-        }
+        public ServiceBase() : this(new DbContextOptionsBuilder().UseSqlServer(Properties.Settings.Default.ConnectionString)) { }
 
-        public ServiceBase(DbContextOptionsBuilder options)
-        {
-            _contextOptions = options;
-        }
+        public ServiceBase(DbContextOptionsBuilder options) { _contextOptions = options; }
 
         public void Add(TEntity entity)
         {

@@ -13,7 +13,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
        
         public new List<Address> GetAll(Func<Address, bool> filter)
         {
-
             return _repository.GetAll(filter);
         }
 
