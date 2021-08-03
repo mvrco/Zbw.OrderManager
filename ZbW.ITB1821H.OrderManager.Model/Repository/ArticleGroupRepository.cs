@@ -11,31 +11,22 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
 
         public new List<ArticleGroup> GetAll(Func<ArticleGroup, bool> filter)
         {
-            using (_context)
-            {
-                return _context.GetAllArticleGroups()
-                    .Where(filter)
-                    .ToList();
-            }
+            return _context.GetAllArticleGroups()
+                .Where(filter)
+                .ToList();
         }
 
         public new List<ArticleGroup> GetAll()
         {
-            using (_context)
-            {
-                return _context.GetAllArticleGroups()
-                    .ToList();
-            }
+            return _context.GetAllArticleGroups()
+                .ToList();
 
         }
 
         public new ArticleGroup GetSingle(int pkValue)
         {
-            using (_context)
-            {
-                return _context.GetArticleGroupsWithParents(pkValue)
-                    .FirstOrDefault(x => x.Id == pkValue);
-            }
+            return _context.GetArticleGroupsWithParents(pkValue)
+                .FirstOrDefault(x => x.Id == pkValue);
         }
     }
 }

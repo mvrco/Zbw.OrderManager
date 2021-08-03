@@ -12,14 +12,11 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
 
         public new List<Customer> GetAll(Func<Customer, bool> filter)
         {
-            using (_context)
-            {
-                return _context.Set<Customer>()
-                    .Include(x => x.Address)
-                    .Include(x => x.Orders)
-                    .Where(filter)
-                    .ToList();
-            }
+            return _context.Set<Customer>()
+                .Include(x => x.Address)
+                .Include(x => x.Orders)
+                .Where(filter)
+                .ToList();
         }
 
         public new List<Customer> GetAll()

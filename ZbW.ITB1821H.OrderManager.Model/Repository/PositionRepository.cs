@@ -12,36 +12,27 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
 
         public new List<Position> GetAll(Func<Position, bool> filter)
         {
-            using (_context)
-            {
-                return _context.Set<Position>()
-                    .Include(x => x.Order)
-                    .Include(x => x.Article)
-                    .Where(filter)
-                    .ToList();
-            }
+            return _context.Set<Position>()
+                .Include(x => x.Order)
+                .Include(x => x.Article)
+                .Where(filter)
+                .ToList();
         }
 
         public new List<Position> GetAll()
         {
-            using (_context)
-            {
-                return _context.Set<Position>()
-                    .Include(x => x.Order)
-                    .Include(x => x.Article)
-                    .ToList();
-            }
+            return _context.Set<Position>()
+                .Include(x => x.Order)
+                .Include(x => x.Article)
+                .ToList();
         }
 
         public new Position GetSingle(int pkValue)
         {
-            using (_context)
-            {
-                return _context.Set<Position>()
-                    .Include(x => x.Order)
-                    .Include(x => x.Article)
-                    .FirstOrDefault(x => x.Id == pkValue);
-            }
+            return _context.Set<Position>()
+                .Include(x => x.Order)
+                .Include(x => x.Article)
+                .FirstOrDefault(x => x.Id == pkValue);
         }
     }
 }

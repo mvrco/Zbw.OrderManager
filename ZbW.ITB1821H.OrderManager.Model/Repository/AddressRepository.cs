@@ -14,33 +14,24 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
 
         public new List<Address> GetAll(Func<Address, bool> filter)
         {
-            using (_context)
-            {
-                return _context.Set<Address>()
-                    .Include(x => x.Customers)
-                    .Where(filter)
-                    .ToList();
-            }
+            return _context.Set<Address>()
+                .Include(x => x.Customers)
+                .Where(filter)
+                .ToList();
         }
 
         public new List<Address> GetAll()
         {
-            using (_context)
-            {
-                return _context.Set<Address>()
-                    .Include(x => x.Customers)
-                    .ToList();
-            }
+            return _context.Set<Address>()
+                .Include(x => x.Customers)
+                .ToList();
         }
 
         public new Address GetSingle(int pkValue)
         {
-            using (_context)
-            {
-                return _context.Set<Address>()
-                    .Include(x => x.Customers)
-                    .FirstOrDefault(x => x.Id == pkValue);
-            }
+            return _context.Set<Address>()
+                .Include(x => x.Customers)
+                .FirstOrDefault(x => x.Id == pkValue);
         }
     }
 }
