@@ -8,22 +8,31 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
 {
     public class CustomerService : ServiceBase<Customer>
     {
-        public CustomerService() : base() { _repository = new CustomerRepository(new DatabaseContext(_contextOptions)); }
-        public CustomerService(DbContextOptionsBuilder optionsBuilder) : base(optionsBuilder) { _repository = new CustomerRepository(new DatabaseContext(_contextOptions)); }
+        public CustomerService() : base() { }
+        public CustomerService(DbContextOptionsBuilder optionsBuilder) : base(optionsBuilder) { }
 
         public new List<Customer> GetAll(Func<Customer, bool> filter)
         {
-            return _repository.GetAll(filter);
+            using (var context = new DatabaseContext(_contextOptions))
+            {
+                return new CustomerRepository(context).GetAll(filter);
+            }
         }
 
         public new List<Customer> GetAll()
         {
-            return _repository.GetAll();
+            using (var context = new DatabaseContext(_contextOptions))
+            {
+                return new CustomerRepository(context).GetAll();
+            }
         }
 
         public new Customer GetSingle(int pkValue)
         {
-            return _repository.GetSingle(pkValue);
+            using (var context = new DatabaseContext(_contextOptions))
+            {
+                return new CustomerRepository(context).GetSingle(pkValue);
+            }
         }
     }
 }

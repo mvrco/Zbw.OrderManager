@@ -8,22 +8,31 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
 {
     public class ArticleGroupService : ServiceBase<ArticleGroup>
     {
-        public ArticleGroupService() : base() { _repository = new ArticleGroupRepository(new DatabaseContext(_contextOptions)); }
-        public ArticleGroupService(DbContextOptionsBuilder optionsBuilder) : base(optionsBuilder) { _repository = new ArticleGroupRepository(new DatabaseContext(_contextOptions)); }
+        public ArticleGroupService() : base() { }
+        public ArticleGroupService(DbContextOptionsBuilder optionsBuilder) : base(optionsBuilder) { }
 
         public new List<ArticleGroup> GetAll(Func<ArticleGroup, bool> filter)
         {
-            return _repository.GetAll(filter);
+            using (var context = new DatabaseContext(_contextOptions))
+            {
+                return new ArticleGroupRepository(context).GetAll(filter);
+            }
         }
 
         public new List<ArticleGroup> GetAll()
         {
-            return _repository.GetAll();
+            using (var context = new DatabaseContext(_contextOptions))
+            {
+                return new ArticleGroupRepository(context).GetAll();
+            }
         }
 
         public new ArticleGroup GetSingle(int pkValue)
         {
-            return _repository.GetSingle(pkValue);
+            using (var context = new DatabaseContext(_contextOptions))
+            {
+                return new ArticleGroupRepository(context).GetSingle(pkValue);
+            }
         }
     }
 }

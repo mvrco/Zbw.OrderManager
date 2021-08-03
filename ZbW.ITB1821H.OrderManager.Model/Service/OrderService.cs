@@ -13,17 +13,26 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
 
         public new List<Order> GetAll(Func<Order, bool> filter)
         {
-            return _repository.GetAll(filter);
+            using (var context = new DatabaseContext(_contextOptions))
+            {
+                return new OrderRepository(context).GetAll(filter);
+            }
         }
 
         public new List<Order> GetAll()
         {
-            return _repository.GetAll();
+            using (var context = new DatabaseContext(_contextOptions))
+            {
+                return new OrderRepository(context).GetAll();
+            }
         }
 
         public new Order GetSingle(int pkValue)
         {
-            return _repository.GetSingle(pkValue);
+            using (var context = new DatabaseContext(_contextOptions))
+            {
+                return new OrderRepository(context).GetSingle(pkValue);
+            }
         }
     }
 }
