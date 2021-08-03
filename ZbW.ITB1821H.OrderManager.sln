@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZbW.ITB1821H.OrderManager.UserInterface", "Zbw.ITB1821H.OrderManager.UserInterface\ZbW.ITB1821H.OrderManager.UserInterface.csproj", "{61BD2CB5-5E9B-4819-85F4-A5F3C9EED34F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZbW.ITB1821H.OrderManager.UserInterface", "Zbw.ITB1821H.OrderManager.UserInterface\ZbW.ITB1821H.OrderManager.UserInterface.csproj", "{61BD2CB5-5E9B-4819-85F4-A5F3C9EED34F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZbW.ITB1821H.OrderManager.Model", "ZbW.ITB1821H.OrderManager.Model\ZbW.ITB1821H.OrderManager.Model.csproj", "{6539F3C6-820B-4BC8-A1F4-66BA40C68912}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZbW.ITB1821H.OrderManager.Model", "ZbW.ITB1821H.OrderManager.Model\ZbW.ITB1821H.OrderManager.Model.csproj", "{6539F3C6-820B-4BC8-A1F4-66BA40C68912}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZbW.ITB1821H.OrderManager.Tests", "ZbW.ITB1821H.OrderManager.Tests\ZbW.ITB1821H.OrderManager.Tests.csproj", "{CEE61223-6058-4D2D-911B-04DF2B1898BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

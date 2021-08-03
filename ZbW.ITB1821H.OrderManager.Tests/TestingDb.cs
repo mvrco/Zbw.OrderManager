@@ -5,20 +5,21 @@ using ZbW.ITB1821H.OrderManager.Model.Context;
 
 namespace ZbW.ITB1821H.OrderManager.Tests
 {
-    public abstract class TestWithSqlite : IDisposable
+    public abstract class TestingDb : IDisposable
     {
         private const string InMemoryConnectionString = "DataSource=:memory:";
         private readonly SqliteConnection _connection;
 
         protected readonly DatabaseContext DbContext;
+        protected readonly DbContextOptionsBuilder OptionsBuilder;
 
-        protected TestWithSqlite()
+        protected TestingDb()
         {
             _connection = new SqliteConnection(InMemoryConnectionString);
             _connection.Open();
-            var options = new DbContextOptionsBuilder<DatabaseContext>()
+            OptionsBuilder = new DbContextOptionsBuilder<DatabaseContext>()
                     .UseSqlite(_connection);
-            DbContext = new DatabaseContext(options);
+            DbContext = new DatabaseContext(OptionsBuilder);
             DbContext.Database.EnsureCreated();
         }
 
