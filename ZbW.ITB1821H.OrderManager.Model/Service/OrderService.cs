@@ -8,8 +8,8 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
 {
     public class OrderService : ServiceBase<Order>
     {
-        public OrderService() : base() { _repository = new OrderRepository(new DatabaseContext(_contextOptions)); }
-        public OrderService(DbContextOptionsBuilder optionsBuilder) : base(optionsBuilder) { _repository = new OrderRepository(new DatabaseContext(_contextOptions)); }
+        public OrderService() : base() { }
+        public OrderService(DbContextOptionsBuilder optionsBuilder) : base(optionsBuilder) { }
 
         public new List<Order> GetAll(Func<Order, bool> filter)
         {
