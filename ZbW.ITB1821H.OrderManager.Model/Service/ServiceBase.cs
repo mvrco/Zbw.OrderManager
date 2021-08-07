@@ -6,7 +6,7 @@ using ZbW.ITB1821H.OrderManager.Model.Repository;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Service
 {
-    public abstract class ServiceBase<TEntity> : IServiceBase<TEntity> where TEntity : class
+    public class ServiceBase<TEntity> : IServiceBase<TEntity> where TEntity : class
     {
         public readonly DbContextOptionsBuilder _contextOptions;
 

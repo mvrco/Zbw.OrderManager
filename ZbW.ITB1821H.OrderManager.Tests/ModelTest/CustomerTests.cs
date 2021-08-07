@@ -42,7 +42,7 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
             {
                 var repo = new CustomerRepository(DbContext);
                 
-                Assert.True(repo.Count() == 15);
+                Assert.True(repo.Count() == DbContext.Customers.Count());
             }
         }
 
@@ -61,7 +61,7 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
         }
 
         [Fact]
-        public void CustomerRepositoryGetAll_GetAllCustomersInListWithFilter_ReturnsTrue()
+        public void CustomerRepositoryGetAll_GetAllCustomersWithFilter_ReturnsTrue()
         {
             using (DbContext)
             {
@@ -74,7 +74,7 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
         }
 
         [Fact]
-        public void CustomerRepositoryGetAll_GetAllCustomersInList_ReturnsTrue()
+        public void CustomerRepositoryGetAll_GetAllCustomers_ReturnsTrue()
         {
             using (DbContext)
             {
@@ -116,16 +116,58 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
         #endregion Repository
 
         #region Service
+        // Setter Tests in service do not work, because of the Sqlitedb (Dispose after connection closed)
+
         [Fact]
-        public void CustomerServiceAdd_AddNewCustomer_ReturnsTrue()
-        { 
-            // Setter Tests in service do not work, because of the Sqlitedb (Dispose after connection closed)
+        public void CustomerServiceCount_CountCustomersWithFilter_ReturnsTrue()
+        {
             var service = new CustomerService(OptionsBuilder);
-            var customer = new Customer { Name = "Monica", LastName = "Watson", Email = "watson@outlook.com", Website = "www.monica.com", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 };
-            service.Add(customer);
+            var customersContext = DbContext.Customers.Where(x => x.LastName.Contains("a")).ToList();
+
+            Assert.True(service.Count(x => x.LastName.Contains("a")) == customersContext.Count);
+        }
+
+        [Fact]
+        public void CustomerServiceCount_CountCustomers_ReturnsTrue()
+        {
+            var service = new CustomerService(OptionsBuilder);
             var customersContext = DbContext.Customers.ToList();
 
-            Assert.True(customersContext.Contains(customer) == true);
+            Assert.True(service.Count() == customersContext.Count);
+        }
+
+        [Fact]
+        public void CustomerServiceGetAll_GetAllCustomersWithFilter_ReturnsTrue()
+        {
+            var service = new CustomerService(OptionsBuilder);
+            var customersContext = DbContext.Customers.Where(x => x.Name.StartsWith("C")).ToList();
+            var customers = service.GetAll(x => x.Name.StartsWith("C"));
+
+            Assert.Equal(customers.Count(), customersContext.Count());
+        }
+
+        [Fact]
+        public void CustomerServiceGetAll_GetAllCustomers_ReturnsTrue()
+        {
+            var service = new CustomerService(OptionsBuilder);
+            var customersContext = DbContext.Customers.ToList();
+            var customers = service.GetAll();
+
+            Assert.True(customers.Count() == customersContext.Count());
+        }
+
+        [Fact]
+        public void CustomerServiceGetSingle_GetSingleCustomer_ReturnsTrue()
+        {
+            var service = new CustomerService(OptionsBuilder);
+            var customerContext = DbContext.Customers.Where(x => x.Id == 12).SingleOrDefault();
+            var customer = service.GetSingle(12);
+
+            Assert.True(
+                customer.Id == customerContext.Id
+                && customer.Name == customerContext.Name
+                && customer.LastName == customerContext.LastName
+                && customer.Website == customerContext.Website);
         }
         #endregion Service
     }
