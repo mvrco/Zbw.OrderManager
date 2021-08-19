@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,9 @@ namespace ZbW.ITB1821H.OrderManager.Model.DbConfiguration
 
             builder.Property(x => x.Name).IsRequired();
             builder.Property(x => x.Price).IsRequired();
+
+            builder.Property(x => x.CreateDate).HasDefaultValueSql("CURRENT_TIMESTAMP").ValueGeneratedOnAdd();
+            builder.Property(X => X.IsActive).HasDefaultValue(true).ValueGeneratedOnAdd();
 
             builder.HasData(
               new Article { Id = 100, Name = "Apple", Description = "Fresh from Switzerland", Price = 0.95, ArticleGroupId = 11 },

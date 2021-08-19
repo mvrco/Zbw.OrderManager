@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZbW.ITB1821H.OrderManager.Model.Context;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210819214450_CreatingTriggersForHistory")]
+    partial class CreatingTriggersForHistory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -249,18 +251,16 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                     b.Property<int>("ArticleGroupId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreateDate")
+                    b.Property<bool>("CreateDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
+                        .HasColumnType("bit")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -280,7 +280,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 100,
                             ArticleGroupId = 11,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreateDate = false,
                             Description = "Fresh from Switzerland",
                             IsActive = false,
                             Name = "Apple",
@@ -290,7 +290,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 101,
                             ArticleGroupId = 11,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreateDate = false,
                             Description = "Fresh from Columbia",
                             IsActive = false,
                             Name = "Banana",
@@ -300,7 +300,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 102,
                             ArticleGroupId = 12,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreateDate = false,
                             Description = "Swiss Quality",
                             IsActive = false,
                             Name = "Chicken",
@@ -310,7 +310,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 103,
                             ArticleGroupId = 12,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreateDate = false,
                             Description = "Atlantic Ocean",
                             IsActive = false,
                             Name = "Salmon",
@@ -320,7 +320,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 104,
                             ArticleGroupId = 13,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreateDate = false,
                             Description = "Switzerland",
                             IsActive = false,
                             Name = "Cheese",
@@ -330,7 +330,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 105,
                             ArticleGroupId = 13,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreateDate = false,
                             Description = "Based on years of experience",
                             IsActive = false,
                             Name = "Yogurt",

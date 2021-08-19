@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZbW.ITB1821H.OrderManager.Model.Context;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210819215415_CreatingTriggersForHistory2")]
+    partial class CreatingTriggersForHistory2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -258,9 +260,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
