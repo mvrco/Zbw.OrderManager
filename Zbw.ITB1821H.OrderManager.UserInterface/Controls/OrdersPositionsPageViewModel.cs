@@ -2,22 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using ZbW.ITB1821H.OrderManager.Controls;
-using ZbW.ITB1821H.OrderManager.Model;
+using ZbW.ITB1821H.OrderManager.Model.Dto;
+using ZbW.ITB1821H.OrderManager.Model.Service.Interfaces;
 
 namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
 {
     public class OrdersPositionsPageViewModel : BaseViewModel
     {
-        private Order selectedOrder;
+        private OrderDto selectedOrder;
+        private IOrderService _orderService;
 
         public OrdersPositionsPageViewModel() : base(LogManager.GetLogger(nameof(OrdersPositionsPageViewModel)))
         {
-            Orders = App.DbContext.Orders.ToList();
+            Orders = _orderService.GetAll();//App.DbContext.Orders.ToList();
         }
 
-        public IList<Order> Orders { get; set; }
+        public IList<OrderDto> Orders { get; set; }
 
-        public Order SelectedOrder
+        public OrderDto SelectedOrder
         {
             get
             {
@@ -27,11 +29,12 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
             {
                 selectedOrder = value;
                 if (value != null)
-                    selectedOrder.Positions = App.DbContext.Positions.Where(x => x.OrderId == selectedOrder.Id).ToList();
+                    // sollte nicht nötig sein, da Positionen mit entsprechendem OrderDto geladen werden
+                    //selectedOrder.Positions = App.DbContext.Positions.Where(x => x.OrderId == selectedOrder.Id).ToList();
                 OnPropertyChanged();
             }
         }
 
-        public Position SelectedPosition { get; set; }
+        public PositionDto SelectedPosition { get; set; }
     }
 }

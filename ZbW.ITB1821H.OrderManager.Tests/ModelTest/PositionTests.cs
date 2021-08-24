@@ -1,172 +1,161 @@
-﻿using System;
+﻿using Moq;
+using System;
 using System.Linq;
 using Xunit;
-using ZbW.ITB1821H.OrderManager.Model;
-using ZbW.ITB1821H.OrderManager.Model.Repository;
+using ZbW.ITB1821H.OrderManager.Model.Dto;
+using ZbW.ITB1821H.OrderManager.Model.Entities;
+using ZbW.ITB1821H.OrderManager.Model.Repository.Interfaces;
 using ZbW.ITB1821H.OrderManager.Model.Service;
 
 namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
 {
-    public class PositionTests : TestingDb
+    public class PositionTests
     {
-        #region Repository
+        #region Position Service/Repository
         [Fact]
-        public void PositionRepositoryAdd_AddNewPosition_ReturnsTrue()
+        public void PositionService_Add_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new PositionRepository(DbContext);
-                var position = new Position { PosNr = 1, OrderId = 1230, Amount = 23, ArticleId = 100 };
-                repo.Add(position);
-                var positionsContext = DbContext.Positions.ToList();
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IPositionRepository>();
+            var position = new Position { Id = 100, PosNr = 3, OrderId = 1232, Amount = 20, ArticleId = 100 };
+            var dto = new PositionDto { Id = 100, PosNr = 3, OrderId = 1232, Amount = 20, ArticleId = 100 };
 
-                Assert.True(positionsContext.Contains(position) == true);
-            }
+            mock.Setup(x => x.Add(It.IsAny<Position>()))
+                .Callback(() => inMemoryDatabase.Positions.Add(position));
+
+            var service = new PositionService(mock.Object);
+            service.Add(dto);
+
+            Assert.True(inMemoryDatabase.Positions.Contains(position));
         }
 
         [Fact]
-        public void PositionRepositoryCountWithFilter_CountPositions_ReturnsTrue()
+        public void PositionService_CountWithFilter_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new PositionRepository(DbContext);
-                var positionsContext = DbContext.Positions.Where(x => x.OrderId == 1230).ToList();
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IPositionRepository>();
 
-                Assert.True(repo.Count(x => x.OrderId == 1230) == positionsContext.Count);
-            }
+            mock.Setup(x => x.Count(x => x.OrderId == 1230))
+                .Returns(() => inMemoryDatabase.Positions.Where(x => x.OrderId == 1230).Count());
+
+            var service = new PositionService(mock.Object);
+            var count = service.Count(x => x.OrderId == 1230);
+
+            Assert.True(count == 4);
         }
 
         [Fact]
-        public void PositionRepositoryCount_CountPositions_ReturnsTrue()
+        public void PositionService_Count_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new PositionRepository(DbContext);
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IPositionRepository>();
 
-                Assert.True(repo.Count() == DbContext.Positions.Count());
-            }
+            mock.Setup(x => x.Count())
+                .Returns(() => inMemoryDatabase.Positions.Count);
+
+            var service = new PositionService(mock.Object);
+            var count = service.Count();
+
+            Assert.True(count == 48);
         }
 
         [Fact]
-        public void PositionRepositoryDelete_DeletePosition_ReturnsTrue()
+        public void PositionService_Delete_ReturnsFalse()
         {
-            using (DbContext)
-            {
-                var repo = new PositionRepository(DbContext);
-                var position = new Position { Id = 1 };
-                repo.Delete(position);
-                var positionsContext = DbContext.Positions.ToList();
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IPositionRepository>();
+            var position = new Position { Id = 9, PosNr = 3, OrderId = 1232, Amount = 20, ArticleId = 100 };
+            var dto = new PositionDto { Id = 9, PosNr = 3, OrderId = 1232, Amount = 20, ArticleId = 100 };
 
-                Assert.True(!positionsContext.Contains(position) && positionsContext.Count == 47);
-            }
+            mock.Setup(x => x.Delete(It.IsAny<Position>()))
+                .Callback(() => inMemoryDatabase.Positions.Remove(position));
+
+            var service = new PositionService(mock.Object);
+            service.Delete(dto);
+
+            Assert.False(inMemoryDatabase.Positions.Contains(position));
         }
 
         [Fact]
-        public void PositionRepositoryGetAll_GetAllPositionsWithFilter_ReturnsTrue()
+        public void PositionService_GetAllWithFilter_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new PositionRepository(DbContext);
-                var positionsContext = DbContext.Positions.Where(x => x.OrderId == 1230).ToList();
-                var positions = repo.GetAll(x => x.OrderId == 1230);
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IPositionRepository>();
 
-                Assert.True(positions.Count == positionsContext.Count);
-            }
+            mock.Setup(x => x.GetAll(x => x.OrderId == 1230))
+                .Returns(() => inMemoryDatabase.Positions.Where(x => x.OrderId == 1230).ToList());
+
+            var service = new PositionService(mock.Object);
+            var list = service.GetAll(x => x.OrderId == 1230);
+
+            Assert.True(list.Count == 4);
         }
 
         [Fact]
-        public void PositionRepositoryGetAll_GetAllPositions_ReturnsTrue()
+        public void PositionService_GetAll_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new PositionRepository(DbContext);
-                var positionsContext = DbContext.Positions.ToList();
-                var positions = repo.GetAll();
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IPositionRepository>();
 
-                Assert.True(positions.Count == positionsContext.Count);
-            }
+            mock.Setup(x => x.GetAll())
+                .Returns(() => inMemoryDatabase.Positions.ToList());
+
+            var service = new PositionService(mock.Object);
+            var list = service.GetAll();
+
+            Assert.True(list.Count == 48);
         }
 
         [Fact]
-        public void PositionRepositoryGetSingle_GetSinglePositionObject_ReturnsEqual()
+        public void PositionService_GetSingle_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new PositionRepository(DbContext);
-                var positionContext = DbContext.Positions.Where(x => x.Id == 5).SingleOrDefault();
-                var position = repo.GetSingle(5);
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IPositionRepository>();
+            var dto = new PositionDto { Id = 9, PosNr = 3, OrderId = 1232, Amount = 20, ArticleId = 100 };
 
-                Assert.Equal(position, positionContext);
-            }
-        }
 
-        [Fact]
-        public void PositionRepositoryUpdate_UpdatePosition_ReturnsTrue()
-        {
-            using (DbContext)
-            {
-                var repo = new PositionRepository(DbContext);
-                var positionContext = DbContext.Positions.Where(x => x.Id == 1).SingleOrDefault();
-                positionContext.OrderId = 1231;
-                repo.Update(positionContext);
-                var positionContextAfterUpdate = DbContext.Positions.Where(x => x.Id == 1).SingleOrDefault();
+            mock.Setup(x => x.GetSingle(It.IsAny<int>()))
+                .Returns(() => inMemoryDatabase.Positions.Where(x => x.Id == 9).FirstOrDefault());
 
-                Assert.True(positionContextAfterUpdate.OrderId == 1231);
-            }
-        }
-        #endregion Repository
-
-        #region Service
-        [Fact]
-        public void PositionServiceCount_CountAdressesWithFilter_ReturnsTrue()
-        {
-            var service = new PositionService(OptionsBuilder);
-            var positionsContext = DbContext.Positions.Where(x => x.OrderId == 1230).ToList();
-
-            Assert.True(service.Count(x => x.OrderId == 1230) == positionsContext.Count);
-        }
-
-        [Fact]
-        public void PositionServiceCount_CountCustomers_ReturnsTrue()
-        {
-            var service = new PositionService(OptionsBuilder);
-
-            Assert.True(service.Count() == DbContext.Positions.Count());
-        }
-
-        [Fact]
-        public void PositionServiceGetAll_GetAllPositionsWithFilter_ReturnsTrue()
-        {
-            var service = new PositionService(OptionsBuilder);
-            var positionsContext = DbContext.Positions.Where(x => x.OrderId == 1230).ToList();
-            var positions = service.GetAll(x => x.OrderId == 1230);
-
-            Assert.True(positions.Count == positionsContext.Count);
-        }
-
-        [Fact]
-        public void PositionServiceGetAll_GetAllPositions_ReturnsTrue()
-        {
-            var service = new PositionService(OptionsBuilder);
-            var positionsContext = DbContext.Positions.ToList();
-            var positions = service.GetAll();
-
-            Assert.True(positions.Count == positionsContext.Count);
-        }
-
-        [Fact]
-        public void PositionServiceGetSingle_GetSinglePosition_ReturnsTrue()
-        {
-            var service = new PositionService(OptionsBuilder);
-            var positionContext = DbContext.Positions.Where(x => x.Id == 5).SingleOrDefault();
-            var position = service.GetSingle(5);
+            var service = new PositionService(mock.Object);
+            var position = service.GetSingle(9);
 
             Assert.True(
-                position.Id == positionContext.Id
-                && position.OrderId == positionContext.OrderId
-                && position.Amount == positionContext.Amount
-                && position.PosNr == positionContext.PosNr);
+                position.Id == dto.Id
+                && position.PosNr == dto.PosNr
+                && position.OrderId == dto.OrderId);
         }
-        #endregion Service
+
+        [Fact]
+        public void PositionService_Update_ReturnsTrue()
+        {
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IPositionRepository>();
+            var position = new Position { Id = 9, PosNr = 10, OrderId = 1233, Amount = 20, ArticleId = 100 };
+            var dto = new PositionDto { Id = 9, PosNr = 10, OrderId = 1233, Amount = 20, ArticleId = 100 };
+
+            mock.Setup(x => x.Update(It.IsAny<Position>()))
+                .Callback(() => {
+                    foreach (var a in inMemoryDatabase.Positions)
+                    {
+                        if (a.Id == position.Id)
+                        {
+                            a.PosNr = position.PosNr;
+                            a.OrderId = position.OrderId;
+                            break;
+                        }
+                    }
+                });
+
+            var service = new PositionService(mock.Object);
+            service.Update(dto);
+            var afterUpdate = inMemoryDatabase.Positions.Where(x => x.Id == position.Id).FirstOrDefault();
+
+            Assert.True(
+                position.Id == afterUpdate.Id
+                && position.PosNr == afterUpdate.PosNr
+                && position.OrderId == dto.OrderId);
+        }
+        #endregion
     }
 }

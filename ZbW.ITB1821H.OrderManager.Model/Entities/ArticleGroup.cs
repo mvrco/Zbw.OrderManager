@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ZbW.ITB1821H.OrderManager.Model
+namespace ZbW.ITB1821H.OrderManager.Model.Entities
 {
     public class ArticleGroup
     {
@@ -12,7 +12,5 @@ namespace ZbW.ITB1821H.OrderManager.Model
         public virtual ArticleGroup ParentGroup { get; set; }
         public virtual ICollection<ArticleGroup> SubArticleGroups { get; set; }
         public virtual ICollection<Article> Articles { get; set; }
-
-        // TODO tostring
     }
 }

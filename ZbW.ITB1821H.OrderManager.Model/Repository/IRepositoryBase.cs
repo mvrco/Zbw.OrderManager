@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,9 +13,9 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
         void Add(TEntity entity);
         void Delete(TEntity entity);
         void Update(TEntity entity);
-        List<TEntity> GetAll(Func<TEntity, bool> filter);
+        List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter);
         List<TEntity> GetAll();
-        long Count(Func<TEntity, bool> filter);
+        long Count(Expression<Func<TEntity, bool>> filter);
         long Count();
     }
 }

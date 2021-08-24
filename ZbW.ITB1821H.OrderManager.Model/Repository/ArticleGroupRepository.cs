@@ -1,32 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using ZbW.ITB1821H.OrderManager.Model.Context;
+using ZbW.ITB1821H.OrderManager.Model.Entities;
+using ZbW.ITB1821H.OrderManager.Model.Repository.Interfaces;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Repository
 {
-    public class ArticleGroupRepository : RepositoryBase<ArticleGroup>
+    public class ArticleGroupRepository : RepositoryBase<ArticleGroup>, IArticleGroupRepository
     {
-        public ArticleGroupRepository(DatabaseContext context) : base(context) { }
+        public ArticleGroupRepository() : base() { }
 
-        public new List<ArticleGroup> GetAll(Func<ArticleGroup, bool> filter)
+        public new List<ArticleGroup> GetAll(Expression<Func<ArticleGroup, bool>> filter)
         {
-            return _context.GetAllArticleGroups()
+            using (var context = new DatabaseContext())
+            {
+                return context.GetAllArticleGroups()
                 .Where(filter)
                 .ToList();
+            }
         }
 
         public new List<ArticleGroup> GetAll()
         {
-            return _context.GetAllArticleGroups()
+            using (var context = new DatabaseContext())
+            {
+                return context.GetAllArticleGroups()
                 .ToList();
-
+            }
         }
 
         public new ArticleGroup GetSingle(int pkValue)
         {
-            return _context.GetArticleGroupsWithParents(pkValue)
+            using (var context = new DatabaseContext())
+            {
+                return context.GetArticleGroupsWithParents(pkValue)
                 .FirstOrDefault(x => x.Id == pkValue);
+            }
         }
     }
 }

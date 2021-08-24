@@ -1,171 +1,160 @@
-﻿using System;
+﻿using Moq;
+using System;
 using System.Linq;
 using Xunit;
-using ZbW.ITB1821H.OrderManager.Model;
-using ZbW.ITB1821H.OrderManager.Model.Repository;
+using ZbW.ITB1821H.OrderManager.Model.Dto;
+using ZbW.ITB1821H.OrderManager.Model.Entities;
+using ZbW.ITB1821H.OrderManager.Model.Repository.Interfaces;
 using ZbW.ITB1821H.OrderManager.Model.Service;
 
 namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
 {
-    public class OrderTests : TestingDb
+    public class OrderTests
     {
-        #region Repository
+        #region Order Service/Repository
         [Fact]
-        public void OrderRepositoryAdd_AddNewOrder_ReturnsTrue()
+        public void OrderService_Add_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new OrderRepository(DbContext);
-                var order = new Order { DateOfPurchase = new DateTime(2021, 1, 30), CustomerId = 1 };
-                repo.Add(order);
-                var ordersContext = DbContext.Orders.ToList();
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IOrderRepository>();
+            var order = new Order { Id = 1280, DateOfPurchase = new DateTime(2021, 2, 3), CustomerId = 3 };
+            var dto = new OrderDto { Id = 1280, DateOfPurchase = new DateTime(2021, 2, 3), CustomerId = 3 };
 
-                Assert.True(ordersContext.Contains(order) == true);
-            }
+            mock.Setup(x => x.Add(It.IsAny<Order>()))
+                .Callback(() => inMemoryDatabase.Orders.Add(order));
+
+            var service = new OrderService(mock.Object);
+            service.Add(dto);
+
+            Assert.True(inMemoryDatabase.Orders.Contains(order));
         }
 
         [Fact]
-        public void OrderRepositoryCountWithFilter_CountOrders_ReturnsTrue()
+        public void OrderService_CountWithFilter_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new OrderRepository(DbContext);
-                var ordersContext = DbContext.Orders.Where(x => x.CustomerId == 1).ToList();
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IOrderRepository>();
 
-                Assert.True(repo.Count(x => x.CustomerId == 1) == ordersContext.Count);
-            }
+            mock.Setup(x => x.Count(x => x.CustomerId == 1))
+                .Returns(() => inMemoryDatabase.Orders.Where(x => x.CustomerId == 1).Count());
+
+            var service = new OrderService(mock.Object);
+            var count = service.Count(x => x.CustomerId == 1);
+
+            Assert.True(count == 1);
         }
 
         [Fact]
-        public void OrderRepositoryCount_CountOrders_ReturnsTrue()
+        public void OrderService_Count_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new OrderRepository(DbContext);
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IOrderRepository>();
 
-                Assert.True(repo.Count() == DbContext.Orders.Count());
-            }
+            mock.Setup(x => x.Count())
+                .Returns(() => inMemoryDatabase.Orders.Count);
+
+            var service = new OrderService(mock.Object);
+            var count = service.Count();
+
+            Assert.True(count == 19);
         }
 
         [Fact]
-        public void OrderRepositoryDelete_DeleteOrder_ReturnsTrue()
+        public void OrderService_Delete_ReturnsFalse()
         {
-            using (DbContext)
-            {
-                var repo = new OrderRepository(DbContext);
-                var order = new Order { Id = 1234 };
-                repo.Delete(order);
-                var ordersContext = DbContext.Orders.ToList();
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IOrderRepository>();
+            var order = new Order { Id = 1238, DateOfPurchase = new DateTime(2021, 2, 3), CustomerId = 3 };
+            var dto = new OrderDto { Id = 1238, DateOfPurchase = new DateTime(2021, 2, 3), CustomerId = 3 };
 
-                Assert.True(!ordersContext.Contains(order) && ordersContext.Count == 18);
-            }
+            mock.Setup(x => x.Delete(It.IsAny<Order>()))
+                .Callback(() => inMemoryDatabase.Orders.Remove(order));
+
+            var service = new OrderService(mock.Object);
+            service.Delete(dto);
+
+            Assert.False(inMemoryDatabase.Orders.Contains(order));
         }
 
         [Fact]
-        public void OrderRepositoryGetAll_GetAllOrdersWithFilter_ReturnsTrue()
+        public void OrderService_GetAllWithFilter_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new OrderRepository(DbContext);
-                var ordersContext = DbContext.Orders.Where(x => x.CustomerId == 1).ToList();
-                var orders = repo.GetAll(x => x.CustomerId == 1);
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IOrderRepository>();
 
-                Assert.True(orders.Count == ordersContext.Count);
-            }
+            mock.Setup(x => x.GetAll(x => x.CustomerId == 1))
+                .Returns(() => inMemoryDatabase.Orders.Where(x => x.CustomerId == 1).ToList());
+
+            var service = new OrderService(mock.Object);
+            var list = service.GetAll(x => x.CustomerId == 1);
+
+            Assert.True(list.Count == 1);
         }
 
         [Fact]
-        public void OrderRepositoryGetAll_GetAllOrders_ReturnsTrue()
+        public void OrderService_GetAll_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new OrderRepository(DbContext);
-                var ordersContext = DbContext.Orders.ToList();
-                var orders = repo.GetAll();
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IOrderRepository>();
 
-                Assert.True(orders.Count == ordersContext.Count);
-            }
+            mock.Setup(x => x.GetAll())
+                .Returns(() => inMemoryDatabase.Orders.ToList());
+
+            var service = new OrderService(mock.Object);
+            var list = service.GetAll();
+
+            Assert.True(list.Count == 19);
         }
 
         [Fact]
-        public void OrderRepositoryGetSingle_GetSingleOrderObject_ReturnsEqual()
+        public void OrderService_GetSingle_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new OrderRepository(DbContext);
-                var orderContext = DbContext.Orders.Where(x => x.Id == 1234).SingleOrDefault();
-                var order = repo.GetSingle(1234);
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IOrderRepository>();
+            var dto = new OrderDto { Id = 1238, DateOfPurchase = new DateTime(2021, 2, 3), CustomerId = 3 };
 
-                Assert.Equal(order, orderContext);
-            }
-        }
 
-        [Fact]
-        public void OrderRepositoryUpdate_UpdateOrder_ReturnsTrue()
-        {
-            using (DbContext)
-            {
-                var repo = new OrderRepository(DbContext);
-                var orderContext = DbContext.Orders.Where(x => x.Id == 1234).SingleOrDefault();
-                orderContext.CustomerId = 5;
-                repo.Update(orderContext);
-                var orderContextAfterUpdate = DbContext.Orders.Where(x => x.Id == 1234).SingleOrDefault();
+            mock.Setup(x => x.GetSingle(It.IsAny<int>()))
+                .Returns(() => inMemoryDatabase.Orders.Where(a => a.Id == 1238).FirstOrDefault());
 
-                Assert.True(orderContextAfterUpdate.CustomerId == 5);
-            }
-        }
-        #endregion Repository
-
-        #region Service
-        [Fact]
-        public void OrderServiceCount_CountAdressesWithFilter_ReturnsTrue()
-        {
-            var service = new OrderService(OptionsBuilder);
-            var ordersContext = DbContext.Orders.Where(x => x.CustomerId == 1).ToList();
-
-            Assert.True(service.Count(x => x.CustomerId == 1) == ordersContext.Count);
-        }
-
-        [Fact]
-        public void OrderServiceCount_CountCustomers_ReturnsTrue()
-        {
-            var service = new OrderService(OptionsBuilder);
-
-            Assert.True(service.Count() == DbContext.Orders.Count());
-        }
-
-        [Fact]
-        public void OrderServiceGetAll_GetAllOrdersWithFilter_ReturnsTrue()
-        {
-            var service = new OrderService(OptionsBuilder);
-            var ordersContext = DbContext.Orders.Where(x => x.CustomerId == 1).ToList();
-            var orders = service.GetAll(x => x.CustomerId == 1);
-
-            Assert.True(orders.Count == ordersContext.Count);
-        }
-
-        [Fact]
-        public void OrderServiceGetAll_GetAllOrders_ReturnsTrue()
-        {
-            var service = new OrderService(OptionsBuilder);
-            var ordersContext = DbContext.Orders.ToList();
-            var orders = service.GetAll();
-
-            Assert.True(orders.Count == ordersContext.Count);
-        }
-
-        [Fact]
-        public void OrderServiceGetSingle_GetSingleOrder_ReturnsTrue()
-        {
-            var service = new OrderService(OptionsBuilder);
-            var orderContext = DbContext.Orders.Where(x => x.Id == 1234).SingleOrDefault();
-            var order = service.GetSingle(1234);
+            var service = new OrderService(mock.Object);
+            var order = service.GetSingle(1238);
 
             Assert.True(
-                order.Id == orderContext.Id
-                && order.DateOfPurchase == orderContext.DateOfPurchase
-                && order.CustomerId == orderContext.CustomerId);
+                order.Id == dto.Id
+                && order.DateOfPurchase == dto.DateOfPurchase
+                && order.CustomerId == dto.CustomerId);
         }
-        #endregion Service
+
+        [Fact]
+        public void OrderService_Update_ReturnsTrue()
+        {
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IOrderRepository>();
+            var order = new Order { Id = 1238, DateOfPurchase = new DateTime(2021, 2, 6), CustomerId = 3 };
+            var dto = new OrderDto { Id = 1238, DateOfPurchase = new DateTime(2021, 2, 6), CustomerId = 3 };
+
+            mock.Setup(x => x.Update(It.IsAny<Order>()))
+                .Callback(() => {
+                    foreach (var a in inMemoryDatabase.Orders)
+                    {
+                        if (a.Id == order.Id)
+                        {
+                            a.DateOfPurchase = order.DateOfPurchase;
+                            break;
+                        }
+                    }
+                });
+
+            var service = new OrderService(mock.Object);
+            service.Update(dto);
+            var afterUpdate = inMemoryDatabase.Orders.Where(x => x.Id == order.Id).FirstOrDefault();
+
+            Assert.True(
+                order.Id == afterUpdate.Id
+                && order.DateOfPurchase == afterUpdate.DateOfPurchase
+                && order.CustomerId == dto.CustomerId);
+        }
+        #endregion
     }
 }

@@ -1,37 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using ZbW.ITB1821H.OrderManager.Model.Context;
+using ZbW.ITB1821H.OrderManager.Model.Entities;
+using ZbW.ITB1821H.OrderManager.Model.Repository.Interfaces;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Repository
 {
-    public class AddressRepository : RepositoryBase<Address>
+    public class AddressRepository : RepositoryBase<Address>, IAddressRepository
     {
-        public AddressRepository(DatabaseContext context) : base(context) { }
+        public AddressRepository() : base() { }
 
-        public new List<Address> GetAll(Func<Address, bool> filter)
+        public new List<Address> GetAll(Expression<Func<Address, bool>> filter)
         {
-            return _context.Set<Address>()
-                .Include(x => x.Customers)
-                .Where(filter)
-                .ToList();
+            using (var context = new DatabaseContext())
+            {
+                return context.Set<Address>()
+                    .Include(x => x.Customers)
+                    .Where(filter)
+                    .ToList();
+            }
         }
 
         public new List<Address> GetAll()
         {
-            return _context.Set<Address>()
+            using (var context = new DatabaseContext())
+            {
+                return context.Set<Address>()
                 .Include(x => x.Customers)
                 .ToList();
+            }
         }
 
         public new Address GetSingle(int pkValue)
         {
-            return _context.Set<Address>()
+            using (var context = new DatabaseContext())
+            {
+                return context.Set<Address>()
                 .Include(x => x.Customers)
                 .FirstOrDefault(x => x.Id == pkValue);
+            }
         }
     }
 }

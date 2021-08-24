@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using ZbW.ITB1821H.OrderManager.Model.Entities;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Context
 {
@@ -13,9 +13,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Context
         public DbSet<Order> Orders { get; set; }
         public DbSet<Position> Positions { get; set; }
 
-        public DatabaseContext() : this(new DbContextOptionsBuilder().UseSqlServer(Properties.Settings.Default.ConnectionString)) { }
-        public DatabaseContext(DbContextOptionsBuilder optionsBuilder) : base(optionsBuilder.Options) { }
-
         public IQueryable<ArticleGroup> GetAllArticleGroups() =>
             ArticleGroups.FromSqlRaw("Exec dbo.GetAllArticleGroups");
 
@@ -24,6 +21,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder.UseSqlServer(Properties.Settings.Default.ConnectionString);
             base.OnConfiguring(optionsBuilder);
         }
 

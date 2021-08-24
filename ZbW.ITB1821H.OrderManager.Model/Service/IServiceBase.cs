@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using ZbW.ITB1821H.OrderManager.Model.Repository;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Service
 {
-  public interface IServiceBase<TEntity>
+  public interface IServiceBase<TEntity, TEntityDto>
   {
-    TEntity GetSingle(int pkValue);
-    void Add(TEntity entity);
-    void Delete(TEntity entity);
-    void Update(TEntity entity);
-    List<TEntity> GetAll(Func<TEntity, bool> filter);
-    List<TEntity> GetAll();
-    long Count(Func<TEntity, bool> filter);
+    TEntityDto GetSingle(int pkValue);
+    void Add(TEntityDto entity);
+    void Delete(TEntityDto entity);
+    void Update(TEntityDto entity);
+    List<TEntityDto> GetAll(Expression<Func<TEntityDto, bool>> filter);
+    List<TEntityDto> GetAll();
+    long Count(Expression<Func<TEntityDto, bool>> filter);
     long Count();
   }
 }

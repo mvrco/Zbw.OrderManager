@@ -1,38 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using ZbW.ITB1821H.OrderManager.Model.Context;
-using ZbW.ITB1821H.OrderManager.Model.Repository;
+﻿using ZbW.ITB1821H.OrderManager.Model.Dto;
+using ZbW.ITB1821H.OrderManager.Model.Entities;
+using ZbW.ITB1821H.OrderManager.Model.Repository.Interfaces;
+using ZbW.ITB1821H.OrderManager.Model.Service.Interfaces;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Service
 {
-    public class ArticleService : ServiceBase<Article>
+    public class ArticleService : ServiceBase<Article, ArticleDto>, IArticleService
     {
-        public ArticleService() : base() { }
-        public ArticleService(DbContextOptionsBuilder optionsBuilder) : base(optionsBuilder) { }
-
-        public new List<Article> GetAll(Func<Article, bool> filter)
-        {
-            using (var context = new DatabaseContext(_contextOptions))
-            {
-                return new ArticleRepository(context).GetAll(filter);
-            }
-        }
-
-        public new List<Article> GetAll()
-        {
-            using (var context = new DatabaseContext(_contextOptions))
-            {
-                return new ArticleRepository(context).GetAll();
-            }
-        }
-
-        public new Article GetSingle(int pkValue)
-        {
-            using (var context = new DatabaseContext(_contextOptions))
-            {
-                return new ArticleRepository(context).GetSingle(pkValue);
-            }
-        }
+        public ArticleService(IArticleRepository repo) : base(repo) { }
     }
 }

@@ -1,40 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using ZbW.ITB1821H.OrderManager.Model.Context;
+using ZbW.ITB1821H.OrderManager.Model.Entities;
+using ZbW.ITB1821H.OrderManager.Model.Repository.Interfaces;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Repository
 {
-    public class OrderRepository : RepositoryBase<Order>
+    public class OrderRepository : RepositoryBase<Order>, IOrderRepository
     {
-        public OrderRepository(DatabaseContext context) : base(context) { }
+        public OrderRepository() : base() { }
 
-        public new List<Order> GetAll(Func<Order, bool> filter)
+        public new List<Order> GetAll(Expression<Func<Order, bool>> filter)
         {
-            return _context.Set<Order>()
+            using (var context = new DatabaseContext())
+            {
+                return context.Set<Order>()
                 .Include(x => x.Customer)
                 .Include(x => x.Positions)
                 .Where(filter)
                 .ToList();
+            }
         }
 
         public new List<Order> GetAll()
         {
-            return _context.Set<Order>()
-                .Include(x => x.Customer)
-                .Include(x => x.Positions)
-                .ToList();
+            using (var context = new DatabaseContext())
+            {
+                return context.Set<Order>()
+                    .Include(x => x.Customer)
+                    .Include(x => x.Positions)
+                    .ToList();
+            }
         }
 
         public new Order GetSingle(int pkValue)
         {
-            return _context.Set<Order>()
+            using (var context = new DatabaseContext())
+            {
+                return context.Set<Order>()
                 .Include(x => x.Customer)
                 .Include(x => x.Positions)
                 .FirstOrDefault(x => x.Id == pkValue);
+            }
         }
     }
 }

@@ -1,173 +1,159 @@
-﻿using System.Linq;
+﻿using Moq;
+using System.Linq;
 using Xunit;
-using ZbW.ITB1821H.OrderManager.Model;
-using ZbW.ITB1821H.OrderManager.Model.Repository;
+using ZbW.ITB1821H.OrderManager.Model.Dto;
+using ZbW.ITB1821H.OrderManager.Model.Entities;
+using ZbW.ITB1821H.OrderManager.Model.Repository.Interfaces;
 using ZbW.ITB1821H.OrderManager.Model.Service;
 
 namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
 {
-    public class ArticleGroupTests : TestingDb
+    public class ArticleGroupTests
     {
-        #region Repository
+        #region ArticleGroup Service/Repository
         [Fact]
-        public void ArticleGroupRepositoryAdd_AddNewArticleGroup_ReturnsTrue()
+        public void ArticleGroupService_Add_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new ArticleGroupRepository(DbContext);
-                var articleGroup = new ArticleGroup { Name = "Food Test", Description = "test all food" };
-                repo.Add(articleGroup);
-                var articleGroupsContext = DbContext.ArticleGroups.ToList();
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IArticleGroupRepository>();
+            var articleGroup = new ArticleGroup { Name = "Fruits", Description = "Worldwide selection of Fruits", ParentGroupId = 10 };
+            var dto = new ArticleGroupDto { Name = "Fruits", Description = "Worldwide selection of Fruits", ParentGroupId = 10 };
 
-                Assert.True(articleGroupsContext.Contains(articleGroup) == true);
-            }
+            mock.Setup(x => x.Add(It.IsAny<ArticleGroup>()))
+                .Callback(() => inMemoryDatabase.ArticleGroups.Add(articleGroup));
+
+            var service = new ArticleGroupService(mock.Object);
+            service.Add(dto);
+
+            Assert.True(inMemoryDatabase.ArticleGroups.Contains(articleGroup));
         }
 
         [Fact]
-        public void ArticleGroupRepositoryCountWithFilter_CountArticleGroups_ReturnsTrue()
+        public void ArticleGroupService_CountWithFilter_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new ArticleGroupRepository(DbContext);
-                var articleGroupsContext = DbContext.ArticleGroups.Where(x => x.ParentGroupId == 10).ToList();
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IArticleGroupRepository>();
 
-                Assert.True(repo.Count(x => x.ParentGroupId == 10) == articleGroupsContext.Count);
-            }
+            mock.Setup(x => x.Count(x => x.ParentGroupId == 10))
+                .Returns(() => inMemoryDatabase.ArticleGroups.Where(x => x.ParentGroupId == 10).Count());
+
+            var service = new ArticleGroupService(mock.Object);
+            var count = service.Count(x => x.ParentGroupId == 10);
+
+            Assert.True(count == 3);
         }
 
         [Fact]
-        public void ArticleGroupRepositoryCount_CountArticleGroups_ReturnsTrue()
+        public void ArticleGroupService_Count_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new ArticleGroupRepository(DbContext);
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IArticleGroupRepository>();
 
-                Assert.True(repo.Count() == DbContext.ArticleGroups.Count());
-            }
+            mock.Setup(x => x.Count())
+                .Returns(() => inMemoryDatabase.ArticleGroups.Count);
+
+            var service = new ArticleGroupService(mock.Object);
+            var count = service.Count();
+
+            Assert.True(count == 4);
         }
 
         [Fact]
-        public void ArticleGroupRepositoryDelete_DeleteArticleGroup_ReturnsTrue()
+        public void ArticleGroupService_Delete_ReturnsFalse()
         {
-            using (DbContext)
-            {
-                var repo = new ArticleGroupRepository(DbContext);
-                var articleGroup = new ArticleGroup { Id = 13 };
-                repo.Delete(articleGroup);
-                var articleGroupsContext = DbContext.ArticleGroups.ToList();
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IArticleGroupRepository>();
+            var articleGroup = new ArticleGroup { Name = "Fruits", Description = "Worldwide selection of Fruits", ParentGroupId = 10 };
+            var dto = new ArticleGroupDto { Name = "Fruits", Description = "Worldwide selection of Fruits", ParentGroupId = 10 };
 
-                Assert.True(!articleGroupsContext.Contains(articleGroup) && articleGroupsContext.Count == 3);
-            }
-        }
+            mock.Setup(x => x.Delete(It.IsAny<ArticleGroup>()))
+                .Callback(() => inMemoryDatabase.ArticleGroups.Remove(articleGroup));
 
-        // Tests failing because of incompatibility between SQL and SQLite, Exec command
-        //[Fact]
-        //public void ArticleGroupRepositoryGetAll_GetAllArticleGroupsWithFilter_ReturnsTrue()
-        //{
-        //    using (DbContext)
-        //    {
-        //        var repo = new ArticleGroupRepository(DbContext);
-        //        var articleGroupsContext = DbContext.ArticleGroups.Where(x => x.ParentGroupId == 10).ToList();
-        //        var articleGroups = repo.GetAll(x => x.ParentGroupId == 10);
+            var service = new ArticleGroupService(mock.Object);
+            service.Delete(dto);
 
-        //        Assert.True(articleGroups.Count == articleGroupsContext.Count);
-        //    }
-        //}
-
-        //[Fact]
-        //public void ArticleGroupRepositoryGetAll_GetAllArticleGroups_ReturnsTrue()
-        //{
-        //    using (DbContext)
-        //    {
-        //        var repo = new ArticleGroupRepository(DbContext);
-        //        var articleGroupsContext = DbContext.ArticleGroups.ToList();
-        //        var articleGroups = repo.GetAll();
-
-        //        Assert.True(articleGroups.Count == articleGroupsContext.Count);
-        //    }
-        //}
-
-        //[Fact]
-        //public void ArticleGroupRepositoryGetSingle_GetSingleArticleGroupObject_ReturnsEqual()
-        //{
-        //    using (DbContext)
-        //    {
-        //        var repo = new ArticleGroupRepository(DbContext);
-        //        var articleGroupContext = DbContext.ArticleGroups.Where(x => x.Id == 10).SingleOrDefault();
-        //        var articleGroup = repo.GetSingle(10);
-
-        //        Assert.Equal(articleGroup, articleGroupContext);
-        //    }
-        //}
-
-        [Fact]
-        public void ArticleGroupRepositoryUpdate_UpdateArticleGroup_ReturnsTrue()
-        {
-            using (DbContext)
-            {
-                var repo = new ArticleGroupRepository(DbContext);
-                var articleGroupContext = DbContext.ArticleGroups.Where(x => x.Id == 11).SingleOrDefault();
-                articleGroupContext.ParentGroupId = 12;
-                repo.Update(articleGroupContext);
-                var articleGroupContextAfterUpdate = DbContext.ArticleGroups.Where(x => x.Id == 11).SingleOrDefault();
-
-                Assert.True(articleGroupContextAfterUpdate.ParentGroupId == 12);
-            }
-        }
-        #endregion Repository
-
-        #region Service
-        [Fact]
-        public void ArticleGroupServiceCount_CountAdressesWithFilter_ReturnsTrue()
-        {
-            var service = new ArticleGroupService(OptionsBuilder);
-            var articleGroupsContext = DbContext.ArticleGroups.Where(x => x.ParentGroupId == 10).ToList();
-
-            Assert.True(service.Count(x => x.ParentGroupId == 10) == articleGroupsContext.Count);
+            Assert.False(inMemoryDatabase.ArticleGroups.Contains(articleGroup));
         }
 
         [Fact]
-        public void ArticleGroupServiceCount_CountCustomers_ReturnsTrue()
+        public void ArticleGroupService_GetAllWithFilter_ReturnsTrue()
         {
-            var service = new ArticleGroupService(OptionsBuilder);
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IArticleGroupRepository>();
 
-            Assert.True(service.Count() == DbContext.ArticleGroups.Count());
+            mock.Setup(x => x.GetAll(x => x.ParentGroupId == 10))
+                .Returns(() => inMemoryDatabase.ArticleGroups.Where(x => x.ParentGroupId == 10).ToList());
+
+            var service = new ArticleGroupService(mock.Object);
+            var list = service.GetAll(x => x.ParentGroupId == 10);
+
+            Assert.True(list.Count == 3);
         }
 
-        // Tests failing because of incompatibility between SQL and SQLite, Exec command
-        //[Fact]
-        //public void ArticleGroupServiceGetAll_GetAllArticleGroupsWithFilter_ReturnsTrue()
-        //{
-        //    var service = new ArticleGroupService(OptionsBuilder);
-        //    var articleGroupsContext = DbContext.ArticleGroups.Where(x => x.ParentGroupId == 10).ToList();
-        //    var articleGroups = service.GetAll(x => x.ParentGroupId == 10);
+        [Fact]
+        public void ArticleGroupService_GetAll_ReturnsTrue()
+        {
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IArticleGroupRepository>();
 
-        //    Assert.True(articleGroups.Count == articleGroupsContext.Count);
-        //}
+            mock.Setup(x => x.GetAll())
+                .Returns(() => inMemoryDatabase.ArticleGroups.ToList());
 
-        //[Fact]
-        //public void ArticleGroupServiceGetAll_GetAllArticleGroups_ReturnsTrue()
-        //{
-        //    var service = new ArticleGroupService(OptionsBuilder);
-        //    var articleGroupsContext = DbContext.ArticleGroups.ToList();
-        //    var articleGroups = service.GetAll();
+            var service = new ArticleGroupService(mock.Object);
+            var list = service.GetAll();
 
-        //    Assert.True(articleGroups.Count == articleGroupsContext.Count);
-        //}
+            Assert.True(list.Count == 4);
+        }
 
-        //[Fact]
-        //public void ArticleGroupServiceGetSingle_GetSingleArticleGroup_ReturnsTrue()
-        //{
-        //    var service = new ArticleGroupService(OptionsBuilder);
-        //    var articleGroupContext = DbContext.ArticleGroups.Where(x => x.Id == 1000).SingleOrDefault();
-        //    var articleGroup = service.GetSingle(1000);
+        [Fact]
+        public void ArticleGroupService_GetSingle_ReturnsTrue()
+        {
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IArticleGroupRepository>();
+            var dto = new ArticleGroupDto { Id = 11, Name = "Fruits", Description = "Worldwide selection of Fruits", ParentGroupId = 10 };
 
-        //    Assert.True(
-        //        articleGroup.Id == articleGroupContext.Id
-        //        && articleGroup.Name == articleGroupContext.Name
-        //        && articleGroup.ParentGroup == articleGroupContext.ParentGroup
-        //        && articleGroup.Description == articleGroupContext.Description);
-        //}
-        #endregion Service
+            mock.Setup(x => x.GetSingle(It.IsAny<int>()))
+                .Returns(() => inMemoryDatabase.ArticleGroups.Where(a => a.Id == 11).FirstOrDefault());
+
+            var service = new ArticleGroupService(mock.Object);
+            var articleGroup = service.GetSingle(11);
+
+            Assert.True(
+                articleGroup.Id == dto.Id
+                && articleGroup.Name == dto.Name
+                && articleGroup.Description == dto.Description
+                && articleGroup.ParentGroupId == dto.ParentGroupId);
+        }
+
+        [Fact]
+        public void ArticleGroupService_Update_ReturnsTrue()
+        {
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IArticleGroupRepository>();
+            var articleGroup = new ArticleGroup { Id = 11, Name = "Bread", Description = "Worldwide selection of Fruits", ParentGroupId = 10 };
+            var dto = new ArticleGroupDto { Id = 11, Name = "Bread", Description = "Worldwide selection of Fruits", ParentGroupId = 10 };
+
+            mock.Setup(x => x.Update(It.IsAny<ArticleGroup>()))
+                .Callback(() => {
+                    foreach (var a in inMemoryDatabase.ArticleGroups)
+                    {
+                        if (a.Id == articleGroup.Id)
+                        {
+                            a.Name = articleGroup.Name;
+                            break;
+                        }
+                    }
+                });
+
+            var service = new ArticleGroupService(mock.Object);
+            service.Update(dto);
+            var afterUpdate = inMemoryDatabase.ArticleGroups.Where(x => x.Id == articleGroup.Id).FirstOrDefault();
+
+            Assert.True(
+                articleGroup.Id == afterUpdate.Id
+                && articleGroup.Name == afterUpdate.Name
+                && articleGroup.Description == afterUpdate.Description);
+        }
+        #endregion
     }
 }

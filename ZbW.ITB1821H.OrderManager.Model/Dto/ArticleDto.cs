@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ZbW.ITB1821H.OrderManager.Model
+namespace ZbW.ITB1821H.OrderManager.Model.Dto
 {
-    public class Article
+    public class ArticleDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -13,8 +13,8 @@ namespace ZbW.ITB1821H.OrderManager.Model
         public bool IsActive { get; set; }
         public DateTime CreateDate { get; set; }
 
-        public virtual ArticleGroup ArticleGroup { get; set; }
-        public virtual ICollection<Position> Positions { get; set; }
+        public virtual ArticleGroupDto ArticleGroup { get; set; }
+        public virtual ICollection<PositionDto> Positions { get; set; }
 
         // TODO tostring
     }

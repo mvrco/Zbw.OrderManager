@@ -1,172 +1,162 @@
-﻿using System.Linq;
+﻿using Moq;
+using System.Linq;
 using Xunit;
-using ZbW.ITB1821H.OrderManager.Model;
-using ZbW.ITB1821H.OrderManager.Model.Repository;
+using ZbW.ITB1821H.OrderManager.Model.Dto;
+using ZbW.ITB1821H.OrderManager.Model.Entities;
+using ZbW.ITB1821H.OrderManager.Model.Repository.Interfaces;
 using ZbW.ITB1821H.OrderManager.Model.Service;
 
 namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
 {
-    public class ArticleTests : TestingDb
+    public class ArticleTests
     {
-        #region Repository
+        #region Article Service/Repository
         [Fact]
-        public void ArticleRepositoryAdd_AddNewArticle_ReturnsTrue()
+        public void ArticleService_Add_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new ArticleRepository(DbContext);
-                var article = new Article { Id = 150, Name = "Apple", Description = "Fresh from Switzerland", Price = 0.95, ArticleGroupId = 11 };
-                repo.Add(article);
-                var articlesContext = DbContext.Articles.ToList();
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IArticleRepository>();
+            var article = new Article { Name = "Banana", Description = "Fresh from Columbia", Price = 1.12, ArticleGroupId = 11 };
+            var dto = new ArticleDto { Name = "Banana", Description = "Fresh from Columbia", Price = 1.12, ArticleGroupId = 11 };
 
-                Assert.True(articlesContext.Contains(article) == true);
-            }
+            mock.Setup(x => x.Add(It.IsAny<Article>()))
+                .Callback(() => inMemoryDatabase.Articles.Add(article));
+
+            var service = new ArticleService(mock.Object);
+            service.Add(dto);
+
+            Assert.True(inMemoryDatabase.Articles.Contains(article));
         }
 
         [Fact]
-        public void ArticleRepositoryCountWithFilter_CountArticles_ReturnsTrue()
+        public void ArticleService_CountWithFilter_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new ArticleRepository(DbContext);
-                var articlesContext = DbContext.Articles.Where(x => x.ArticleGroupId == 11).ToList();
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IArticleRepository>();
 
-                Assert.True(repo.Count(x => x.ArticleGroupId == 11) == articlesContext.Count);
-            }
+            mock.Setup(x => x.Count(x => x.ArticleGroupId == 11))
+                .Returns(() => inMemoryDatabase.Articles.Where(x => x.ArticleGroupId == 11).Count());
+
+            var service = new ArticleService(mock.Object);
+            var count = service.Count(x => x.ArticleGroupId == 11);
+
+            Assert.True(count == 2);
         }
 
         [Fact]
-        public void ArticleRepositoryCount_CountArticles_ReturnsTrue()
+        public void ArticleService_Count_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new ArticleRepository(DbContext);
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IArticleRepository>();
 
-                Assert.True(repo.Count() == DbContext.Articles.Count());
-            }
+            mock.Setup(x => x.Count())
+                .Returns(() => inMemoryDatabase.Articles.Count);
+
+            var service = new ArticleService(mock.Object);
+            var count = service.Count();
+
+            Assert.True(count == 6);
         }
 
         [Fact]
-        public void ArticleRepositoryDelete_DeleteArticle_ReturnsTrue()
+        public void ArticleService_Delete_ReturnsFalse()
         {
-            using (DbContext)
-            {
-                var repo = new ArticleRepository(DbContext);
-                var article = new Article { Id = 100 };
-                repo.Delete(article);
-                var articlesContext = DbContext.Articles.ToList();
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IArticleRepository>();
+            var article = new Article { Id = 101, Name = "Banana", Description = "Fresh from Columbia", Price = 1.12, ArticleGroupId = 11 };
+            var dto = new ArticleDto { Id = 101, Name = "Banana", Description = "Fresh from Columbia", Price = 1.12, ArticleGroupId = 11 };
 
-                Assert.True(!articlesContext.Contains(article) && articlesContext.Count == 5);
-            }
+            mock.Setup(x => x.Delete(It.IsAny<Article>()))
+                .Callback(() => inMemoryDatabase.Articles.Remove(article));
+
+            var service = new ArticleService(mock.Object);
+            service.Delete(dto);
+
+            Assert.False(inMemoryDatabase.Articles.Contains(article));
         }
 
         [Fact]
-        public void ArticleRepositoryGetAll_GetAllArticlesWithFilter_ReturnsTrue()
+        public void ArticleService_GetAllWithFilter_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new ArticleRepository(DbContext);
-                var articlesContext = DbContext.Articles.Where(x => x.ArticleGroupId == 11).ToList();
-                var articles = repo.GetAll(x => x.ArticleGroupId == 11);
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IArticleRepository>();
 
-                Assert.True(articles.Count == articlesContext.Count);
-            }
+            mock.Setup(x => x.GetAll(x => x.ArticleGroupId == 11))
+                .Returns(() => inMemoryDatabase.Articles.Where(x => x.ArticleGroupId == 11).ToList());
+
+            var service = new ArticleService(mock.Object);
+            var list = service.GetAll(x => x.ArticleGroupId == 11);
+
+            Assert.True(list.Count == 2);
         }
 
         [Fact]
-        public void ArticleRepositoryGetAll_GetAllArticles_ReturnsTrue()
+        public void ArticleService_GetAll_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new ArticleRepository(DbContext);
-                var articlesContext = DbContext.Articles.ToList();
-                var articles = repo.GetAll();
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IArticleRepository>();
 
-                Assert.True(articles.Count == articlesContext.Count);
-            }
+            mock.Setup(x => x.GetAll())
+                .Returns(() => inMemoryDatabase.Articles.ToList());
+
+            var service = new ArticleService(mock.Object);
+            var list = service.GetAll();
+
+            Assert.True(list.Count == 6);
         }
 
         [Fact]
-        public void ArticleRepositoryGetSingle_GetSingleArticleObject_ReturnsEqual()
+        public void ArticleService_GetSingle_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new ArticleRepository(DbContext);
-                var articleContext = DbContext.Articles.Where(x => x.Id == 100).SingleOrDefault();
-                var article = repo.GetSingle(100);
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IArticleRepository>();
+            var dto = new ArticleDto { Id = 101, Name = "Banana", Description = "Fresh from Columbia", Price = 1.12, ArticleGroupId = 11 };
 
-                Assert.Equal(article, articleContext);
-            }
-        }
 
-        [Fact]
-        public void ArticleRepositoryUpdate_UpdateArticle_ReturnsTrue()
-        {
-            using (DbContext)
-            {
-                var repo = new ArticleRepository(DbContext);
-                var articleContext = DbContext.Articles.Where(x => x.Id == 100).SingleOrDefault();
-                articleContext.ArticleGroupId = 12;
-                repo.Update(articleContext);
-                var articleContextAfterUpdate = DbContext.Articles.Where(x => x.Id == 100).SingleOrDefault();
+            mock.Setup(x => x.GetSingle(It.IsAny<int>()))
+                .Returns(() => inMemoryDatabase.Articles.Where(a => a.Id == 101).FirstOrDefault());
 
-                Assert.True(articleContextAfterUpdate.ArticleGroupId == 12);
-            }
-        }
-        #endregion Repository
-
-        #region Service
-        [Fact]
-        public void ArticleServiceCount_CountAdressesWithFilter_ReturnsTrue()
-        {
-            var service = new ArticleService(OptionsBuilder);
-            var articlesContext = DbContext.Articles.Where(x => x.ArticleGroupId == 11).ToList();
-
-            Assert.True(service.Count(x => x.ArticleGroupId == 11) == articlesContext.Count);
-        }
-
-        [Fact]
-        public void ArticleServiceCount_CountCustomers_ReturnsTrue()
-        {
-            var service = new ArticleService(OptionsBuilder);
-
-            Assert.True(service.Count() == DbContext.Articles.Count());
-        }
-
-        [Fact]
-        public void ArticleServiceGetAll_GetAllArticlesWithFilter_ReturnsTrue()
-        {
-            var service = new ArticleService(OptionsBuilder);
-            var articlesContext = DbContext.Articles.Where(x => x.ArticleGroupId == 11).ToList();
-            var articles = service.GetAll(x => x.ArticleGroupId == 11);
-
-            Assert.True(articles.Count == articlesContext.Count);
-        }
-
-        [Fact]
-        public void ArticleServiceGetAll_GetAllArticles_ReturnsTrue()
-        {
-            var service = new ArticleService(OptionsBuilder);
-            var articlesContext = DbContext.Articles.ToList();
-            var articles = service.GetAll();
-
-            Assert.True(articles.Count == articlesContext.Count);
-        }
-
-        [Fact]
-        public void ArticleServiceGetSingle_GetSingleArticle_ReturnsTrue()
-        {
-            var service = new ArticleService(OptionsBuilder);
-            var articleContext = DbContext.Articles.Where(x => x.Id == 100).SingleOrDefault();
-            var article = service.GetSingle(100);
+            var service = new ArticleService(mock.Object);
+            var article = service.GetSingle(101);
 
             Assert.True(
-                article.Id == articleContext.Id
-                && article.Name == articleContext.Name
-                && article.ArticleGroupId == articleContext.ArticleGroupId
-                && article.Price == articleContext.Price
-                && article.Description == articleContext.Description);
+                article.Id == dto.Id
+                && article.Name == dto.Name
+                && article.Description == dto.Description
+                && article.Price == dto.Price);
         }
-        #endregion Service
+
+        [Fact]
+        public void ArticleService_Update_ReturnsTrue()
+        {
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IArticleRepository>();
+            var article = new Article { Id = 101, Name = "Pineapple", Description = "Fresh", Price = 1.12, ArticleGroupId = 11 };
+            var dto = new ArticleDto { Id = 101, Name = "Pineapple", Description = "Fresh", Price = 1.12, ArticleGroupId = 11 };
+
+            mock.Setup(x => x.Update(It.IsAny<Article>()))
+                .Callback(() => {
+                    foreach (var a in inMemoryDatabase.Articles)
+                    {
+                        if (a.Id == article.Id)
+                        {
+                            a.Name = article.Name;
+                            a.Description = article.Description;
+                            break;
+                        }
+                    }
+                });
+
+            var service = new ArticleService(mock.Object);
+            service.Update(dto);
+            var afterUpdate = inMemoryDatabase.Articles.Where(x => x.Id == article.Id).FirstOrDefault();
+
+            Assert.True(
+                article.Id == dto.Id
+                && article.Name == dto.Name
+                && article.Description == dto.Description
+                && article.Price == dto.Price);
+        }
+        #endregion
     }
 }

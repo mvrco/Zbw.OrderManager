@@ -4,23 +4,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Data;
 using ZbW.ITB1821H.OrderManager.Controls;
-using ZbW.ITB1821H.OrderManager.Model;
+using ZbW.ITB1821H.OrderManager.Model.Dto;
+using ZbW.ITB1821H.OrderManager.Model.Service.Interfaces;
 using ZbW.ITB1821H.OrderManager.UserInterface.Util;
 
 namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
 {
     public class ArticlesGroupsPageViewModel : BaseViewModel
     {
-        private ArticleGroup selectedArticleGroup;
+        private ArticleGroupDto selectedArticleGroup;
+        private IArticleGroupService _articleGroupService;
 
         public ArticlesGroupsPageViewModel() : base(LogManager.GetLogger(nameof(ArticlesGroupsPageViewModel)))
         {
-            ArticleGroups = App.DbContext.ArticleGroups.ToList();
+            ArticleGroups = _articleGroupService.GetAll(); //App.DbContext.ArticleGroups.ToList();
         }
 
-        public IList<ArticleGroup> ArticleGroups { get; private set; }
+        public IList<ArticleGroupDto> ArticleGroups { get; private set; }
 
-        public ArticleGroup SelectedArticleGroup
+        public ArticleGroupDto SelectedArticleGroup
         {
             get
             {
@@ -30,11 +32,12 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
             {
                 selectedArticleGroup = value;
                 if (value != null)
-                    selectedArticleGroup.Articles = App.DbContext.Articles.Where(x => x.ArticleGroupId == selectedArticleGroup.Id).ToList();
+                    // same as customer
+                    // selectedArticleGroup.Articles = App.DbContext.Articles.Where(x => x.ArticleGroupId == selectedArticleGroup.Id).ToList();
                 OnPropertyChanged();
             }
         }
 
-        public Article SelectedArticle { get; set; }
+        public ArticleDto SelectedArticle { get; set; }
     }
 }

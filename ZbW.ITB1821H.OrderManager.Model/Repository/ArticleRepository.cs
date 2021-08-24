@@ -1,38 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using ZbW.ITB1821H.OrderManager.Model.Context;
+using ZbW.ITB1821H.OrderManager.Model.Entities;
+using ZbW.ITB1821H.OrderManager.Model.Repository.Interfaces;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Repository
 {
-    public class ArticleRepository : RepositoryBase<Article>
+    public class ArticleRepository : RepositoryBase<Article>, IArticleRepository
     {
-        public ArticleRepository(DatabaseContext context) : base(context) { }
+        public ArticleRepository() : base() { }
 
-        public new List<Article> GetAll(Func<Article, bool> filter)
+        public new List<Article> GetAll(Expression<Func<Article, bool>> filter)
         {
-            return _context.Set<Article>()
+            using (var context = new DatabaseContext())
+            {
+                return context.Set<Article>()
                 .Include(x => x.ArticleGroup)
                 .Include(x => x.Positions)
                 .Where(filter)
                 .ToList();
+            }
         }
 
         public new List<Article> GetAll()
         {
-            return _context.Set<Article>()
+            using (var context = new DatabaseContext())
+            {
+                return context.Set<Article>()
                 .Include(x => x.ArticleGroup)
                 .Include(x => x.Positions)
                 .ToList();
+            }
         }
 
         public new Article GetSingle(int pkValue)
         {
-            return _context.Set<Article>()
+            using (var context = new DatabaseContext())
+            {
+                return context.Set<Article>()
                 .Include(x => x.ArticleGroup)
                 .Include(x => x.Positions)
                 .FirstOrDefault(x => x.Id == pkValue);
+            }
         }
     }
 }

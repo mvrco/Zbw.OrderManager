@@ -1,174 +1,162 @@
-﻿using System.Linq;
+﻿using Moq;
+using System.Linq;
 using Xunit;
-using ZbW.ITB1821H.OrderManager.Model;
-using ZbW.ITB1821H.OrderManager.Model.Repository;
+using ZbW.ITB1821H.OrderManager.Model.Dto;
+using ZbW.ITB1821H.OrderManager.Model.Entities;
+using ZbW.ITB1821H.OrderManager.Model.Repository.Interfaces;
 using ZbW.ITB1821H.OrderManager.Model.Service;
 
 namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
 {
-    public class CustomerTests : TestingDb
+    public class CustomerTests
     {
-        #region Repository
+        #region Customer Service/Repository
         [Fact]
-        public void CustomerRepositoryAdd_AddNewCustomer_ReturnsTrue()
+        public void CustomerService_Add_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new CustomerRepository(DbContext);
-                var customer = new Customer { Name = "Monica", LastName = "Watson", Email = "watson@outlook.com", Website = "www.monica.com", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 };
-                repo.Add(customer);
-                var customersContext = DbContext.Customers.ToList();
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<ICustomerRepository>();
+            var customer = new Customer { Name = "Monica", LastName = "Watson", Email = "watson@outlook.com", Website = "www.monica.com", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 };
+            var dto = new CustomerDto { Name = "Monica", LastName = "Watson", Email = "watson@outlook.com", Website = "www.monica.com", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 };
+            
+            mock.Setup(x => x.Add(It.IsAny<Customer>()))
+                .Callback(() => inMemoryDatabase.Customers.Add(customer));
 
-                Assert.True(customersContext.Contains(customer) == true);
-            }
+            var service = new CustomerService(mock.Object);
+            service.Add(dto);
+            
+            Assert.True(inMemoryDatabase.Customers.Contains(customer));
         }
 
         [Fact]
-        public void CustomerRepositoryCountWithFilter_CountCustomers_ReturnsTrue()
+        public void CustomerService_CountWithFilter_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new CustomerRepository(DbContext);
-                var customersContext = DbContext.Customers.Where(x => x.LastName.Contains("a")).ToList();
-                
-                Assert.True(repo.Count(x => x.LastName.Contains("a")) == customersContext.Count);
-            }
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<ICustomerRepository>();
+
+            mock.Setup(x => x.Count(c => c.LastName.Contains("a")))
+                .Returns(() => inMemoryDatabase.Customers.Where(c => c.LastName.Contains("a")).Count());
+
+            var service = new CustomerService(mock.Object);
+            var count = service.Count(c => c.LastName.Contains("a"));
+
+            Assert.True(count == 6);
         }
 
         [Fact]
-        public void CustomerRepositoryCount_CountCustomers_ReturnsTrue()
+        public void CustomerService_Count_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new CustomerRepository(DbContext);
-                
-                Assert.True(repo.Count() == DbContext.Customers.Count());
-            }
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<ICustomerRepository>();
+
+            mock.Setup(x => x.Count())
+                .Returns(() => inMemoryDatabase.Customers.Count);
+
+            var service = new CustomerService(mock.Object);
+            var count = service.Count();
+            
+            Assert.True(count == 15);
         }
 
         [Fact]
-        public void CustomerRepositoryDelete_DeleteCustomer_ReturnsTrue()
+        public void CustomerService_Delete_ReturnsFalse()
         {
-            using (DbContext)
-            {
-                var repo = new CustomerRepository(DbContext);
-                var customer = new Customer { Id = 14 };
-                repo.Delete(customer);
-                var customersContext = DbContext.Customers.ToList();
-                
-                Assert.True(customersContext.Contains(customer) == false && customersContext.Count == 14);
-            }
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<ICustomerRepository>();
+            var customer = new Customer { Id = 2, Name = "Iris", LastName = "Watson", Email = "iris-watson@gmail.com", Website = "www.facebook.com/asdf", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 };
+            var dto = new CustomerDto { Id = 2, Name = "Iris", LastName = "Watson", Email = "iris-watson@gmail.com", Website = "www.facebook.com/asdf", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 };
+                            
+            mock.Setup(x => x.Delete(It.IsAny<Customer>()))
+                .Callback(() => inMemoryDatabase.Customers.Remove(customer));
+
+            var service = new CustomerService(mock.Object);
+            service.Delete(dto);
+
+            Assert.False(inMemoryDatabase.Customers.Contains(customer));
         }
 
         [Fact]
-        public void CustomerRepositoryGetAll_GetAllCustomersWithFilter_ReturnsTrue()
+        public void CustomerService_GetAllWithFilter_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new CustomerRepository(DbContext);
-                var customersContext = DbContext.Customers.Where(x => x.Name.StartsWith("C")).ToList();
-                var customers = repo.GetAll(x => x.Name.StartsWith("C"));
-                
-                Assert.True(customers.Count == customersContext.Count);
-            }
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<ICustomerRepository>();
+
+            mock.Setup(x => x.GetAll(c => c.LastName.Contains("a")))
+                .Returns(() => inMemoryDatabase.Customers.Where(c => c.LastName.Contains("a")).ToList());
+
+            var service = new CustomerService(mock.Object);
+            var list = service.GetAll(c => c.LastName.Contains("a"));
+
+            Assert.True(list.Count == 6);
         }
 
         [Fact]
-        public void CustomerRepositoryGetAll_GetAllCustomers_ReturnsTrue()
+        public void CustomerService_GetAll_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new CustomerRepository(DbContext);
-                var customersContext = DbContext.Customers.ToList();
-                var customers = repo.GetAll();
-                
-                Assert.True(customers.Count == customersContext.Count);
-            }
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<ICustomerRepository>();
+
+            mock.Setup(x => x.GetAll())
+                .Returns(() => inMemoryDatabase.Customers.ToList());
+
+            var service = new CustomerService(mock.Object);
+            var list = service.GetAll();
+
+            Assert.True(list.Count == 15);
         }
 
         [Fact]
-        public void CustomerRepositoryGetSingle_GetSingleCustomerObject_ReturnsEqual()
+        public void CustomerService_GetSingle_ReturnsTrue()
         {
-            using (DbContext)
-            {
-                var repo = new CustomerRepository(DbContext);
-                var customerContext = DbContext.Customers.Where(x => x.Id == 12).SingleOrDefault();
-                var customer = repo.GetSingle(12);
-                
-                Assert.Equal(customer, customerContext);
-            }
-        }
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<ICustomerRepository>();
+            var dto = new CustomerDto { Id = 4, Name = "Theodore", LastName = "Lowe", Email = "theo.Lowe@bdd_dd.com", Website = "http://lowe.net", PasswordSalt = "09820278", PasswordHash = "236ED504E07B07B0A5A258267A076280", AddressId = 1003 };
 
-        [Fact]
-        public void CustomerRepositoryUpdate_UpdateCustomer_ReturnsTrue()
-        {
-            using (DbContext)
-            {
-                var repo = new CustomerRepository(DbContext);
-                var customerContext = DbContext.Customers.Where(x => x.Id == 7).SingleOrDefault();
-                customerContext.Name = "John";
-                repo.Update(customerContext);
-                var customerContextAfterUpdate = DbContext.Customers.Where(x => x.Id == 7).SingleOrDefault();
-                
-                Assert.True(customerContextAfterUpdate.Name == "John");
-            }
-        }
-        #endregion Repository
 
-        #region Service
-        // Setter Tests in service do not work, because of the Sqlitedb (Dispose after connection closed)
+            mock.Setup(x => x.GetSingle(It.IsAny<int>()))
+                .Returns(() => inMemoryDatabase.Customers.Where(c => c.Id == 4).FirstOrDefault());
 
-        [Fact]
-        public void CustomerServiceCount_CountCustomersWithFilter_ReturnsTrue()
-        {
-            var service = new CustomerService(OptionsBuilder);
-            var customersContext = DbContext.Customers.Where(x => x.LastName.Contains("a")).ToList();
-
-            Assert.True(service.Count(x => x.LastName.Contains("a")) == customersContext.Count);
-        }
-
-        [Fact]
-        public void CustomerServiceCount_CountCustomers_ReturnsTrue()
-        {
-            var service = new CustomerService(OptionsBuilder);
-            var customersContext = DbContext.Customers.ToList();
-
-            Assert.True(service.Count() == customersContext.Count);
-        }
-
-        [Fact]
-        public void CustomerServiceGetAll_GetAllCustomersWithFilter_ReturnsTrue()
-        {
-            var service = new CustomerService(OptionsBuilder);
-            var customersContext = DbContext.Customers.Where(x => x.Name.StartsWith("C")).ToList();
-            var customers = service.GetAll(x => x.Name.StartsWith("C"));
-
-            Assert.Equal(customers.Count(), customersContext.Count());
-        }
-
-        [Fact]
-        public void CustomerServiceGetAll_GetAllCustomers_ReturnsTrue()
-        {
-            var service = new CustomerService(OptionsBuilder);
-            var customersContext = DbContext.Customers.ToList();
-            var customers = service.GetAll();
-
-            Assert.True(customers.Count() == customersContext.Count());
-        }
-
-        [Fact]
-        public void CustomerServiceGetSingle_GetSingleCustomer_ReturnsTrue()
-        {
-            var service = new CustomerService(OptionsBuilder);
-            var customerContext = DbContext.Customers.Where(x => x.Id == 12).SingleOrDefault();
-            var customer = service.GetSingle(12);
+            var service = new CustomerService(mock.Object);
+            var customer = service.GetSingle(4);
 
             Assert.True(
-                customer.Id == customerContext.Id
-                && customer.Name == customerContext.Name
-                && customer.LastName == customerContext.LastName
-                && customer.Website == customerContext.Website);
+                customer.Id == dto.Id
+                && customer.Name == dto.Name
+                && customer.LastName == dto.LastName
+                && customer.Website == dto.Website);
         }
-        #endregion Service
+
+        [Fact]
+        public void CustomerService_Update_ReturnsTrue()
+        {
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<ICustomerRepository>();
+            var customer = new Customer { Id = 2, Name = "Max", LastName = "Waton", Email = "iris-watson@gmail.com", Website = "www.facebook.com/asdf", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 };
+            var dto = new CustomerDto { Id = 2, Name = "Max", LastName = "Waton", Email = "iris-watson@gmail.com", Website = "www.facebook.com/asdf", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 };
+
+            mock.Setup(x => x.Update(It.IsAny<Customer>()))
+                .Callback(() => {
+                    foreach (var c in inMemoryDatabase.Customers)
+                    {
+                        if (c.Id == customer.Id)
+                        {
+                            c.Name = customer.Name;
+                            c.LastName = customer.LastName;
+                            break;
+                        }
+                    }
+                });
+
+            var service = new CustomerService(mock.Object);
+            service.Update(dto);
+            var afterUpdate = inMemoryDatabase.Customers.Where(x => x.Id == customer.Id).FirstOrDefault();
+           
+            Assert.True(
+                customer.Id == afterUpdate.Id
+                && customer.Name == afterUpdate.Name
+                && customer.LastName == afterUpdate.LastName
+                && customer.Website == afterUpdate.Website);
+        }
+        #endregion
     }
 }

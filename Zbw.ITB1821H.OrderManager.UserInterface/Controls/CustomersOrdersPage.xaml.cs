@@ -3,7 +3,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using ZbW.ITB1821H.OrderManager.Model;
+using ZbW.ITB1821H.OrderManager.Model.Dto;
 using ZbW.ITB1821H.OrderManager.UserInterface.Util;
 using ZbW.ITB1821H.OrderManager.UserInterface.Windows;
 
@@ -43,7 +43,7 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
         private void CustomersDataGrid_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             SingleObjectWindow window = new();
-            SingleObjectWindowViewModel<Customer> viewModel = new(customersDatagrid.SelectedItem as Customer);
+            SingleObjectWindowViewModel<CustomerDto> viewModel = new(customersDatagrid.SelectedItem as CustomerDto);
             window.DataContext = viewModel;
             window.Owner = Application.Current.MainWindow;
             // property grid is not theme aware, dark skin messes it up
@@ -54,7 +54,7 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
         private void OrdersDataGrid_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             SingleObjectWindow window = new();
-            SingleObjectWindowViewModel<Order> viewModel = new(ordersDatagrid.SelectedItem as Order);
+            SingleObjectWindowViewModel<OrderDto> viewModel = new(ordersDatagrid.SelectedItem as OrderDto);
             window.DataContext = viewModel;
             window.Owner = Application.Current.MainWindow;
             // property grid is not theme aware, dark skin messes it up

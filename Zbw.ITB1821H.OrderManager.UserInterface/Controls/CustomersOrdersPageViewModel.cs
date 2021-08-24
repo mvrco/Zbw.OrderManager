@@ -2,22 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using ZbW.ITB1821H.OrderManager.Controls;
-using ZbW.ITB1821H.OrderManager.Model;
+using ZbW.ITB1821H.OrderManager.Model.Dto;
+using ZbW.ITB1821H.OrderManager.Model.Repository;
+using ZbW.ITB1821H.OrderManager.Model.Service;
+using ZbW.ITB1821H.OrderManager.Model.Service.Interfaces;
 
 namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
 {
     public class CustomersOrdersPageViewModel : BaseViewModel
     {
-        private Customer selectedCustomer;
+        private CustomerDto selectedCustomer;
+        private ICustomerService _customerService;
 
         public CustomersOrdersPageViewModel() : base(LogManager.GetLogger(nameof(CustomersOrdersPageViewModel)))
         {
-            Customers = App.DbContext.Customers.ToList();
+            _customerService = new CustomerService(new CustomerRepository());
+            Customers = _customerService.GetAll();//App.DbContext.Customers.ToList();
         }
 
-        public IList<Customer> Customers { get; set; }
+        public IList<CustomerDto> Customers { get; set; }
 
-        public Customer SelectedCustomer
+        public CustomerDto SelectedCustomer
         {
             get
             {
@@ -27,11 +32,12 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
             {
                 selectedCustomer = value;
                 if (value != null)
-                    selectedCustomer.Orders = App.DbContext.Orders.Where(x => x.CustomerId == selectedCustomer.Id).ToList();
+                    // Abfrage sollte nocht benötigt werden, da Orders mit CustomerDto geladen werden
+                    //selectedCustomer.Orders = App.DbContext.Orders.Where(x => x.CustomerId == selectedCustomer.Id).ToList();
                 OnPropertyChanged();
             }
         }
 
-        public Order SelectedOrder { get; set; }
+        public OrderDto SelectedOrder { get; set; }
     }
 }

@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ZbW.ITB1821H.OrderManager.Model
+namespace ZbW.ITB1821H.OrderManager.Model.Dto
 {
-    public class Order
+    public class OrderDto
     {
-        public Order()
+        public OrderDto()
         {
             //Id = 0;
             //DateOfPurchase = DateTime.Now;
         }
 
-        public Order(DateTime dateOfPurchase)
+        public OrderDto(DateTime dateOfPurchase)
         {
             //Id = 0;
             DateOfPurchase = dateOfPurchase;
@@ -20,8 +20,8 @@ namespace ZbW.ITB1821H.OrderManager.Model
         public int Id { get; set; }
         public DateTime DateOfPurchase { get; set; }
         public int CustomerId { get; set; }
-        public virtual Customer Customer { get; set; }
-        public virtual ICollection<Position> Positions { get; set; }
+        public virtual CustomerDto Customer { get; set; }
+        public virtual ICollection<PositionDto> Positions { get; set; }
 
         // TODO tostring
         public override string ToString()
