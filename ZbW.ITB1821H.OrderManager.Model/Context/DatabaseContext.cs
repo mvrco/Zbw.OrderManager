@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using ZbW.ITB1821H.OrderManager.Model.Entities;
 
@@ -12,6 +13,13 @@ namespace ZbW.ITB1821H.OrderManager.Model.Context
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Position> Positions { get; set; }
+
+        public virtual DbSet<QuartalsReporting> QuartalsReportings { get; set; }
+
+        public IQueryable<QuartalsReporting> GetQuartalsReportings()
+        {
+            return QuartalsReportings.FromSqlRaw("Exec dbo.GetQuartalsReports");
+        }
 
         public IQueryable<ArticleGroup> GetAllArticleGroups() =>
             ArticleGroups.FromSqlRaw("Exec dbo.GetAllArticleGroups");
@@ -27,6 +35,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Ignore<QuartalsReporting>();
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(DatabaseContext).Assembly);
             base.OnModelCreating(modelBuilder);
         }
