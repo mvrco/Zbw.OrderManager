@@ -16,9 +16,16 @@ namespace ZbW.ITB1821H.OrderManager.Model.Context
 
         public virtual DbSet<QuartalsReporting> QuartalsReportings { get; set; }
 
+        public virtual DbSet<Invoice> Invoices { get; set; }
+
         public IQueryable<QuartalsReporting> GetQuartalsReportings()
         {
             return QuartalsReportings.FromSqlRaw("Exec dbo.GetQuartalsReports");
+        }
+
+        public IQueryable<Invoice> GetInvoices()
+        {
+            return Invoices.FromSqlRaw("Exec dbo.GetInvoices");
         }
 
         public IQueryable<ArticleGroup> GetAllArticleGroups() =>
@@ -36,6 +43,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Ignore<QuartalsReporting>();
+            modelBuilder.Ignore<Invoice>();
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(DatabaseContext).Assembly);
             base.OnModelCreating(modelBuilder);
         }
