@@ -3,5 +3,5 @@ repo_url: https://github.com/elbeachboy/zbw.Auftragsverwaltung
 repo_name: zbw/OrderManager
 
 theme:
-    name: material
+    name: readthedocs
     
