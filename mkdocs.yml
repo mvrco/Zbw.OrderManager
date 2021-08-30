@@ -1,8 +1,7 @@
 site_name: Auftragsverwaltung
 repo_url: https://github.com/elbeachboy/zbw.Auftragsverwaltung
 repo_name: zbw/OrderManager
-edit_uri: edit/main/docs/
 
 theme:
-    name: readthedocs
+    name: material
     
