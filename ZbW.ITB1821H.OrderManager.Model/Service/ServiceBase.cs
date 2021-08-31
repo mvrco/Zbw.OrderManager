@@ -17,12 +17,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
         public ServiceBase(IRepositoryBase<TEntity> repo)
         {
             _repo = repo;
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<TEntity, TEntityDto>().ReverseMap();
-                cfg.AddExpressionMapping();
-            });
-            _mapper = new Mapper(config);
         }
 
         public void Add(TEntityDto entity)
@@ -48,13 +42,13 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
         public List<TEntityDto> GetAll(Expression<Func<TEntityDto, bool>> filter)
         {
             var result = _repo.GetAll(_mapper.Map<Expression<Func<TEntity, bool>>>(filter));
-            return _mapper.Map<List<TEntityDto>>(result);
+            return _mapper.Map<List<TEntity>, List<TEntityDto>>(result);
         }
 
         public List<TEntityDto> GetAll()
         {
             var result = _repo.GetAll();
-            return _mapper.Map<List<TEntityDto>>(result);
+            return _mapper.Map<List<TEntity>, List<TEntityDto>>(result);
         }
 
         public TEntityDto GetSingle(int pkValue)

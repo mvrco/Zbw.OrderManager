@@ -5,6 +5,8 @@ using System.Linq;
 using System.Windows.Data;
 using ZbW.ITB1821H.OrderManager.Controls;
 using ZbW.ITB1821H.OrderManager.Model.Dto;
+using ZbW.ITB1821H.OrderManager.Model.Repository;
+using ZbW.ITB1821H.OrderManager.Model.Service;
 using ZbW.ITB1821H.OrderManager.Model.Service.Interfaces;
 using ZbW.ITB1821H.OrderManager.UserInterface.Util;
 
@@ -17,6 +19,7 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
 
         public ArticlesGroupsPageViewModel() : base(LogManager.GetLogger(nameof(ArticlesGroupsPageViewModel)))
         {
+            _articleGroupService = new ArticleGroupService(new ArticleGroupRepository());
             ArticleGroups = _articleGroupService.GetAll(); //App.DbContext.ArticleGroups.ToList();
         }
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using ZbW.ITB1821H.OrderManager.Controls;
 using ZbW.ITB1821H.OrderManager.Model.Dto;
+using ZbW.ITB1821H.OrderManager.Model.Repository;
+using ZbW.ITB1821H.OrderManager.Model.Service;
 using ZbW.ITB1821H.OrderManager.Model.Service.Interfaces;
 
 namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
@@ -14,6 +16,7 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
 
         public OrdersPositionsPageViewModel() : base(LogManager.GetLogger(nameof(OrdersPositionsPageViewModel)))
         {
+            _orderService = new OrderService(new OrderRepository());
             Orders = _orderService.GetAll();//App.DbContext.Orders.ToList();
         }
 
