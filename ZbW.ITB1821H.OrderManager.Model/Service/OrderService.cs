@@ -16,6 +16,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
                 cfg.CreateMap<Order, OrderDto>().ReverseMap();
                 cfg.CreateMap<Customer, CustomerDto>().ReverseMap();
                 cfg.CreateMap<Position, PositionDto>().ReverseMap();
+                cfg.CreateMap<Address, AddressDto>().ReverseMap();
                 cfg.AddExpressionMapping();
             });
             _mapper = new Mapper(config);
