@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.EntityFrameworkCore;
 using ZbW.ITB1821H.OrderManager.Model.Entities;
 
@@ -29,10 +30,10 @@ namespace ZbW.ITB1821H.OrderManager.Model.Context
         }
 
         public IQueryable<ArticleGroup> GetAllArticleGroups() =>
-            ArticleGroups.FromSqlRaw("Exec dbo.GetAllArticleGroups");
+            ArticleGroups.FromSqlRaw("Select * from dbo.GetAllArticleGroupsTVF()").Include(x => x.Articles);
 
         public IQueryable<ArticleGroup> GetArticleGroupsWithParents(int id) =>
-            ArticleGroups.FromSqlRaw("Exec dbo.GetArticleGroupsWithParents {0}", id);
+            ArticleGroups.FromSqlRaw("Select * from dbo.GetAllArticleGroupsTVF({0})", id).Include(x => x.Articles);
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
