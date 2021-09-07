@@ -1,5 +1,5 @@
 site_name: Auftragsverwaltung
-repo_url: https://github.com/MasterAzazel/Zbw.OrderManager
+repo_url: https://github.com/mvrco/Zbw.OrderManager
 
 theme:
     name: readthedocs
