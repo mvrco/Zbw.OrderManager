@@ -12,6 +12,8 @@ namespace ZbW.ITB1821H.OrderManager.Tests
         public IList<Article> Articles { get; private set; }
         public IList<Order> Orders { get; private set; }
         public IList<Position> Positions { get; private set; }
+        public IList<Invoice> Invoices { get; private set; }
+        public IList<QuartalsReporting> QuarterReportings { get; private set; }
 
         public InMemoryDatabase()
         {
@@ -144,6 +146,20 @@ namespace ZbW.ITB1821H.OrderManager.Tests
                   new Position { Id = 46, PosNr = 1, OrderId = 1246, Amount = 100, ArticleId = 100 },
                   new Position { Id = 47, PosNr = 1, OrderId = 1247, Amount = 35, ArticleId = 101 },
                   new Position { Id = 48, PosNr = 1, OrderId = 1248, Amount = 75, ArticleId = 102 }
+            };
+
+            Invoices = new List<Invoice> {
+                new Invoice { CustomerId = 1, Name = "Cecilia Chapman", Street = "711 Nulla St.", PostalCode = "96522", City = "Mankato", Country = "US", DateOfPurchase = new DateTime(2021, 1, 30), OrderId = 1234, Amount = 85.41 },
+                new Invoice { CustomerId = 1, Name = "Cecilia Chapman", Street = "711 Nulla St.", PostalCode = "96522", City = "Mankato", Country = "US", DateOfPurchase = new DateTime(2021, 5, 4), OrderId = 1235, Amount = 100.00 },
+                new Invoice { CustomerId = 1, Name = "Cecilia Chapman", Street = "711 Nulla St.", PostalCode = "96522", City = "Mankato", Country = "US", DateOfPurchase = new DateTime(2021, 5, 4), OrderId = 1236, Amount = 224.15 },
+                new Invoice { CustomerId = 1, Name = "Cecilia Chapman", Street = "711 Nulla St.", PostalCode = "96522", City = "Mankato", Country = "US", DateOfPurchase = new DateTime(2021, 6, 30), OrderId = 1237, Amount = 89.20 }
+            };
+
+            QuarterReportings = new List<QuartalsReporting> {
+                new QuartalsReporting { Category = "Category 1", QuartalMinus0 = 0, QuartalMinus1 = 1, QuartalMinus2 = 2, QuartalMinus3 = 3, QuartalMinus4 = 4, QuartalMinus5 = 5, QuartalMinus6 = 6, QuartalMinus7 = 7, QuartalMinus8 = 8, QuartalMinus9 = 9, QuartalMinus11 = 11, QuartalMinus10 = 10, YOYinPercent = 10 },
+                new QuartalsReporting { Category = "Category 2", QuartalMinus0 = 0, QuartalMinus1 = 1, QuartalMinus2 = 2, QuartalMinus3 = 3, QuartalMinus4 = 4, QuartalMinus5 = 5, QuartalMinus6 = 6, QuartalMinus7 = 7, QuartalMinus8 = 8, QuartalMinus9 = 9, QuartalMinus11 = 11, QuartalMinus10 = 10, YOYinPercent = 10 },
+                new QuartalsReporting { Category = "Category 3", QuartalMinus0 = 0, QuartalMinus1 = 1, QuartalMinus2 = 2, QuartalMinus3 = 3, QuartalMinus4 = 4, QuartalMinus5 = 5, QuartalMinus6 = 6, QuartalMinus7 = 7, QuartalMinus8 = 8, QuartalMinus9 = 9, QuartalMinus11 = 11, QuartalMinus10 = 10, YOYinPercent = 10 },
+                new QuartalsReporting { Category = "Category 4", QuartalMinus0 = 0, QuartalMinus1 = 1, QuartalMinus2 = 2, QuartalMinus3 = 3, QuartalMinus4 = 4, QuartalMinus5 = 5, QuartalMinus6 = 6, QuartalMinus7 = 7, QuartalMinus8 = 8, QuartalMinus9 = 9, QuartalMinus11 = 11, QuartalMinus10 = 10, YOYinPercent = 10 }
             };
         }
     }

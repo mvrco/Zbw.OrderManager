@@ -123,7 +123,8 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
                 customer.Id == dto.Id
                 && customer.Name == dto.Name
                 && customer.LastName == dto.LastName
-                && customer.Website == dto.Website);
+                && customer.Website == dto.Website
+                && customer.FullName == dto.FullName);
         }
 
         [Fact]
@@ -155,7 +156,16 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
                 customer.Id == afterUpdate.Id
                 && customer.Name == afterUpdate.Name
                 && customer.LastName == afterUpdate.LastName
-                && customer.Website == afterUpdate.Website);
+                && customer.Website == afterUpdate.Website
+                && customer.FullName == dto.FullName);
+        }
+
+        [Fact]
+        public void CustomerDto_ToString_ReturnsTrue()
+        {
+            var dto = new CustomerDto { Id = 2, Name = "Max", LastName = "Waton", Email = "iris-watson@gmail.com", Website = "www.facebook.com/asdf", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 };
+
+            Assert.True(dto.ToString() == "Id; 2; FullName; Max Waton");
         }
         #endregion
     }

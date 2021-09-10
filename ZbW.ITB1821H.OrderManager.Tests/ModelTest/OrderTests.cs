@@ -1,5 +1,6 @@
 ﻿using Moq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 using ZbW.ITB1821H.OrderManager.Model.Dto;
@@ -154,6 +155,16 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
                 order.Id == afterUpdate.Id
                 && order.DateOfPurchase == afterUpdate.DateOfPurchase
                 && order.CustomerId == dto.CustomerId);
+        }
+
+        [Fact]
+        public void OrderDto_ToString_ReturnsTrue()
+        {
+            var dto = new OrderDto { Id = 1238, DateOfPurchase = new DateTime(2021, 2, 6), CustomerId = 2, 
+                Customer = new CustomerDto { Id = 2, Name = "Max", LastName = "Waton", Email = "iris-watson@gmail.com", Website = "www.facebook.com/asdf", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 } };
+
+            Assert.True(dto.ToString() == "Id; 1238; DateOfPurchase; 06.02.2021 00:00:00; Customer; Id; 2; FullName; Max Waton; Positions; ");
+
         }
         #endregion
     }
