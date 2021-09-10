@@ -9,11 +9,5 @@
         public int ArticleId { get; set; }
         public virtual OrderDto Order { get; set; }
         public virtual ArticleDto Article { get; set; }
-
-        public override string ToString()
-        {
-            // TODO tostring
-            return "";
-        }
     }
 }

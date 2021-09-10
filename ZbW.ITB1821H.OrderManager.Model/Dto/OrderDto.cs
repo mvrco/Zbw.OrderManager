@@ -22,14 +22,5 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
         public int CustomerId { get; set; }
         public virtual CustomerDto Customer { get; set; }
         public virtual ICollection<PositionDto> Positions { get; set; }
-
-        // TODO tostring
-        public override string ToString()
-        {
-            return nameof(Id) + "; " + Id + "; " +
-                nameof(DateOfPurchase) + "; " + DateOfPurchase + "; " +
-                nameof(Customer) + "; " + Customer?.ToString() + "; " +
-                nameof(Positions) + "; " + Positions?.ToString();
-        }
     }
 }
