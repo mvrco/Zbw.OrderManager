@@ -2,5 +2,5 @@ site_name: Auftragsverwaltung
 repo_url: https://github.com/mvrco/Zbw.OrderManager
 
 theme:
-    name: readthedocs
+    name: material
     
