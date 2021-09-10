@@ -10,6 +10,10 @@
         public virtual OrderDto Order { get; set; }
         public virtual ArticleDto Article { get; set; }
 
-        // TODO tostring
+        public override string ToString()
+        {
+            // TODO tostring
+            return "";
+        }
     }
 }

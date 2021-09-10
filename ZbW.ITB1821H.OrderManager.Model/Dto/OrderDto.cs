@@ -29,7 +29,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
             return nameof(Id) + "; " + Id + "; " +
                 nameof(DateOfPurchase) + "; " + DateOfPurchase + "; " +
                 nameof(Customer) + "; " + Customer?.ToString() + "; " +
-                nameof(Positions) + "; ";// + Positions?.ToString();
+                nameof(Positions) + "; " + Positions?.ToString();
         }
     }
 }
