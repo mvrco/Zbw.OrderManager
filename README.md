@@ -4,3 +4,5 @@ Order management client implemented by a team of 3 as a school exercise for the 
 ![Build & Test](https://github.com/MasterAzazel/Zbw.OrderManager/actions/workflows/main.yml/badge.svg)
 
 [Documentation](https://mvrco.github.io/Zbw.OrderManager/)
+
+[Sonarcloud](https://sonarcloud.io/dashboard?id=mvrco_Zbw.OrderManager) 
