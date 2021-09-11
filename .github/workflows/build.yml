@@ -49,5 +49,5 @@ jobs:
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"mvrco_Zbw.OrderManager" /o:"mvrco" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/ZbW.ITB1821H.OrderManager.Tests/results/coverage.opencover.xml"
           dotnet restore
           dotnet build --no-restore
-          dotnet test --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutput='./results/' /p:CoverletOutputFormat='opencover' /p:Exclude="[*]ZbW.ITB1821H.OrderManager.UserInterface.*%2c[*]ZbW.ITB1821H.OrderManager.Tests.*%2c[*]ZbW.ITB1821H.OrderManager.Model.DbConfiguration.*%2c[*]ZbW.ITB1821H.OrderManager.Model.Migrations.*%2c[*]ZbW.ITB1821H.OrderManager.Model.Context.*"
+          dotnet test --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutput='./results/' /p:CoverletOutputFormat='opencover' /p:Exclude='[*]ZbW.ITB1821H.OrderManager.Model.Migrations.*'
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
