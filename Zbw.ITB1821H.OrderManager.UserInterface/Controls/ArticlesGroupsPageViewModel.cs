@@ -20,7 +20,7 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
         public ArticlesGroupsPageViewModel() : base(LogManager.GetLogger(nameof(ArticlesGroupsPageViewModel)))
         {
             _articleGroupService = new ArticleGroupService(new ArticleGroupRepository());
-            ArticleGroups = _articleGroupService.GetAll(); //App.DbContext.ArticleGroups.ToList();
+            ArticleGroups = _articleGroupService.GetAll();
         }
 
         public IList<ArticleGroupDto> ArticleGroups { get; private set; }

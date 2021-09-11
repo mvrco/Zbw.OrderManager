@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Entities
 {
+
+    [XmlRoot("Customer")]
     public class Customer
     {
         public int Id { get; set; }
@@ -14,6 +17,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Entities
         public string PasswordHash { get; set; }
         public int AddressId { get; set; }
         public virtual Address Address { get; set; }
+        [XmlIgnore]
         public virtual ICollection<Order> Orders { get; set; }
     }
 }

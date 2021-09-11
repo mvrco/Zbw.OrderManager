@@ -7,5 +7,16 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="Add, view or edit existing customer" Height="450" Width="400">
-    <xctk:PropertyGrid SelectedObject="{Binding BusinessObject}" ShowAdvancedOptions="True" />
+    <xctk:PropertyGrid SelectedObject="{Binding BusinessObject}" ShowAdvancedOptions="True" ShowSortOptions="False" ShowSummary="False">
+        <xctk:PropertyGrid.PropertyDefinitions>
+            <!--<xctk:PropertyDefinition Name="Id" IsBrowsable="False" />-->
+            <xctk:PropertyDefinition Name="AddressId" IsBrowsable="False"/>
+            <xctk:PropertyDefinition Name="CustomerId" IsBrowsable="False" />
+            <xctk:PropertyDefinition Name="OrderId" IsBrowsable="False" />
+            <xctk:PropertyDefinition Name="InvoiceId" IsBrowsable="False" />
+            <xctk:PropertyDefinition Name="PositionId" IsBrowsable="False" />
+            <xctk:PropertyDefinition Name="ArticleId" IsBrowsable="False" />
+            <xctk:PropertyDefinition Name="ArticleGroupId" IsBrowsable="False" />
+        </xctk:PropertyGrid.PropertyDefinitions>
+    </xctk:PropertyGrid>
 </mah:MetroWindow>

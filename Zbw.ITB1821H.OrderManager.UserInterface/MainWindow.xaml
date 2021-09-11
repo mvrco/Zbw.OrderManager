@@ -14,12 +14,14 @@
     <mah:MetroWindow.ContextMenu>
         <ContextMenu>
             <MenuItem Command="ApplicationCommands.New" />
-            <MenuItem Command="ApplicationCommands.Open" />
             <MenuItem Command="ApplicationCommands.Delete" />
         </ContextMenu>
     </mah:MetroWindow.ContextMenu>
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
+            <Button Command="{Binding ImportData}" ToolTip="Import data">
+                <iconPacks:PackIconModern Width="20" Height="20" Kind="Save" />
+            </Button>
             <Button Command="{Binding ExportData}" ToolTip="Export data">
                 <iconPacks:PackIconModern Width="20" Height="20" Kind="Save" />
             </Button>

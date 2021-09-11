@@ -16,6 +16,9 @@ using System.Xml.Serialization;
 using ZbW.ITB1821H.OrderManager.Controls;
 using ZbW.ITB1821H.OrderManager.Model;
 using ZbW.ITB1821H.OrderManager.Model.Context;
+using ZbW.ITB1821H.OrderManager.Model.Entities;
+using ZbW.ITB1821H.OrderManager.Model.Repository;
+using ZbW.ITB1821H.OrderManager.Model.Service;
 using ZbW.ITB1821H.OrderManager.UserInterface.Controls;
 using ZbW.ITB1821H.OrderManager.UserInterface.Util;
 
@@ -64,6 +67,7 @@ namespace ZbW.ITB1821H.OrderManager
             //    NavigationDestination = new Uri(typeof(SaveFileDialog).Name, UriKind.RelativeOrAbsolute)
             //});
             // create commands
+            ImportData = new ActionCommand(OnImportData);
             ExportData = new ActionCommand(OnExportData);
         }
 
@@ -81,7 +85,7 @@ namespace ZbW.ITB1821H.OrderManager
                     Stream fileStream = dialog.OpenFile();
                     StreamWriter sw = new StreamWriter(fileStream);
                     // get json string
-                    string jsonString = System.Text.Json.JsonSerializer.Serialize(App.DbContext.Customers.ToList(), new JsonSerializerOptions() { WriteIndented = true });
+                    string jsonString = System.Text.Json.JsonSerializer.Serialize(new CustomerService(new CustomerRepository()).GetAll(), new JsonSerializerOptions() { WriteIndented = true, ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve});
                     switch (dialog.SafeFileName.Split(".").Last())
                     {
                         case "json":
@@ -100,6 +104,43 @@ namespace ZbW.ITB1821H.OrderManager
                     }
                     sw.Flush();
                     sw.Close();
+                }
+            }
+            catch (IOException ioExc)
+            {
+                ShowError(ioExc.Message);
+            }
+        }
+
+        public ICommand ImportData { get; set; }
+
+        private void OnImportData()
+        {
+            try
+            {
+                OpenFileDialog dialog = new OpenFileDialog() { DefaultExt = "json", FileName = "OrderManagerData", Filter = "JSON file|*.json|XML file|*.xml" };
+                bool? result = dialog.ShowDialog();
+                if (result == true)
+                {
+                    //Stream fileStream = dialog.OpenFile();
+                    //StreamWriter sw = new StreamWriter(fileStream);
+                    // get json string
+                    string jsonString = System.Text.Json.JsonSerializer.Serialize(new CustomerService(new CustomerRepository()).GetAll(), new JsonSerializerOptions() { WriteIndented = true, ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve });
+                    switch (dialog.SafeFileName.Split(".").Last())
+                    {
+                        case "json":
+                            // read json from file and deserialize into list of customers
+                            var test = JsonConvert.DeserializeObject<List<Customer>>(File.ReadAllText(dialog.FileName));
+                            break;
+
+                        case "xml":
+                            // convert json string to xml string anf write to file
+                            XmlRootAttribute xRoot = new XmlRootAttribute();
+                            xRoot.ElementName = "OrderManagerData";
+                            var x = new XmlSerializer(typeof(List<Customer>), xRoot).Deserialize(XmlReader.Create(dialog.FileName));
+                           
+                            break;
+                    }
                 }
             }
             catch (IOException ioExc)

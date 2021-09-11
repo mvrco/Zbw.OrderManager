@@ -1,9 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Dto
 {
     public class AddressDto
     {
+        public AddressDto()
+        {
+
+        }
+        private int id;
+        [ReadOnly(true)]
         public int Id { get; set; }
         public string Street { get; set; }
         public string City { get; set; }
