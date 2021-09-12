@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using ZbW.ITB1821H.OrderManager.Model.Repository;
 
-namespace ZbW.ITB1821H.OrderManager.Model.Service
+namespace ZbW.ITB1821H.OrderManager.Model.Service.Interfaces
 {
   public interface IServiceBase<TEntity, TEntityDto>
   {
