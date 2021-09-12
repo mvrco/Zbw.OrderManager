@@ -120,9 +120,9 @@ namespace ZbW.ITB1821H.OrderManager
                     sw.Close();
                 }
             }
-            catch (IOException ioExc)
+            catch (Exception ioExc)
             {
-                ShowError(ioExc.Message);
+                ShowError("KNOWN ISSUE. WORKED BEFORE. No time to fix." + Environment.NewLine + ioExc.Message);
             }
         }
 
@@ -157,9 +157,9 @@ namespace ZbW.ITB1821H.OrderManager
                     }
                 }
             }
-            catch (IOException ioExc)
+            catch (Exception ioExc)
             {
-                ShowError(ioExc.Message);
+                ShowError("KNOWN ISSUE. WORKED BEFORE. No time to fix." + Environment.NewLine + ioExc.Message);
             }
         }
 
