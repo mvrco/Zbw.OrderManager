@@ -48,8 +48,14 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
             SingleObjectWindowViewModel<ArticleDto, Article, ArticleService> viewModel = new(articlesDatagrid.SelectedItem as ArticleDto, new ArticleService(new ArticleRepository()));
             window.DataContext = viewModel;
             window.Owner = Application.Current.MainWindow;
+            window.Closing += Window_Closing;
             window.ShowDialog();
             e.Handled = true;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void ArticleGroupsDataGrid_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
