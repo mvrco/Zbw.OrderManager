@@ -21,6 +21,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
                     .Include(x => x.Address)
                     .Include(x => x.Orders)
                     .ThenInclude(x => x.Positions)
+                    .ThenInclude(x => x.Article)
                     .Where(filter)
                     .ToList();
             }
@@ -34,6 +35,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
                     .Include(x => x.Address)
                     .Include(x => x.Orders)
                     .ThenInclude(x => x.Positions)
+                    .ThenInclude(x => x.Article)
                     .ToList();
             }
         }
@@ -46,6 +48,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
                     .Include(x => x.Address)
                     .Include(x => x.Orders)
                     .ThenInclude(x => x.Positions)
+                    .ThenInclude(x => x.Article)
                     .FirstOrDefault(x => x.Id == pkValue);
             }
         }
