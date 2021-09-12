@@ -92,7 +92,7 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
                 if (selectedCustomer == null)
                     throw new ApplicationException("Select a customer first.");
                 SingleObjectWindow window = new();
-                SingleObjectWindowViewModel<OrderDto, Order, IOrderService> viewModel = new(new OrderDto() { Customer = SelectedCustomer, DateOfPurchase = DateTime.Now }, _orderService, true);
+                SingleObjectWindowViewModel<OrderDto, Order, IOrderService> viewModel = new(new OrderDto() { CustomerId = SelectedCustomer.Id, DateOfPurchase = DateTime.Now }, _orderService, true);
                 window.DataContext = viewModel;
                 window.Owner = Application.Current.MainWindow;
                 // property grid is not theme aware, dark skin messes it up

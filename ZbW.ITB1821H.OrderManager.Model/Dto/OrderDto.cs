@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Dto
 {
@@ -18,11 +19,12 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
             DateOfPurchase = dateOfPurchase;
         }
         [ReadOnly(true)]
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public DateTime DateOfPurchase { get; set; }
         [ReadOnly(true)]
-        [Browsable(false)]
+        //[Browsable(false)]
         public int CustomerId { get; set; }
+        [Browsable(false)]
         public virtual CustomerDto Customer { get; set; }
         public virtual ICollection<PositionDto> Positions { get; private set; }
 
