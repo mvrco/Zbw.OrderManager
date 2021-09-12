@@ -46,5 +46,21 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
                 .FirstOrDefault(x => x.Id == pkValue);
             }
         }
+
+        public void Delete(Address entity)
+        {
+            if (entity.Customers == null)
+            {
+                using (var context = new DatabaseContext())
+                {
+                    context.Set<Address>().Remove(entity);
+                    context.SaveChanges();
+                }
+            }
+            else
+            {
+                throw new InvalidOperationException("The address depends to a customer and therefore cannot be deleted.");
+            }
+        }
     }
 }
