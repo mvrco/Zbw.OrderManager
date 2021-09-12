@@ -9,7 +9,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
 {
     public class CustomerDto
     {
-        private const string EMAIL_REGEX = @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$";
+        private const string EMAIL_REGEX = @"^[a-zA-Z][\w\d\-\.]+[a-zA-Z]@([\w\-\d]+\.)+[\w-]{2,4}$";
         private string name;
         private string email;
         private string website;
