@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZbW.ITB1821H.OrderManager.Model.Context;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210912094740_AddedCustomerIdPropertyToCustomer")]
+    partial class AddedCustomerIdPropertyToCustomer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -435,7 +437,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 1,
                             AddressId = 1000,
-                            CustomerId = "CU10001",
                             Email = "cecilia@chapman.com",
                             LastName = "Chapman",
                             Name = "Cecilia",
@@ -447,7 +448,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 2,
                             AddressId = 1001,
-                            CustomerId = "CU10002",
                             Email = "iris-watson@gmail.com",
                             LastName = "Watson",
                             Name = "Iris",
@@ -459,7 +459,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 3,
                             AddressId = 1002,
-                            CustomerId = "CU10003",
                             Email = "c3l3steee_Slater@yahoo.com",
                             LastName = "Slater",
                             Name = "Celeste",
@@ -471,7 +470,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 4,
                             AddressId = 1003,
-                            CustomerId = "CU10004",
                             Email = "theo.Lowe@bdd_dd.com",
                             LastName = "Lowe",
                             Name = "Theodore",
@@ -483,7 +481,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 5,
                             AddressId = 1004,
-                            CustomerId = "CU10005",
                             Email = "asdf@1234.info",
                             LastName = "Wise",
                             Name = "Calista",
@@ -495,7 +492,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 6,
                             AddressId = 1005,
-                            CustomerId = "CU10006",
                             Email = "kyla.o_sen@outlook.com",
                             LastName = "Olsen",
                             Name = "Kyla",
@@ -507,7 +503,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 7,
                             AddressId = 1014,
-                            CustomerId = "CU10007",
                             Email = "ray-forrester@gmail.com",
                             LastName = "Forrester",
                             Name = "Ray",
@@ -519,7 +514,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 8,
                             AddressId = 1006,
-                            CustomerId = "CU10008",
                             Email = "lawrence.vazquez@outlook.com",
                             LastName = "Vazquez",
                             Name = "Lawrence",
@@ -531,7 +525,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 9,
                             AddressId = 1015,
-                            CustomerId = "CU10009",
                             Email = "hawkins@ab_cd.net",
                             LastName = "Hawkins",
                             Name = "Aaron",
@@ -543,7 +536,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 10,
                             AddressId = 1008,
-                            CustomerId = "CU10010",
                             Email = "melvin@gmail.com",
                             LastName = "Porter",
                             Name = "Melvin",
@@ -555,7 +547,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 11,
                             AddressId = 1009,
-                            CustomerId = "CU10011",
                             Email = "colbyyyy@gmail.com",
                             LastName = "Colby",
                             Name = "Bernard",
@@ -567,7 +558,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 12,
                             AddressId = 1010,
-                            CustomerId = "CU10012",
                             Email = "russell--adria@outlook.com",
                             LastName = "Adria",
                             Name = "Russell",
@@ -579,7 +569,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 13,
                             AddressId = 1011,
-                            CustomerId = "CU10013",
                             Email = "chester@bennett.com",
                             LastName = "Bennett",
                             Name = "Chester",
@@ -591,7 +580,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 14,
                             AddressId = 1012,
-                            CustomerId = "CU10014",
                             Email = "harr.mcg@outlook.com",
                             LastName = "Mcguire",
                             Name = "Harrison",
@@ -603,7 +591,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Migrations
                         {
                             Id = 15,
                             AddressId = 1013,
-                            CustomerId = "CU10015",
                             Email = "wallace@rosss.com",
                             LastName = "Ross",
                             Name = "Wallace",

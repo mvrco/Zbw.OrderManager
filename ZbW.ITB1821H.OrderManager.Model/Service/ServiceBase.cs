@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using AutoMapper.Extensions.ExpressionMapping;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using ZbW.ITB1821H.OrderManager.Model.Repository;
+using ZbW.ITB1821H.OrderManager.Model.Repository.Interfaces;
+using ZbW.ITB1821H.OrderManager.Model.Service.Interfaces;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Service
 {
@@ -14,7 +14,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
         public IMapper _mapper;
         public IRepositoryBase<TEntity> _repo;
 
-        public ServiceBase(IRepositoryBase<TEntity> repo)
+        protected ServiceBase(IRepositoryBase<TEntity> repo)
         {
             _repo = repo;
         }

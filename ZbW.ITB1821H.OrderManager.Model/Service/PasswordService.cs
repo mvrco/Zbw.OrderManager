@@ -31,7 +31,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
       return customer.PasswordHash == Hash(password, customer.PasswordSalt);
     }
 
-    private string Hash(string password, string salt)
+    private static string Hash(string password, string salt)
     {
       var md5 = MD5.Create();
       byte[] bytes = md5.ComputeHash(Encoding.ASCII.GetBytes(salt + password));

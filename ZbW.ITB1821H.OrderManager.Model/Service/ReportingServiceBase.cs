@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
-using ZbW.ITB1821H.OrderManager.Model.Repository;
+using ZbW.ITB1821H.OrderManager.Model.Repository.Interfaces;
+using ZbW.ITB1821H.OrderManager.Model.Service.Interfaces;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Service
 {
-    public abstract class ReportinServiceBase<TEntity, TEntityDto> : IReportingServiceBase<TEntity, TEntityDto>
+    public abstract class ReportingServiceBase<TEntity, TEntityDto> : IReportingServiceBase<TEntity, TEntityDto>
         where TEntity : class
         where TEntityDto : class
     {
         public IMapper _mapper;
         public IReportingRepositoryBase<TEntity> _repo;
 
-        public ReportinServiceBase(IReportingRepositoryBase<TEntity> repo)
+        protected ReportingServiceBase(IReportingRepositoryBase<TEntity> repo)
         {
             _repo = repo;
             var config = new MapperConfiguration(cfg =>

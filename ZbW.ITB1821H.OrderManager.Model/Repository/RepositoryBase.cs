@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using ZbW.ITB1821H.OrderManager.Model.Context;
+using ZbW.ITB1821H.OrderManager.Model.Repository.Interfaces;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Repository
 {
