@@ -43,8 +43,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Ignore<QuartalsReporting>();
-            modelBuilder.Ignore<Invoice>();
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(DatabaseContext).Assembly);
             base.OnModelCreating(modelBuilder);
         }

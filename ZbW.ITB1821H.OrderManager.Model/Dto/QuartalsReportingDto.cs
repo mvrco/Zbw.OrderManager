@@ -3,18 +3,18 @@
     public class QuartalsReportingDto
     {
         public string Category { get; set; }
-        public float YOYinPercent { get; set; }
-        public float QuartalMinus0 { get; set; }
-        public float QuartalMinus1 { get; set; }
-        public float QuartalMinus2 { get; set; }
-        public float QuartalMinus3 { get; set; }
-        public float QuartalMinus4 { get; set; }
-        public float QuartalMinus5 { get; set; }
-        public float QuartalMinus6 { get; set; }
-        public float QuartalMinus7 { get; set; }
-        public float QuartalMinus8 { get; set; }
-        public float QuartalMinus9 { get; set; }
-        public float QuartalMinus10 { get; set; }
-        public float QuartalMinus11 { get; set; }
+        public double YOYinPercent { get; set; }
+        public double QuartalMinus0 { get; set; }
+        public double QuartalMinus1 { get; set; }
+        public double QuartalMinus2 { get; set; }
+        public double QuartalMinus3 { get; set; }
+        public double QuartalMinus4 { get; set; }
+        public double QuartalMinus5 { get; set; }
+        public double QuartalMinus6 { get; set; }
+        public double QuartalMinus7 { get; set; }
+        public double QuartalMinus8 { get; set; }
+        public double QuartalMinus9 { get; set; }
+        public double QuartalMinus10 { get; set; }
+        public double QuartalMinus11 { get; set; }
     }
 }
