@@ -1,4 +1,6 @@
 ﻿using Moq;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 using ZbW.ITB1821H.OrderManager.Model.Dto;
@@ -63,8 +65,8 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
         {
             var inMemoryDatabase = new InMemoryDatabase();
             var mock = new Mock<IArticleGroupRepository>();
-            var articleGroup = new ArticleGroup { Name = "Fruits", Description = "Worldwide selection of Fruits", ParentGroupId = 10 };
-            var dto = new ArticleGroupDto { Name = "Fruits", Description = "Worldwide selection of Fruits", ParentGroupId = 10 };
+            var articleGroup = inMemoryDatabase.ArticleGroups.Where(x => x.Id == 11).FirstOrDefault();
+            var dto = new ArticleGroupDto { Id = 11, Name = "Fruits", Description = "Worldwide selection of Fruits", ParentGroupId = 10 };
 
             mock.Setup(x => x.Delete(It.IsAny<ArticleGroup>()))
                 .Callback(() => inMemoryDatabase.ArticleGroups.Remove(articleGroup));
@@ -73,6 +75,32 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
             service.Delete(dto);
 
             Assert.False(inMemoryDatabase.ArticleGroups.Contains(articleGroup));
+        }
+
+        [Fact]
+        public void ArticleGroupService_DeleteNotAllowedArticles_ThrowsException()
+        {
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IArticleGroupRepository>();
+            var dto = new ArticleGroupDto { Id = 11, Name = "Fruits", Description = "Worldwide selection of Fruits", ParentGroupId = 10, 
+                Articles = new List<ArticleDto> { new ArticleDto { Id = 101, Name = "Banana", Description = "Fresh from Columbia", Price = 1.12, ArticleGroupId = 11 } } };
+            
+            var service = new ArticleGroupService(mock.Object);
+            Assert.Throws<InvalidOperationException>(() => service.Delete(dto));
+        }
+
+        [Fact]
+        public void ArticleGroupService_DeleteNotAllowedSubArticleGroup_ThrowsException()
+        {
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IArticleGroupRepository>();
+            var dto = new ArticleGroupDto { Id = 11, Name = "Fruits", Description = "Worldwide selection of Fruits", ParentGroupId = 10, 
+                SubArticleGroups = new List<ArticleGroupDto> { new ArticleGroupDto { Id = 12, Name = "Fruits", Description = "Worldwide selection of Fruits", ParentGroupId = 10 } }
+            };
+
+            var service = new ArticleGroupService(mock.Object);
+
+            Assert.Throws<InvalidOperationException>(() => service.Delete(dto));
         }
 
         [Fact]

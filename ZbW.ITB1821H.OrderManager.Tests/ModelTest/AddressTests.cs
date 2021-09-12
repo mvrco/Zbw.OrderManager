@@ -1,4 +1,6 @@
 ﻿using Moq;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 using ZbW.ITB1821H.OrderManager.Model.Dto;
@@ -63,7 +65,7 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
         {
             var inMemoryDatabase = new InMemoryDatabase();
             var mock = new Mock<IAddressRepository>();
-            var address = new Address { Id = 1009, Street = "153 Wood St.", City = "Ocean Springs", State = "MS", PostalCode = "39564", Country = "US" };
+            var address = inMemoryDatabase.Addresses.Where(x => x.Id == 1009).FirstOrDefault();
             var dto = new AddressDto { Id = 1009, Street = "153 Wood St.", City = "Ocean Springs", State = "MS", PostalCode = "39564", Country = "US" };
 
             mock.Setup(x => x.Delete(It.IsAny<Address>()))
@@ -73,6 +75,18 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
             service.Delete(dto);
 
             Assert.False(inMemoryDatabase.Addresses.Contains(address));
+        }
+
+        [Fact]
+        public void AddressService_DeleteNotAllowed_ThrowsException()
+        {
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<IAddressRepository>();
+            var dto = new AddressDto { Id = 1009, Street = "153 Wood St.", City = "Ocean Springs", State = "MS", PostalCode = "39564", Country = "US", 
+                Customers = new List<CustomerDto> { new CustomerDto { CustomerId = "CU10001", Name = "Monica", LastName = "Watson", Email = "watson@outlook.com", Website = "www.monica.com", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1009 } } };
+
+            var service = new AddressService(mock.Object);
+            Assert.Throws<InvalidOperationException>(() => service.Delete(dto));
         }
 
         [Fact]

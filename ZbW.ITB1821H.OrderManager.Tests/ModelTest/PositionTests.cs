@@ -60,20 +60,15 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
         }
 
         [Fact]
-        public void PositionService_Delete_ReturnsFalse()
+        public void PositionService_DeleteNotAllowed_ThrowsException()
         {
             var inMemoryDatabase = new InMemoryDatabase();
             var mock = new Mock<IPositionRepository>();
-            var position = new Position { Id = 9, PosNr = 3, OrderId = 1232, Amount = 20, ArticleId = 100 };
             var dto = new PositionDto { Id = 9, PosNr = 3, OrderId = 1232, Amount = 20, ArticleId = 100 };
 
-            mock.Setup(x => x.Delete(It.IsAny<Position>()))
-                .Callback(() => inMemoryDatabase.Positions.Remove(position));
-
             var service = new PositionService(mock.Object);
-            service.Delete(dto);
-
-            Assert.False(inMemoryDatabase.Positions.Contains(position));
+            
+            Assert.Throws<InvalidOperationException>(() => service.Delete(dto));
         }
 
         [Fact]

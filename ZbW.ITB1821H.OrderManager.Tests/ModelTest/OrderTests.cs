@@ -61,20 +61,15 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
         }
 
         [Fact]
-        public void OrderService_Delete_ReturnsFalse()
+        public void OrderService_DeleteNotAllowed_ThrowsException()
         {
             var inMemoryDatabase = new InMemoryDatabase();
             var mock = new Mock<IOrderRepository>();
-            var order = new Order { Id = 1238, DateOfPurchase = new DateTime(2021, 2, 3), CustomerId = 3 };
             var dto = new OrderDto { Id = 1238, DateOfPurchase = new DateTime(2021, 2, 3), CustomerId = 3 };
 
-            mock.Setup(x => x.Delete(It.IsAny<Order>()))
-                .Callback(() => inMemoryDatabase.Orders.Remove(order));
-
             var service = new OrderService(mock.Object);
-            service.Delete(dto);
 
-            Assert.False(inMemoryDatabase.Orders.Contains(order));
+            Assert.Throws<InvalidOperationException>(() => service.Delete(dto));
         }
 
         [Fact]

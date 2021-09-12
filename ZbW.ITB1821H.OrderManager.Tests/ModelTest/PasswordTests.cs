@@ -18,7 +18,7 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
         }
 
         [Fact]
-        public void PasswordServiceComparePassword_ComparesPasswordWithSavedPAssword_ReturnsTrue()
+        public void PasswordServiceComparePassword_ComparesPasswordWithSavedPassword_ReturnsTrue()
         {
             var service = new PasswordService();
             var customer = new CustomerDto { Id = 1, Name = "Cecilia", LastName = "Chapman", Email = "cecilia@chapman.com", Website = "https://chapman.com", PasswordSalt = "12837163", PasswordHash = "E14CE3435BC3194B77C609F26EF6075E", AddressId = 1000 };

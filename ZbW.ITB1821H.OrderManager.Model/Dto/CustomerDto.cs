@@ -140,7 +140,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
         public int AddressId { get; set; }
         [ExpandableObject]
         public virtual AddressDto Address { get; set; }
-        public virtual ICollection<OrderDto> Orders { get; private set; }
+        public virtual ICollection<OrderDto> Orders { get; set; }
 
         public override string ToString()
         {
