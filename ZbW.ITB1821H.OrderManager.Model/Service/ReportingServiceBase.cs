@@ -14,7 +14,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
         public IMapper _mapper;
         public IReportingRepositoryBase<TEntity> _repo;
 
-        public ReportingServiceBase(IReportingRepositoryBase<TEntity> repo)
+        protected ReportingServiceBase(IReportingRepositoryBase<TEntity> repo)
         {
             _repo = repo;
             var config = new MapperConfiguration(cfg =>

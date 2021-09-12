@@ -14,7 +14,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
         public IMapper _mapper;
         public IRepositoryBase<TEntity> _repo;
 
-        public ServiceBase(IRepositoryBase<TEntity> repo)
+        protected ServiceBase(IRepositoryBase<TEntity> repo)
         {
             _repo = repo;
         }
