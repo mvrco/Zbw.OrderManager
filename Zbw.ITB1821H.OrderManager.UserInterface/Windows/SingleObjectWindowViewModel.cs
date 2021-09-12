@@ -34,10 +34,11 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Windows
                     service.Add(BusinessObject);
                 else
                     service.Update(BusinessObject);
+                ShowInfo("Successfully saved", "Success");
             }
             catch(Exception e)
             {
-                MessageBox.Show("Problem saving");
+                MessageBox.Show("Problem saving to database " + Environment.NewLine + (e.InnerException ?? e.InnerException));
             }
         }
     }

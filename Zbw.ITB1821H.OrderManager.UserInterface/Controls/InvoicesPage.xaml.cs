@@ -3,11 +3,11 @@
 namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
 {
     /// <summary>
-    /// Interaction logic for YearOverviewPage.xaml
+    /// Interaction logic for InvoicesPage.xaml
     /// </summary>
-    public partial class YearOverviewPage : Page
+    public partial class InvoicesPage : Page
     {
-        public YearOverviewPage()
+        public InvoicesPage()
         {
             InitializeComponent();
         }

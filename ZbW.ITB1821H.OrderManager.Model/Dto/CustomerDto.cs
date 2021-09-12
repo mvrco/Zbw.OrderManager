@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
-using ZbW.ITB1821H.OrderManager.Model.Service;
 using ZbW.ITB1821H.OrderManager.UserInterface.Util;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Dto

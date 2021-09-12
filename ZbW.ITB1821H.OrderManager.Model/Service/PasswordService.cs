@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
-using ZbW.ITB1821H.OrderManager.Model.Dto;
 using ZbW.ITB1821H.OrderManager.Model.Entities;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Service
 {
-  public class PasswordService
+    public class PasswordService
   {
     /// <summary>
     /// Generates a new random salt-value and hashes the specified password. 

@@ -1,6 +1,5 @@
 ﻿using log4net;
 using MahApps.Metro.IconPacks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
 using Microsoft.Xaml.Behaviors.Core;
 using Newtonsoft.Json;
@@ -14,7 +13,6 @@ using System.Windows.Input;
 using System.Xml;
 using System.Xml.Serialization;
 using ZbW.ITB1821H.OrderManager.Controls;
-using ZbW.ITB1821H.OrderManager.Model;
 using ZbW.ITB1821H.OrderManager.Model.Context;
 using ZbW.ITB1821H.OrderManager.Model.Entities;
 using ZbW.ITB1821H.OrderManager.Model.Repository;
@@ -57,6 +55,13 @@ namespace ZbW.ITB1821H.OrderManager
                 Label = "Orders",
                 NavigationType = typeof(ArticlesGroupsPage),
                 NavigationDestination = new Uri("Controls/OrdersPositionsPage.xaml", UriKind.RelativeOrAbsolute)
+            });
+            this.Menu.Add(new HamMenuItem()
+            {
+                Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.AsteriskSolid },
+                Label = "Invoices",
+                NavigationType = typeof(InvoicesPage),
+                NavigationDestination = new Uri("Controls/InvoicesPage.xaml", UriKind.RelativeOrAbsolute)
             });
 
             this.Menu.Add(new HamMenuItem()
