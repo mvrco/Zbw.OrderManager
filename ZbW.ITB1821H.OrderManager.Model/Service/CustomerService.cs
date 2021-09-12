@@ -26,7 +26,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
 
         public new void Delete(CustomerDto entity)
         {
-            if (entity.Orders.Count == 0)
+            if (entity.Orders == null)
             {
                 _repo.Delete(_mapper.Map<Customer>(entity));
             }
