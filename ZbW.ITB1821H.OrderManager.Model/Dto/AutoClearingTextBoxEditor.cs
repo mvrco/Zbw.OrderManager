@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Media;
 
 namespace ZbW.ITB1821H.OrderManager.UserInterface.Util
 {
     //Custom editors that are used as attributes MUST implement the ITypeEditor interface.
-    public class PasswordBoxValidationEditor : Xceed.Wpf.Toolkit.PropertyGrid.Editors.ITypeEditor
+    public class AutoClearingTextBoxEditor : Xceed.Wpf.Toolkit.PropertyGrid.Editors.ITypeEditor
     {
+        static bool firstTimeFocus = false;
         public FrameworkElement ResolveEditor(Xceed.Wpf.Toolkit.PropertyGrid.PropertyItem propertyItem)
         {
-            PasswordBox textBox = new PasswordBox();
+            TextBox textBox = new TextBox();
             //textBox.Background = new SolidColorBrush(Colors.Red);
 
             //create the binding from the bound property item to the editor
@@ -25,9 +21,16 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Util
             _binding.ValidatesOnDataErrors = true;
             _binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
             _binding.Mode = BindingMode.TwoWay;
+            textBox.GotFocus += TextBox_GotKeyboardFocus;
             BindingOperations.SetBinding(textBox, TextBox.TextProperty, _binding);
-            textBox.Clear();
             return textBox;
+        }
+
+        private void TextBox_GotKeyboardFocus(object sender, RoutedEventArgs e)
+        {
+            if (!firstTimeFocus)
+                (sender as TextBox).Clear();
+            firstTimeFocus = true;
         }
     }
 }

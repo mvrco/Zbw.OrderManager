@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using ZbW.ITB1821H.OrderManager.Model.Service;
@@ -10,13 +11,13 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
 {
     public class CustomerDto : INotifyPropertyChanged
     {
-        private PasswordService passwordService;
         private const string EMAIL_REGEX = @"^[a-zA-Z][\w\d\-\.]+[a-zA-Z]@([\w\-\d]+\.)+[\w-]{2,4}$";
         private string name;
         private string email;
         private string website;
         private string customerId;
         private string password;
+        private string lastName;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -27,7 +28,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
 
         public CustomerDto()
         {
-            passwordService = new();
+            password = "*****";
         }
 
         [ReadOnly(true)]
@@ -60,11 +61,23 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
             set
             {
                 name = value;
+                OnPropertyChanged(nameof(FullName));
             }
         }
 
         [Editor(typeof(TextBoxValidationEditor), typeof(TextBoxValidationEditor))]
-        public string LastName { get; set; }
+        public string LastName
+        {
+            get
+            {
+                return lastName;
+            }
+            set
+            {
+                lastName = value;
+                OnPropertyChanged(nameof(FullName));
+            }
+        }
 
         [ReadOnly(true)]
         public string FullName => Name + " " + LastName;
@@ -100,7 +113,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
             }
         }
 
-        [Editor(typeof(PasswordBoxValidationEditor), typeof(PasswordBoxValidationEditor))]
+        [Editor(typeof(AutoClearingTextBoxEditor), typeof(AutoClearingTextBoxEditor))]
         public string Password
         {
             get
@@ -109,17 +122,21 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
             }
             set
             {
+                if (value.Length < 8)
+                    throw new ApplicationException("Not long enough.");
+                if (!value.Any(char.IsDigit))
+                    throw new ApplicationException("Must include at least one number.");
+                if (value.All(char.IsLetterOrDigit))
+                    throw new ApplicationException("Must include at least one special character.");
+
                 password = value;
-                passwordService.HashPassword(password, this);
-                OnPropertyChanged(PasswordSalt);
-                OnPropertyChanged(PasswordHash);
             }
         }
-        [ReadOnly(true)]
+        [Browsable(false)]
         public string PasswordSalt { get; set; }
-        [ReadOnly(true)]
+        [Browsable(false)]
         public string PasswordHash { get; set; }
-        [ReadOnly(true)]
+        [Browsable(false)]
         public int AddressId { get; set; }
         [ExpandableObject]
         public virtual AddressDto Address { get; set; }
