@@ -19,6 +19,12 @@
         </Grid.ColumnDefinitions>
 
         <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            <ScrollViewer.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Command="{Binding DeleteArticleGroup}" Header="Delete" />
+                    <MenuItem Command="{Binding AddArticleGroup}" Header="Add" />
+                </ContextMenu>
+            </ScrollViewer.ContextMenu>
             <DataGrid x:Name="articleGroupDatagrid" IsReadOnly="true" MouseDoubleClick="ArticleGroupsDataGrid_DoubleClick" mah:DataGridHelper.SelectionUnit="FullRow" CanUserAddRows="False" CanUserDeleteRows="False" ItemsSource="{Binding ArticleGroups}"
                                   SelectionMode="Single" SelectedItem="{Binding SelectedArticleGroup}" >
                 <DataGrid.InputBindings>
@@ -28,6 +34,12 @@
         </ScrollViewer>
         <GridSplitter Grid.Column="1" ResizeDirection="Columns" ShowsPreview="True" />
         <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            <ScrollViewer.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Command="{Binding DeleteArticleCommand}" Header="Delete" />
+                    <MenuItem Command="{Binding AddArticleCommand}" Header="Add" />
+                </ContextMenu>
+            </ScrollViewer.ContextMenu>
             <DataGrid x:Name="articlesDatagrid" IsReadOnly="true" MouseDoubleClick="ArticlesDataGrid_DoubleClick" mah:DataGridHelper.SelectionUnit="FullRow" CanUserAddRows="False" CanUserDeleteRows="False" ItemsSource="{Binding SelectedArticleGroup.Articles}"
                                   SelectionMode="Single" SelectedItem="{Binding SelectedArticle}" >
                 <DataGrid.InputBindings>

@@ -75,11 +75,10 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
                 // property grid is not theme aware, dark skin messes it up
                 ThemeManager.Current.ChangeTheme(window, "Light.Blue");
                 window.ShowDialog();
-                SelectedCustomer = null;
             }
             catch (Exception e)
             {
-                ShowError(e.Message);
+                ShowWarning(e.Message);
             }
         }
 
@@ -90,18 +89,19 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
         {
             try
             {
+                if (selectedCustomer == null)
+                    throw new ApplicationException("Select a customer first.");
                 SingleObjectWindow window = new();
-                SingleObjectWindowViewModel<OrderDto, Order, IOrderService> viewModel = new(new OrderDto() { CustomerId = SelectedCustomer.Id, Customer = SelectedCustomer, DateOfPurchase = DateTime.Now }, _orderService, true);
+                SingleObjectWindowViewModel<OrderDto, Order, IOrderService> viewModel = new(new OrderDto() { Customer = SelectedCustomer, DateOfPurchase = DateTime.Now }, _orderService, true);
                 window.DataContext = viewModel;
                 window.Owner = Application.Current.MainWindow;
                 // property grid is not theme aware, dark skin messes it up
                 ThemeManager.Current.ChangeTheme(window, "Light.Blue");
                 window.ShowDialog();
-                SelectedCustomer = null;
             }
             catch (Exception e)
             {
-                ShowError(e.Message);
+                ShowWarning(e.Message);
             }
         }
     }

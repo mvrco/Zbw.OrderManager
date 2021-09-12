@@ -21,6 +21,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
         public int Id { get; set; }
         public DateTime DateOfPurchase { get; set; }
         [ReadOnly(true)]
+        [Browsable(false)]
         public int CustomerId { get; set; }
         public virtual CustomerDto Customer { get; set; }
         public virtual ICollection<PositionDto> Positions { get; private set; }
