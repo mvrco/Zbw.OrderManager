@@ -3,23 +3,39 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+using ZbW.ITB1821H.OrderManager.Model.Service;
 using ZbW.ITB1821H.OrderManager.UserInterface.Util;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Dto
 {
-    public class CustomerDto
+    public class CustomerDto : INotifyPropertyChanged
     {
+        private PasswordService passwordService;
         private const string EMAIL_REGEX = @"^[a-zA-Z][\w\d\-\.]+[a-zA-Z]@([\w\-\d]+\.)+[\w-]{2,4}$";
         private string name;
         private string email;
         private string website;
         private string customerId;
+        private string password;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        public CustomerDto()
+        {
+            passwordService = new();
+        }
 
         [ReadOnly(true)]
         public int Id { get; set; }
 
         [Editor(typeof(TextBoxValidationEditor), typeof(TextBoxValidationEditor))]
-        public string CustomerId {
+        public string CustomerId
+        {
             get
             {
                 return customerId;
@@ -83,8 +99,22 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
                 website = value;
             }
         }
-        [Editor(typeof(TextBoxValidationEditor), typeof(TextBoxValidationEditor))]
-        public string Password { get; set; }
+
+        [Editor(typeof(PasswordBoxValidationEditor), typeof(PasswordBoxValidationEditor))]
+        public string Password
+        {
+            get
+            {
+                return password;
+            }
+            set
+            {
+                password = value;
+                passwordService.HashPassword(password, this);
+                OnPropertyChanged(PasswordSalt);
+                OnPropertyChanged(PasswordHash);
+            }
+        }
         [ReadOnly(true)]
         public string PasswordSalt { get; set; }
         [ReadOnly(true)]

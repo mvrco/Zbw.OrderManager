@@ -26,7 +26,7 @@
         </Grid.ColumnDefinitions>
 
         <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-            <DataGrid x:Name="customersDatagrid" MouseDoubleClick="CustomersDataGrid_DoubleClick"
+            <DataGrid x:Name="customersDatagrid" IsReadOnly="True" MouseDoubleClick="CustomersDataGrid_DoubleClick"
                       mah:DataGridHelper.SelectionUnit="FullRow" CanUserAddRows="False" CanUserDeleteRows="False" ItemsSource="{Binding Customers}" SelectionMode="Single" SelectedItem="{Binding SelectedCustomer}">
                 <DataGrid.InputBindings>
                     <KeyBinding Key="Delete" Command="{Binding DeleteCustomerCommand}" />
@@ -35,7 +35,7 @@
         </ScrollViewer>
         <GridSplitter Grid.Column="1" ResizeDirection="Columns" ShowsPreview="True" />
         <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-            <DataGrid x:Name="ordersDatagrid" MouseDoubleClick="OrdersDataGrid_DoubleClick" CanUserAddRows="False" CanUserDeleteRows="False"
+            <DataGrid x:Name="ordersDatagrid" IsReadOnly="True" MouseDoubleClick="OrdersDataGrid_DoubleClick" CanUserAddRows="False" CanUserDeleteRows="False"
                       mah:DataGridHelper.SelectionUnit="FullRow" ItemsSource="{Binding SelectedCustomer.Orders}" SelectionMode="Single" SelectedItem="{Binding SelectedOrder}">
             </DataGrid>
         </ScrollViewer>
