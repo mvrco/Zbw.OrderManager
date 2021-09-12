@@ -37,6 +37,14 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
             isEmailValid = true;
         }
 
+        public static CustomerDto CreateNew()
+        {
+            return new CustomerDto() {
+                isPasswordValid = false, isCustomerIdValid = false, isEmailValid = false, isWebsiteValid = false,
+                Address = new AddressDto()
+            };
+        }
+
         [ReadOnly(true)]
         public int Id { get; set; }
 

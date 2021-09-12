@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ZbW.ITB1821H.OrderManager.UserInterface.Windows"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
         mc:Ignorable="d"
-        Title="Add, view or edit existing customer" Height="450" Width="400">
+        Title="Add, view or edit object" Height="450" Width="400">
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Style="{DynamicResource MahApps.Styles.Button}" Content="Save" Command="{Binding Save}" IsEnabled="{Binding BusinessObject.IsValid}"/>

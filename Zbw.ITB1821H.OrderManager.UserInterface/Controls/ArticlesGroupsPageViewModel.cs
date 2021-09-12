@@ -56,7 +56,7 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
             }
             catch (Exception e)
             {
-                MessageBox.Show("");
+                ShowError(e.Message);
             }
         }
 
@@ -65,8 +65,15 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
 
         private void DeleteArticle()
         {
-            _articleService.Delete(SelectedArticle);
-            SelectedArticle = null;
+            try
+            {
+                _articleService.Delete(SelectedArticle);
+                SelectedArticle = null;
+            }
+            catch(Exception e)
+            {
+                ShowError(e.Message);
+            }
         }
     }
 }

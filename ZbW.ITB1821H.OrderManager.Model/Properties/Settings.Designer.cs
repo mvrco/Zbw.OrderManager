@@ -25,7 +25,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("data source=.\\zbw; Initial Catalog=OrderManager; Trusted_Connection=True;Integrat" +
+        [global::System.Configuration.DefaultSettingValueAttribute("data source=LAPTOP-9DAPODK6; Initial Catalog=OrderManager; Trusted_Connection=True;Integrat" +
             "ed Security=SSPI;")]
         public string ConnectionString {
             get {
