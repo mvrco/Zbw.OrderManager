@@ -14,8 +14,8 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
         public int? ParentGroupId { get; set; }
         [ExpandableObject]
         public virtual ArticleGroupDto ParentGroup { get; set; }
-        public virtual ICollection<ArticleGroupDto> SubArticleGroups { get; set; }
-        public virtual ICollection<ArticleDto> Articles { get; set; }
+        public virtual ICollection<ArticleGroupDto> SubArticleGroups { get; private set; }
+        public virtual ICollection<ArticleDto> Articles { get; private set; }
 
         // TODO tostring
     }

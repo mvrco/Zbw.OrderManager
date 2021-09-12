@@ -23,6 +23,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
         [ReadOnly(true)]
         public int CustomerId { get; set; }
         public virtual CustomerDto Customer { get; set; }
-        public virtual ICollection<PositionDto> Positions { get; set; }
+        public virtual ICollection<PositionDto> Positions { get; private set; }
     }
 }

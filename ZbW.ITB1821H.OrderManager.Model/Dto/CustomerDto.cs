@@ -13,10 +13,27 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
         private string name;
         private string email;
         private string website;
+        private string customerId;
 
         [ReadOnly(true)]
         public int Id { get; set; }
-        
+
+        [Editor(typeof(TextBoxValidationEditor), typeof(TextBoxValidationEditor))]
+        public string CustomerId {
+            get
+            {
+                return customerId;
+            }
+            set
+            {
+                if (!value.StartsWith("CU"))
+                    throw new ApplicationException("Must start with 'CU'");
+                if (value.Length != 7)
+                    throw new ApplicationException("Not long enough");
+                customerId = value;
+            }
+        }
+
         [Editor(typeof(TextBoxValidationEditor), typeof(TextBoxValidationEditor))]
         public string Name
         {
@@ -29,10 +46,10 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
                 name = value;
             }
         }
-        
+
         [Editor(typeof(TextBoxValidationEditor), typeof(TextBoxValidationEditor))]
         public string LastName { get; set; }
-        
+
         [ReadOnly(true)]
         public string FullName => Name + " " + LastName;
 
@@ -53,7 +70,8 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
         }
 
         [Editor(typeof(TextBoxValidationEditor), typeof(TextBoxValidationEditor))]
-        public string Website {
+        public string Website
+        {
             get
             {
                 return website;
@@ -75,7 +93,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
         public int AddressId { get; set; }
         [ExpandableObject]
         public virtual AddressDto Address { get; set; }
-        public virtual ICollection<OrderDto> Orders { get; set; }
+        public virtual ICollection<OrderDto> Orders { get; private set; }
 
         public override string ToString()
         {

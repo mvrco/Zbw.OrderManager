@@ -1,5 +1,7 @@
 ﻿using log4net;
+using Microsoft.Xaml.Behaviors.Core;
 using System.Collections.Generic;
+using System.Windows.Input;
 using ZbW.ITB1821H.OrderManager.Controls;
 using ZbW.ITB1821H.OrderManager.Model.Dto;
 using ZbW.ITB1821H.OrderManager.Model.Repository;
@@ -35,5 +37,14 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
         }
 
         public OrderDto SelectedOrder { get; set; }
+
+        private ActionCommand deleteCustomerCommand;
+        public ICommand DeleteCustomerCommand => deleteCustomerCommand ??= new ActionCommand(DeleteCustomer);
+
+        private void DeleteCustomer()
+        {
+            _customerService.Delete(selectedCustomer);
+            SelectedCustomer = null;
+        }
     }
 }

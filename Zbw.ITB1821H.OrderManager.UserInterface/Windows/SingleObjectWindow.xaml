@@ -11,7 +11,7 @@
         <xctk:PropertyGrid.PropertyDefinitions>
             <!--<xctk:PropertyDefinition Name="Id" IsBrowsable="False" />-->
             <xctk:PropertyDefinition Name="AddressId" IsBrowsable="False"/>
-            <xctk:PropertyDefinition Name="CustomerId" IsBrowsable="False" />
+            
             <xctk:PropertyDefinition Name="OrderId" IsBrowsable="False" />
             <xctk:PropertyDefinition Name="InvoiceId" IsBrowsable="False" />
             <xctk:PropertyDefinition Name="PositionId" IsBrowsable="False" />

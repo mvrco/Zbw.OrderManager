@@ -28,7 +28,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
         public DateTime CreateDate { get; set; }
         [ExpandableObject]
         public virtual ArticleGroupDto ArticleGroup { get; set; }
-        public virtual ICollection<PositionDto> Positions { get; set; }
+        public virtual ICollection<PositionDto> Positions { get; private set; }
 
         // TODO tostring
     }

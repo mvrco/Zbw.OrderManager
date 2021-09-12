@@ -19,13 +19,21 @@
         </Grid.ColumnDefinitions>
 
         <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-            <DataGrid x:Name="articleGroupDatagrid" MouseDoubleClick="ArticleGroupsDataGrid_DoubleClick" mah:DataGridHelper.SelectionUnit="FullRow" CanUserAddRows="True" ItemsSource="{Binding ArticleGroups}"
-                                  SelectionMode="Single" SelectedItem="{Binding SelectedArticleGroup}" />
+            <DataGrid x:Name="articleGroupDatagrid" MouseDoubleClick="ArticleGroupsDataGrid_DoubleClick" mah:DataGridHelper.SelectionUnit="FullRow" CanUserAddRows="False" CanUserDeleteRows="False" ItemsSource="{Binding ArticleGroups}"
+                                  SelectionMode="Single" SelectedItem="{Binding SelectedArticleGroup}" >
+                <DataGrid.InputBindings>
+                    <KeyBinding Key="Delete" Command="{Binding DeleteArticleGroup}" />
+                </DataGrid.InputBindings>
+            </DataGrid>
         </ScrollViewer>
         <GridSplitter Grid.Column="1" ResizeDirection="Columns" ShowsPreview="True" />
         <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-            <DataGrid x:Name="articlesDatagrid" MouseDoubleClick="ArticlesDataGrid_DoubleClick" mah:DataGridHelper.SelectionUnit="FullRow" CanUserAddRows="False" ItemsSource="{Binding SelectedArticleGroup.Articles}"
-                                  SelectionMode="Single" SelectedItem="{Binding SelectedArticle}" />
+            <DataGrid x:Name="articlesDatagrid" MouseDoubleClick="ArticlesDataGrid_DoubleClick" mah:DataGridHelper.SelectionUnit="FullRow" CanUserAddRows="False" CanUserDeleteRows="False" ItemsSource="{Binding SelectedArticleGroup.Articles}"
+                                  SelectionMode="Single" SelectedItem="{Binding SelectedArticle}" >
+                <DataGrid.InputBindings>
+                    <KeyBinding Key="Delete" Command="{Binding DeleteArticleCommand}" />
+                </DataGrid.InputBindings>
+            </DataGrid>
         </ScrollViewer>
     </Grid>
 </Page>
