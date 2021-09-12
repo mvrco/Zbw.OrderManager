@@ -11,7 +11,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Entities
         public string CustomerId { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }
-        public string FullName => Name + " " + LastName;
         public string Email { get; set; }
         public string Website { get; set; }
         public string PasswordSalt { get; set; }

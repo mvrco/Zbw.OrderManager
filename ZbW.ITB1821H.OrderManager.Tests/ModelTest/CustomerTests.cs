@@ -18,8 +18,8 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
         {
             var inMemoryDatabase = new InMemoryDatabase();
             var mock = new Mock<ICustomerRepository>();
-            var customer = new Customer { CustomerId = "CU10001", Name = "Monica", LastName = "Watson", Email = "watson@outlook.com", Website = "www.monica.com", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 };
-            var dto = new CustomerDto { CustomerId = "CU10001", Name = "Monica", LastName = "Watson", Email = "watson@outlook.com", Website = "www.monica.com", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 };
+            var dto = new CustomerDto { CustomerId = "CU10030", Name = "Monica", LastName = "Watson", Email = "watson@outlook.com", Website = "www.monica.com", Password = "45$$sDFAEeesf", AddressId = 1001 };
+            var customer = new Customer { CustomerId = dto.CustomerId, Name = dto.Name, LastName = dto.LastName, Email = dto.Email, Website = dto.Website, AddressId = dto.AddressId };
 
             mock.Setup(x => x.Add(It.IsAny<Customer>()))
                 .Callback(() => inMemoryDatabase.Customers.Add(customer));
@@ -66,7 +66,7 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
             var inMemoryDatabase = new InMemoryDatabase();
             var mock = new Mock<ICustomerRepository>();
             var customer = inMemoryDatabase.Customers.Where(x => x.Id == 2).FirstOrDefault();
-            var dto = new CustomerDto { Id = 2, CustomerId = "CU10002", Name = "Iris", LastName = "Watson", Email = "iris-watson@gmail.com", Website = "www.facebook.com/asdf", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 };
+            var dto = new CustomerDto { Id = 2, CustomerId = "CU10002", Name = "Iris", LastName = "Watson", Email = "iris-watson@gmail.com", Website = "www.facebook.com/asdf", AddressId = 1001 };
 
             mock.Setup(x => x.Delete(It.IsAny<Customer>()))
                 .Callback(() => inMemoryDatabase.Customers.Remove(customer));
@@ -82,7 +82,7 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
         {
             var inMemoryDatabase = new InMemoryDatabase();
             var mock = new Mock<ICustomerRepository>();
-            var dto = new CustomerDto { Id = 2, CustomerId = "CU10002", Name = "Iris", LastName = "Watson", Email = "iris-watson@gmail.com", Website = "www.facebook.com/asdf", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001,
+            var dto = new CustomerDto { Id = 2, CustomerId = "CU10002", Name = "Iris", LastName = "Watson", Email = "iris-watson@gmail.com", Website = "www.facebook.com/asdf", AddressId = 1001,
                 Orders = new List<OrderDto> { new OrderDto() { Id = 1, CustomerId = 2, DateOfPurchase = new DateTime(2021, 10, 5) } }
             };
 
@@ -125,7 +125,7 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
         {
             var inMemoryDatabase = new InMemoryDatabase();
             var mock = new Mock<ICustomerRepository>();
-            var dto = new CustomerDto { Id = 4, CustomerId = "CU10004", Name = "Theodore", LastName = "Lowe", Email = "theo.Lowe@bdd_dd.com", Website = "http://lowe.net", PasswordSalt = "09820278", PasswordHash = "236ED504E07B07B0A5A258267A076280", AddressId = 1003 };
+            var dto = new CustomerDto { Id = 4, CustomerId = "CU10004", Name = "Theodore", LastName = "Lowe", Email = "theo.Lowe@bdd_dd.com", Website = "http://lowe.net", AddressId = 1003 };
 
 
             mock.Setup(x => x.GetSingle(It.IsAny<int>()))
@@ -147,18 +147,17 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
         {
             var inMemoryDatabase = new InMemoryDatabase();
             var mock = new Mock<ICustomerRepository>();
-            var customer = new Customer { Id = 2, CustomerId = "CU10002", Name = "Max", LastName = "Waton", Email = "iris-watson@gmail.com", Website = "www.facebook.com/asdf", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 };
-            var dto = new CustomerDto { Id = 2, CustomerId = "CU10002", Name = "Max", LastName = "Waton", Email = "iris-watson@gmail.com", Website = "www.facebook.com/asdf", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 };
+            var dto = new CustomerDto { Id = 2, CustomerId = "CU10002", Name = "Max", LastName = "Waton", Email = "iris-watson@gmail.com", Website = "www.facebook.com/asdf", AddressId = 1001 };
 
             mock.Setup(x => x.Update(It.IsAny<Customer>()))
                 .Callback(() =>
                 {
                     foreach (var c in inMemoryDatabase.Customers)
                     {
-                        if (c.Id == customer.Id)
+                        if (c.Id == dto.Id)
                         {
-                            c.Name = customer.Name;
-                            c.LastName = customer.LastName;
+                            c.Name = dto.Name;
+                            c.LastName = dto.LastName;
                             break;
                         }
                     }
@@ -166,14 +165,47 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
 
             var service = new CustomerService(mock.Object);
             service.Update(dto);
-            var afterUpdate = inMemoryDatabase.Customers.Where(x => x.Id == customer.Id).FirstOrDefault();
+            var afterUpdate = inMemoryDatabase.Customers.Where(x => x.Id == dto.Id).FirstOrDefault();
 
             Assert.True(
-                customer.Id == afterUpdate.Id
-                && customer.Name == afterUpdate.Name
-                && customer.LastName == afterUpdate.LastName
-                && customer.Website == afterUpdate.Website
-                && customer.FullName == dto.FullName);
+                dto.Id == afterUpdate.Id
+                && dto.Name == afterUpdate.Name
+                && dto.LastName == afterUpdate.LastName
+                && dto.Website == afterUpdate.Website
+                && dto.FullName == dto.FullName);
+        }
+
+        [Fact]
+        public void CustomerService_UpdateWithPassword_ReturnsTrue()
+        {
+            var inMemoryDatabase = new InMemoryDatabase();
+            var mock = new Mock<ICustomerRepository>();
+            var dto = new CustomerDto { Id = 2, CustomerId = "CU10002", Name = "Max", LastName = "Waton", Email = "iris-watson@gmail.com", Password = "abcdhH*DFH23", Website = "www.facebook.com/asdf", AddressId = 1001 };
+
+            mock.Setup(x => x.Update(It.IsAny<Customer>()))
+                .Callback(() =>
+                {
+                    foreach (var c in inMemoryDatabase.Customers)
+                    {
+                        if (c.Id == dto.Id)
+                        {
+                            c.Name = dto.Name;
+                            c.LastName = dto.LastName;
+                            break;
+                        }
+                    }
+                });
+
+            var service = new CustomerService(mock.Object);
+            service.Update(dto);
+            var afterUpdate = inMemoryDatabase.Customers.Where(x => x.Id == dto.Id).FirstOrDefault();
+
+            Assert.True(
+                dto.Id == afterUpdate.Id
+                && dto.Name == afterUpdate.Name
+                && dto.LastName == afterUpdate.LastName
+                && dto.Website == afterUpdate.Website
+                && dto.FullName == dto.FullName);
         }
         #endregion
 
@@ -181,7 +213,7 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
         [Fact]
         public void CustomerDto_ToString_ReturnsTrue()
         {
-            var dto = new CustomerDto { Id = 2, CustomerId = "CU10002", Name = "Max", LastName = "Waton", Email = "iris-watson@gmail.com", Website = "www.facebook.com/asdf", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 };
+            var dto = new CustomerDto { Id = 2, CustomerId = "CU10002", Name = "Max", LastName = "Waton", Email = "iris-watson@gmail.com", Website = "www.facebook.com/asdf", AddressId = 1001 };
 
             Assert.True(dto.ToString() == "Id; 2; FullName; Max Waton");
         }
@@ -189,32 +221,44 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
         [Fact]
         public void CustomerDto_ValidationMail_ThrowsException()
         {
-            Assert.Throws<ApplicationException>(() => new CustomerDto { Id = 2, CustomerId = "CU10002", Name = "Max", LastName = "Waton", Email = "iris-watsongmail.com", Website = "www.facebook.com/asdf", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 });
+            Assert.Throws<ApplicationException>(() => new CustomerDto { Id = 2, CustomerId = "CU10002", Name = "Max", LastName = "Waton", Email = "iris-watsongmail.com", Website = "www.facebook.com/asdf", AddressId = 1001 });
         }
 
 
         [Fact]
         public void CustomerDto_ValidationWebsite_ThrowsException()
         {
-            Assert.Throws<ApplicationException>(() => new CustomerDto { Id = 2, CustomerId = "CU10002", Name = "Max", LastName = "Waton", Email = "iris-watson@gmail.com", Website = "www.facebook@\\.com", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 });
+            Assert.Throws<ApplicationException>(() => new CustomerDto { Id = 2, CustomerId = "CU10002", Name = "Max", LastName = "Waton", Email = "iris-watson@gmail.com", Website = "www.facebook@\\.com", AddressId = 1001 });
         }
 
         [Fact]
         public void CustomerDto_ValidationCustomerIdCU_ThrowsException()
         {
-            Assert.Throws<ApplicationException>(() => new CustomerDto { Id = 2, CustomerId = "CD10002", Name = "Max", LastName = "Waton", Email = "iris-watson@gmail.com", Website = "www.facebook@\\.com", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 });
+            Assert.Throws<ApplicationException>(() => new CustomerDto { Id = 2, CustomerId = "CD10002", Name = "Max", LastName = "Waton", Email = "iris-watson@gmail.com", Website = "www.facebook@\\.com", AddressId = 1001 });
         }
 
         [Fact]
         public void CustomerDto_ValidationCustomerIdLength_ThrowsException()
         {
-            Assert.Throws<ApplicationException>(() => new CustomerDto { Id = 2, CustomerId = "CU102", Name = "Max", LastName = "Waton", Email = "iris-watson@gmail.com", Website = "www.facebook@\\.com", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 });
+            Assert.Throws<ApplicationException>(() => new CustomerDto { Id = 2, CustomerId = "CU102", Name = "Max", LastName = "Waton", Email = "iris-watson@gmail.com", Website = "www.facebook@\\.com", AddressId = 1001 });
         }
 
         [Fact]
-        public void CustomerDto_ValidationPassword_ThrowsException()
+        public void CustomerDto_ValidationPasswordLength_ThrowsException()
         {
-            Assert.Throws<ApplicationException>(() => new CustomerDto { Id = 2, CustomerId = "CU10002", Name = "Max", LastName = "Waton", Email = "iris-watson@gmail.com", Website = "www.facebook.com", Password = "123", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1001 });
+            Assert.Throws<ApplicationException>(() => new CustomerDto { Id = 2, CustomerId = "CU10002", Name = "Max", LastName = "Waton", Email = "iris-watson@gmail.com", Website = "www.facebook.com", Password = "123", AddressId = 1001 });
+        }
+
+        [Fact]
+        public void CustomerDto_ValidationPasswordDigit_ThrowsException()
+        {
+            Assert.Throws<ApplicationException>(() => new CustomerDto { Id = 2, CustomerId = "CU10002", Name = "Max", LastName = "Waton", Email = "iris-watson@gmail.com", Website = "www.facebook.com", Password = "asdfCDEH", AddressId = 1001 });
+        }
+
+        [Fact]
+        public void CustomerDto_ValidationPasswordSpecialCharacter_ThrowsException()
+        {
+            Assert.Throws<ApplicationException>(() => new CustomerDto { Id = 2, CustomerId = "CU10002", Name = "Max", LastName = "Waton", Email = "iris-watson@gmail.com", Website = "www.facebook.com", Password = "as12CDEH", AddressId = 1001 });
         }
         #endregion
     }

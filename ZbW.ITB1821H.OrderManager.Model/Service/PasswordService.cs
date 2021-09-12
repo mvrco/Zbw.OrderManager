@@ -2,6 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using ZbW.ITB1821H.OrderManager.Model.Dto;
+using ZbW.ITB1821H.OrderManager.Model.Entities;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Service
 {
@@ -13,7 +14,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
     /// </summary>
     /// <param name="password">Non-hashed password string</param>
     /// <param name="customer">Customer which the password should be stored to</param>
-    public void HashPassword(string password, CustomerDto customer)
+    public void HashPassword(string password, Customer customer)
     {
       var r = new Random();
       customer.PasswordSalt = r.Next(10000000, 99999999).ToString();
@@ -26,7 +27,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
     /// <param name="password">Non-hashed password string to compare</param>
     /// <param name="customer">The customer with the password to compare</param>
     /// <returns>True if the hash-strings are equal</returns>
-    public bool ComparePassword(string password, CustomerDto customer)
+    public bool ComparePassword(string password, Customer customer)
     {
       return customer.PasswordHash == Hash(password, customer.PasswordSalt);
     }

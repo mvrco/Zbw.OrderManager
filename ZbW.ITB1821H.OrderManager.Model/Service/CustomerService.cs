@@ -34,5 +34,24 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
                 throw new InvalidOperationException("This customer already has invoices and can therefore no longer be deleted.");
             }
         }
+
+        public new void Add(CustomerDto entity)
+        {
+            var pwService = new PasswordService();
+            var mappedEntity = _mapper.Map<Customer>(entity);
+            pwService.HashPassword(entity.Password, mappedEntity);
+            _repo.Add(mappedEntity);
+        }
+
+        public new void Update(CustomerDto entity)
+        {
+            var mappedEntity = _mapper.Map<Customer>(entity);
+            if (entity.Password != "*****" && entity.Password != null)
+            {
+                var pwService = new PasswordService();
+                pwService.HashPassword(entity.Password, mappedEntity);
+            }
+            _repo.Update(mappedEntity);
+        }
     }
 }
