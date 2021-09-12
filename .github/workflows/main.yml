@@ -31,3 +31,7 @@ jobs:
       run: msbuild
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Deploy MkDocs
+      uses: mhausenblas/mkdocs-deploy-gh-pages@1.23
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
