@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
+using System;
 using ZbW.ITB1821H.OrderManager.Model.Dto;
 using ZbW.ITB1821H.OrderManager.Model.Entities;
 using ZbW.ITB1821H.OrderManager.Model.Repository.Interfaces;
@@ -20,6 +21,18 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
                 cfg.AddExpressionMapping();
             });
             _mapper = new Mapper(config);
+        }
+
+        public new void Delete(ArticleGroupDto entity)
+        {
+            if (entity.SubArticleGroups == null && entity.Articles == null)
+            {
+                _repo.Delete(_mapper.Map<ArticleGroup>(entity));
+            }
+            else
+            {
+                throw new InvalidOperationException("The articelgroup depends to other entities and therefore cannot be deleted.");
+            }
         }
     }
 }

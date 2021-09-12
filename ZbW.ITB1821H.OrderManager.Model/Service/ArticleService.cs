@@ -21,5 +21,11 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
             });
             _mapper = new Mapper(config);
         }
+
+        public new void Delete(ArticleDto entity)
+        {
+            entity.IsActive = false;
+            _repo.Update(_mapper.Map<Article>(entity));
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
+using System;
 using ZbW.ITB1821H.OrderManager.Model.Dto;
 using ZbW.ITB1821H.OrderManager.Model.Entities;
 using ZbW.ITB1821H.OrderManager.Model.Repository.Interfaces;
@@ -20,6 +21,18 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
                 cfg.AddExpressionMapping();
             });
             _mapper = new Mapper(config);
+        }
+
+        public new void Delete(CustomerDto entity)
+        {
+            if (entity.Orders == null)
+            {
+                _repo.Delete(_mapper.Map<Customer>(entity));
+            }
+            else
+            {
+                throw new InvalidOperationException("This customer already has invoices and can therefore no longer be deleted.");
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
+using System;
 using ZbW.ITB1821H.OrderManager.Model.Dto;
 using ZbW.ITB1821H.OrderManager.Model.Entities;
 using ZbW.ITB1821H.OrderManager.Model.Repository.Interfaces;
@@ -21,6 +22,11 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
                 cfg.AddExpressionMapping();
             });
             _mapper = new Mapper(config);
+        }
+
+        public new void Delete(OrderDto entity)
+        {
+            throw new InvalidOperationException("The order depends to positions and therefore cannot be deleted.");
         }
     }
 }

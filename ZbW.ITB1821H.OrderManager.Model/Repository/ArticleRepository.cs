@@ -49,15 +49,5 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
                 .FirstOrDefault(x => x.Id == pkValue);
             }
         }
-
-        public void Delete(Article entity)
-        {
-            entity.IsActive = false;
-            using (var context = new DatabaseContext())
-            {
-                context.Set<Article>().Update(entity);
-                context.SaveChanges();
-            }
-        }
     }
 }

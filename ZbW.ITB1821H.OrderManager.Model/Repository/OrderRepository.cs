@@ -52,10 +52,5 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
                     .FirstOrDefault(x => x.Id == pkValue);
             }
         }
-
-        public void Delete(Order entity)
-        {
-            throw new InvalidOperationException("The order depends to positions and therefore cannot be deleted.");
-        }
     }
 }

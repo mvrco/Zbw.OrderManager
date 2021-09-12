@@ -49,21 +49,5 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
                     .FirstOrDefault(x => x.Id == pkValue);
             }
         }
-
-        public void Delete(Customer entity)
-        {
-            if (entity.Orders == null)
-            {
-                using (var context = new DatabaseContext())
-                {
-                    context.Set<Customer>().Remove(entity);
-                    context.SaveChanges();
-                }
-            }
-            else
-            {
-                throw new InvalidOperationException("This customer already has invoices and can therefore no longer be deleted.");
-            }
-        }
     }
 }

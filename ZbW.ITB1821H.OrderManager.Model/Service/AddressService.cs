@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
+using System;
 using ZbW.ITB1821H.OrderManager.Model.Dto;
 using ZbW.ITB1821H.OrderManager.Model.Entities;
 using ZbW.ITB1821H.OrderManager.Model.Repository.Interfaces;
@@ -20,6 +21,18 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
                 cfg.AddExpressionMapping();
             });
             _mapper = new Mapper(config);
+        }
+
+        public new void Delete(AddressDto entity)
+        {
+            if (entity.Customers == null)
+            {
+                _repo.Delete(_mapper.Map<Address>(entity));
+            }
+            else
+            {
+                throw new InvalidOperationException("The address depends to a customer and therefore cannot be deleted.");
+            }
         }
     }
 }

@@ -39,21 +39,5 @@ namespace ZbW.ITB1821H.OrderManager.Model.Repository
                 .FirstOrDefault(x => x.Id == pkValue);
             }
         }
-
-        public void Delete(ArticleGroup entity)
-        {
-            if (entity.SubArticleGroups == null && entity.Articles == null)
-            {
-                using (var context = new DatabaseContext())
-                {
-                    context.Set<ArticleGroup>().Remove(entity);
-                    context.SaveChanges();
-                }
-            }
-            else
-            {
-                throw new InvalidOperationException("The articelgroup depends to other entities and therefore cannot be deleted.");
-            }
-        }
     }
 }
