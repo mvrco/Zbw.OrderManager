@@ -186,6 +186,10 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
             }
         }
         [Browsable(false)]
+        public string PasswordHash { get; set; }
+        [Browsable(false)]
+        public string PasswordSalt { get; set; }
+        [Browsable(false)]
         public int AddressId { get; set; }
         [ExpandableObject]
         public virtual AddressDto Address { get; set; }
