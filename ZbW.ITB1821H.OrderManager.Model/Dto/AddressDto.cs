@@ -83,6 +83,6 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
             }
         }
 
-        public virtual ICollection<CustomerDto> Customers { get; private set; }
+        public virtual ICollection<CustomerDto> Customers { get; set; }
     }
 }

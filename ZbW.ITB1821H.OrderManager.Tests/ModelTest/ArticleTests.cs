@@ -63,16 +63,24 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
         {
             var inMemoryDatabase = new InMemoryDatabase();
             var mock = new Mock<IArticleRepository>();
-            var article = new Article { Id = 101, Name = "Banana", Description = "Fresh from Columbia", Price = 1.12, ArticleGroupId = 11 };
             var dto = new ArticleDto { Id = 101, Name = "Banana", Description = "Fresh from Columbia", Price = 1.12, ArticleGroupId = 11 };
 
             mock.Setup(x => x.Delete(It.IsAny<Article>()))
-                .Callback(() => inMemoryDatabase.Articles.Remove(article));
+                .Callback(() => { 
+                    foreach (var a in inMemoryDatabase.Articles)
+                    {
+                        if(a.Id == dto.Id)
+                        {
+                            a.IsActive = false;
+                        }
+                    }
+                });
 
             var service = new ArticleService(mock.Object);
             service.Delete(dto);
 
-            Assert.False(inMemoryDatabase.Articles.Contains(article));
+            var article = inMemoryDatabase.Articles.Where(x => x.Id == 101).FirstOrDefault();
+            Assert.True(article.IsActive == false);
         }
 
         [Fact]
