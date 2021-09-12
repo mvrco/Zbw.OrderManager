@@ -4,19 +4,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZbW.ITB1821H.OrderManager.UserInterface.Windows"
-        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
         mc:Ignorable="d"
         Title="Add, view or edit existing customer" Height="450" Width="400">
-    <xctk:PropertyGrid ShowTitle="False" SelectedObject="{Binding BusinessObject}" ShowAdvancedOptions="True" ShowSortOptions="False" ShowSummary="False">
-        <xctk:PropertyGrid.PropertyDefinitions>
-            <!--<xctk:PropertyDefinition Name="Id" IsBrowsable="False" />-->
-            <xctk:PropertyDefinition Name="AddressId" IsBrowsable="False"/>
-            
-            <xctk:PropertyDefinition Name="OrderId" IsBrowsable="False" />
-            <xctk:PropertyDefinition Name="InvoiceId" IsBrowsable="False" />
-            <xctk:PropertyDefinition Name="PositionId" IsBrowsable="False" />
-            <xctk:PropertyDefinition Name="ArticleId" IsBrowsable="False" />
-            <xctk:PropertyDefinition Name="ArticleGroupId" IsBrowsable="False" />
-        </xctk:PropertyGrid.PropertyDefinitions>
-    </xctk:PropertyGrid>
+    <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Style="{DynamicResource MahApps.Styles.Button}" Content="Save" Command="{Binding Save}" IsEnabled="{Binding BusinessObject.IsValid}"/>
+            <Button Style="{DynamicResource MahApps.Styles.Button}" Content="Cancel" Click="Cancel_Click" IsEnabled="True"/>
+        </StackPanel>
+        <xctk:PropertyGrid ShowTitle="False" SelectedObject="{Binding BusinessObject}" ShowAdvancedOptions="True" ShowSortOptions="False" ShowSummary="False">
+            <xctk:PropertyGrid.PropertyDefinitions>
+                <xctk:PropertyDefinition Name="AddressId" IsBrowsable="False"/>
+                <xctk:PropertyDefinition Name="OrderId" IsBrowsable="False" />
+                <xctk:PropertyDefinition Name="InvoiceId" IsBrowsable="False" />
+                <xctk:PropertyDefinition Name="PositionId" IsBrowsable="False" />
+                <xctk:PropertyDefinition Name="ArticleId" IsBrowsable="False" />
+                <xctk:PropertyDefinition Name="ArticleGroupId" IsBrowsable="False" />
+            </xctk:PropertyGrid.PropertyDefinitions>
+        </xctk:PropertyGrid>
+    </DockPanel>
 </mah:MetroWindow>

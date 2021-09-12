@@ -4,6 +4,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using ZbW.ITB1821H.OrderManager.Model.Dto;
+using ZbW.ITB1821H.OrderManager.Model.Entities;
+using ZbW.ITB1821H.OrderManager.Model.Repository;
+using ZbW.ITB1821H.OrderManager.Model.Service;
 using ZbW.ITB1821H.OrderManager.UserInterface.Util;
 using ZbW.ITB1821H.OrderManager.UserInterface.Windows;
 
@@ -43,7 +46,7 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
         private void CustomersDataGrid_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             SingleObjectWindow window = new();
-            SingleObjectWindowViewModel<CustomerDto> viewModel = new(customersDatagrid.SelectedItem as CustomerDto);
+            SingleObjectWindowViewModel<CustomerDto, Customer, CustomerService> viewModel = new(customersDatagrid.SelectedItem as CustomerDto, new CustomerService(new CustomerRepository()));
             window.DataContext = viewModel;
             window.Owner = Application.Current.MainWindow;
             // property grid is not theme aware, dark skin messes it up
@@ -54,7 +57,7 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
         private void OrdersDataGrid_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             SingleObjectWindow window = new();
-            SingleObjectWindowViewModel<OrderDto> viewModel = new(ordersDatagrid.SelectedItem as OrderDto);
+            SingleObjectWindowViewModel<OrderDto, Order, OrderService> viewModel = new(ordersDatagrid.SelectedItem as OrderDto, new OrderService(new OrderRepository()));
             window.DataContext = viewModel;
             window.Owner = Application.Current.MainWindow;
             // property grid is not theme aware, dark skin messes it up

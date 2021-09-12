@@ -6,7 +6,7 @@ using ZbW.ITB1821H.OrderManager.UserInterface.Util;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Dto
 {
-    public class ArticleDto
+    public class ArticleDto : IValidate
     {
         private string name;
         [ReadOnly(true)]
@@ -29,6 +29,10 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
         [ExpandableObject]
         public virtual ArticleGroupDto ArticleGroup { get; set; }
         public virtual ICollection<PositionDto> Positions { get; private set; }
+
+        // nothing to validate (yet)
+        [Browsable(false)]
+        public bool IsValid => true;
 
         // TODO tostring
     }

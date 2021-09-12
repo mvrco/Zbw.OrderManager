@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Dto
 {
-    public class InvoiceDto
+    public class InvoiceDto : IValidate
     {
         [ReadOnly(true)]
         public int CustomerId { get; set; }
@@ -20,5 +20,9 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
         [ReadOnly(true)]
         public int OrderId { get; set; }
         public double Amount { get; set; }
+
+        // nothing to validate (yet)
+        [Browsable(false)]
+        public bool IsValid => true;
     }
 }

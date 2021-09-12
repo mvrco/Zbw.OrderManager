@@ -1,6 +1,8 @@
-﻿namespace ZbW.ITB1821H.OrderManager.Model.Dto
+﻿using System.ComponentModel;
+
+namespace ZbW.ITB1821H.OrderManager.Model.Dto
 {
-    public class QuartalsReportingDto
+    public class QuartalsReportingDto : IValidate
     {
         public string Category { get; set; }
         public double YOYinPercent { get; set; }
@@ -16,5 +18,9 @@
         public double QuartalMinus9 { get; set; }
         public double QuartalMinus10 { get; set; }
         public double QuartalMinus11 { get; set; }
+
+        // nothing to validate (yet)
+        [Browsable(false)]
+        public bool IsValid => true;
     }
 }

@@ -3,6 +3,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using ZbW.ITB1821H.OrderManager.Model.Dto;
+using ZbW.ITB1821H.OrderManager.Model.Entities;
+using ZbW.ITB1821H.OrderManager.Model.Repository;
+using ZbW.ITB1821H.OrderManager.Model.Service;
 using ZbW.ITB1821H.OrderManager.UserInterface.Util;
 using ZbW.ITB1821H.OrderManager.UserInterface.Windows;
 
@@ -42,7 +45,7 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
         private void ArticlesDataGrid_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             SingleObjectWindow window = new();
-            SingleObjectWindowViewModel<ArticleDto> viewModel = new(articlesDatagrid.SelectedItem as ArticleDto);
+            SingleObjectWindowViewModel<ArticleDto, Article, ArticleService> viewModel = new(articlesDatagrid.SelectedItem as ArticleDto, new ArticleService(new ArticleRepository()));
             window.DataContext = viewModel;
             window.Owner = Application.Current.MainWindow;
             window.ShowDialog();
@@ -52,7 +55,7 @@ namespace ZbW.ITB1821H.OrderManager.UserInterface.Controls
         private void ArticleGroupsDataGrid_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             SingleObjectWindow window = new();
-            SingleObjectWindowViewModel<ArticleGroupDto> viewModel = new(articleGroupDatagrid.SelectedItem as ArticleGroupDto);
+            SingleObjectWindowViewModel<ArticleGroupDto, ArticleGroup, ArticleGroupService> viewModel = new(articleGroupDatagrid.SelectedItem as ArticleGroupDto, new ArticleGroupService(new ArticleGroupRepository()));
             window.DataContext = viewModel;
             window.Owner = Application.Current.MainWindow;
             window.ShowDialog();

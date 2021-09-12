@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Dto
 {
-    public class OrderDto
+    public class OrderDto : IValidate
     {
         public OrderDto()
         {
@@ -24,5 +24,9 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
         public int CustomerId { get; set; }
         public virtual CustomerDto Customer { get; set; }
         public virtual ICollection<PositionDto> Positions { get; private set; }
+
+        // nothing to validate (yet)
+        [Browsable(false)]
+        public bool IsValid => true;
     }
 }

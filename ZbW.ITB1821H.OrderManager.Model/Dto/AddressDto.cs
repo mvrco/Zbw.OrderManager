@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Dto
 {
-    public class AddressDto
+    public class AddressDto : IValidate
     {
         private int id;
         private string street;
@@ -84,5 +84,9 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
         }
 
         public virtual ICollection<CustomerDto> Customers { get; set; }
+
+        //nothing to validate (yet)
+        [Browsable(false)]
+        public bool IsValid => true;
     }
 }

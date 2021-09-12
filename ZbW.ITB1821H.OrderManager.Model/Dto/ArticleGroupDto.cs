@@ -4,7 +4,7 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Dto
 {
-    public class ArticleGroupDto
+    public class ArticleGroupDto : IValidate
     {
         [ReadOnly(true)]
         public int Id { get; set; }
@@ -16,6 +16,10 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
         public virtual ArticleGroupDto ParentGroup { get; set; }
         public virtual ICollection<ArticleGroupDto> SubArticleGroups { get; set; }
         public virtual ICollection<ArticleDto> Articles { get; set; }
+
+        // nothing to validate (yet)
+        [Browsable(false)]
+        public bool IsValid => true;
 
         // TODO tostring
     }

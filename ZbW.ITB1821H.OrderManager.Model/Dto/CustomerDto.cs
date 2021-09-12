@@ -9,7 +9,7 @@ using ZbW.ITB1821H.OrderManager.UserInterface.Util;
 
 namespace ZbW.ITB1821H.OrderManager.Model.Dto
 {
-    public class CustomerDto : INotifyPropertyChanged
+    public class CustomerDto : INotifyPropertyChanged, IValidate
     {
         private const string EMAIL_REGEX = @"^[a-zA-Z][\w\d\-\.]+[a-zA-Z]@([\w\-\d]+\.)+[\w-]{2,4}$";
         private string name;
@@ -18,6 +18,8 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
         private string customerId;
         private string password;
         private string lastName;
+
+        private bool isEmailValid, isCustomerIdValid, isWebsiteValid, isPasswordValid;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -29,6 +31,10 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
         public CustomerDto()
         {
             password = "*****";
+            isPasswordValid = true;
+            isWebsiteValid = true;
+            isCustomerIdValid = true;
+            isEmailValid = true;
         }
 
         [ReadOnly(true)]
@@ -44,10 +50,21 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
             set
             {
                 if (!value.StartsWith("CU"))
+                {
+                    isCustomerIdValid = false;
+                    OnPropertyChanged(nameof(IsValid));
                     throw new ApplicationException("Must start with 'CU'");
-                if (value.Length != 7)
+                }
+                else if (value.Length != 7)
+                {
+                    isCustomerIdValid = false;
+                    OnPropertyChanged(nameof(IsValid));
                     throw new ApplicationException("Not long enough");
+                }
+                isCustomerIdValid = true;
                 customerId = value;
+
+                OnPropertyChanged(nameof(IsValid));
             }
         }
 
@@ -93,8 +110,15 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
             {
                 Regex regex = new Regex(EMAIL_REGEX);
                 if (!regex.IsMatch(value))
+                {
+                    isEmailValid = false;
+                    OnPropertyChanged(nameof(IsValid));
                     throw new ApplicationException("Email address is invalid.");
+                }
+                isEmailValid = true;
                 email = value;
+
+                OnPropertyChanged(nameof(IsValid));
             }
         }
 
@@ -108,8 +132,15 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
             set
             {
                 if (!Uri.IsWellFormedUriString(value, UriKind.RelativeOrAbsolute))
+                {
+                    isWebsiteValid = false;
+                    OnPropertyChanged(nameof(IsValid));
                     throw new ApplicationException("Website is invalid.");
+                }
+                isWebsiteValid = true;
                 website = value;
+
+                OnPropertyChanged(nameof(IsValid));
             }
         }
 
@@ -123,13 +154,27 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
             set
             {
                 if (value.Length < 8)
+                {
+                    isPasswordValid = false;
+                    OnPropertyChanged(nameof(IsValid));
                     throw new ApplicationException("Not long enough.");
-                if (!value.Any(char.IsDigit))
+                }
+                else if (!value.Any(char.IsDigit))
+                {
+                    isPasswordValid = false;
+                    OnPropertyChanged(nameof(IsValid));
                     throw new ApplicationException("Must include at least one number.");
-                if (value.All(char.IsLetterOrDigit))
+                }
+                else if (value.All(char.IsLetterOrDigit))
+                {
+                    isPasswordValid = false;
+                    OnPropertyChanged(nameof(IsValid));
                     throw new ApplicationException("Must include at least one special character.");
-
+                }
+                isPasswordValid = true;
                 password = value;
+
+                OnPropertyChanged(nameof(IsValid));
             }
         }
         [Browsable(false)]
@@ -141,6 +186,14 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
         [ExpandableObject]
         public virtual AddressDto Address { get; set; }
         public virtual ICollection<OrderDto> Orders { get; set; }
+        [Browsable(false)]
+        public bool IsValid
+        {
+            get
+            {
+                return isCustomerIdValid && isEmailValid && isWebsiteValid && isPasswordValid;
+            }
+        }
 
         public override string ToString()
         {
