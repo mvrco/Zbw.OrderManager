@@ -25,7 +25,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Service
 
         public new void Delete(ArticleGroupDto entity)
         {
-            if (entity.SubArticleGroups == null && entity.Articles == null)
+            if (entity.SubArticleGroups.Count == 0 && entity.Articles.Count == 0)
             {
                 _repo.Delete(_mapper.Map<ArticleGroup>(entity));
             }
