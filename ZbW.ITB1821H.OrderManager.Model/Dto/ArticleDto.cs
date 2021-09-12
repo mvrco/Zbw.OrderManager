@@ -12,14 +12,7 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
         [ReadOnly(true)]
         public int Id { get; set; }
         [Editor(typeof(TextBoxValidationEditor), typeof(TextBoxValidationEditor))]
-        public string Name { get => name; set
-            {
-                if (value == "666666")
-                    throw new Exception("Test");
-                name = value;
-
-            }
-        }
+        public string Name { get; set; }
         public string Description { get; set; }
         public double Price { get; set; }
         [ReadOnly(true)]
@@ -29,7 +22,5 @@ namespace ZbW.ITB1821H.OrderManager.Model.Dto
         [ExpandableObject]
         public virtual ArticleGroupDto ArticleGroup { get; set; }
         public virtual ICollection<PositionDto> Positions { get; private set; }
-
-        // TODO tostring
     }
 }

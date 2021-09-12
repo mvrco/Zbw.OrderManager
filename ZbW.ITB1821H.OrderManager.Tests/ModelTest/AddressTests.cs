@@ -83,7 +83,7 @@ namespace ZbW.ITB1821H.OrderManager.Tests.ModelTest
             var inMemoryDatabase = new InMemoryDatabase();
             var mock = new Mock<IAddressRepository>();
             var dto = new AddressDto { Id = 1009, Street = "153 Wood St.", City = "Ocean Springs", State = "MS", PostalCode = "39564", Country = "US", 
-                Customers = new List<CustomerDto> { new CustomerDto { CustomerId = "CU10001", Name = "Monica", LastName = "Watson", Email = "watson@outlook.com", Website = "www.monica.com", PasswordSalt = "78920238", PasswordHash = "73A3E02C4DD27B55E06022C50D7D0AFC", AddressId = 1009 } } };
+                Customers = new List<CustomerDto> { new CustomerDto { CustomerId = "CU10001", Name = "Monica", LastName = "Watson", Email = "watson@outlook.com", Website = "www.monica.com", AddressId = 1009 } } };
 
             var service = new AddressService(mock.Object);
             Assert.Throws<InvalidOperationException>(() => service.Delete(dto));
