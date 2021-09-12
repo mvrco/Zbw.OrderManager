@@ -59,6 +59,15 @@ namespace ZbW.ITB1821H.OrderManager
                 NavigationDestination = new Uri("Controls/OrdersPositionsPage.xaml", UriKind.RelativeOrAbsolute)
             });
 
+            this.Menu.Add(new HamMenuItem()
+            {
+                Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.CalendarPlusSolid },
+                Label = "Reports",
+                NavigationType = typeof(YearOverviewPage),
+                NavigationDestination = new Uri("Controls/YearOverviewPage.xaml", UriKind.RelativeOrAbsolute)
+            });
+
+
             //this.OptionsMenu.Add(new HamMenuItem()
             //{
             //    Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.FileExportSolid },
